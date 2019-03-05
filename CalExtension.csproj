@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E2053A3F-F7FC-49BD-85B3-CC8A130237B8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CalExtension</RootNamespace>
+    <AssemblyName>CalExtension</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MulLib">
+      <HintPath>..\..\..\..\Publ\Phoenix_Muj_.NET3.5_dll\MulLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Phoenix">
+      <HintPath>..\..\..\..\Publ\Phoenix_Muj_.NET3.5_dll\Phoenix.dll</HintPath>
+    </Reference>
+    <Reference Include="PhoenixShared">
+      <HintPath>..\..\..\..\Publ\Phoenix_Muj_.NET3.5_dll\PhoenixShared.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UOEncryption.NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Publ\Phoenix_Muj_.NET3.5\UOEncryption.NET.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abilities\Ranger.cs" />
+    <Compile Include="Abilities\Guardian.cs" />
+    <Compile Include="Abilities\Bishop.cs" />
+    <Compile Include="Abilities\GolemMaster.cs" />
+    <Compile Include="Abilities\Necromancer.cs" />
+    <Compile Include="Abilities\Vampire.cs" />
+    <Compile Include="Abilities\Medic.cs" />
+    <Compile Include="Cal\Business\Attributes\ParameterAttribute.cs" />
+    <Compile Include="Cal\Business\Attributes\Require.cs" />
+    <Compile Include="Cal\Business\Attributes\Unique.cs" />
+    <Compile Include="Cal\Business\Attributes\UsageAttribute.cs" />
+    <Compile Include="Cal\Business\UOPosition.cs" />
+    <Compile Include="Cal\Business\UOPositionCollection.cs" />
+    <Compile Include="Cal\Cal.cs" />
+    <Compile Include="Cal\CalBusiness.cs" />
+    <Compile Include="Cal\CalBusinessCollection.cs" />
+    <Compile Include="Cal\CalStatusMessage.cs" />
+    <Compile Include="Cal\CalStatusMessageCollection.cs" />
+    <Compile Include="Cal\ICalBusiness.cs" />
+    <Compile Include="Cal\ICalBusinessCollection.cs" />
+    <Compile Include="Cal\Utils.cs" />
+    <Compile Include="External\CorpsesNotoriety.cs" />
+    <Compile Include="External\CoveOfMadness.cs" />
+    <Compile Include="External\DeathHandler.cs" />
+    <Compile Include="External\Light.cs" />
+    <Compile Include="External\Snap.cs" />
+    <Compile Include="Pages\CalebGlobalConfigSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\CalebGlobalConfigSettings.Designer.cs">
+      <DependentUpon>CalebGlobalConfigSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Quests\Drticka.cs" />
+    <Compile Include="External\TimerList.cs" />
+    <Compile Include="Pages\CalebConfigSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Pages\CalebConfigSettings.Designer.cs">
+      <DependentUpon>CalebConfigSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CalebConfig.cs" />
+    <Compile Include="PlayerRoles\Fighter.cs" />
+    <Compile Include="PlayerRoles\GolemMaster.cs" />
+    <Compile Include="PlayerRoles\MobMaster.cs" />
+    <Compile Include="Quests\Mikulas.cs" />
+    <Compile Include="Skills\Lumberjacking2.cs" />
+    <Compile Include="Skills\Necromancy.cs" />
+    <Compile Include="Skills\Musicanship.cs" />
+    <Compile Include="Skills\Inscription.cs" />
+    <Compile Include="Skills\Taming2.cs" />
+    <Compile Include="Skills\Cartography.cs" />
+    <Compile Include="Skills\Bowcraft.cs" />
+    <Compile Include="Skills\Fighting.cs" />
+    <Compile Include="Skills\Poisoning.cs" />
+    <Compile Include="Skills\Jewelry.cs" />
+    <Compile Include="Skills\Veterinary.cs" />
+    <Compile Include="Skills\Mining2.cs" />
+    <Compile Include="Skills\Catrpentry.cs" />
+    <Compile Include="Skills\Tracking.cs" />
+    <Compile Include="Skills\Tailoring.cs" />
+    <Compile Include="Skills\Blacksmithy.cs" />
+    <Compile Include="Skills\Healing.cs" />
+    <Compile Include="Skills\Fishing.cs" />
+    <Compile Include="Skills\Lockpicking.cs" />
+    <Compile Include="Skills\Tinkering.cs" />
+    <Compile Include="Status\ArtImageControlExt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Status\SlotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Status\UtilityForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Status\ManaBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Status\StaminaBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Status\StatusFormWrapper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Status\StatusWrapper.cs" />
+    <Compile Include="UOExtensions\HiddenRessTimer.cs" />
+    <Compile Include="UOExtensions\Mount.cs" />
+    <Compile Include="UOExtensions\Rename.cs" />
+    <Compile Include="UOExtensions\GoldenMedailon.cs" />
+    <Compile Include="UOExtensions\Bandana.cs" />
+    <Compile Include="UOExtensions\ContainerFrame.cs" />
+    <Compile Include="UOExtensions\KlicekRakev.cs" />
+    <Compile Include="UOExtensions\TextEntry.cs" />
+    <Compile Include="UOExtensions\Ship.cs" />
+    <Compile Include="UOExtensions\Morf.cs" />
+    <Compile Include="UOExtensions\IngameConsoleOverride.cs" />
+    <Compile Include="UOExtensions\WallTimeKeeper.cs" />
+    <Compile Include="UOExtensions\ItemRequip.cs" />
+    <Compile Include="UOExtensions\NbRuna.cs" />
+    <Compile Include="UOExtensions\RunscriptCounter.cs" />
+    <Compile Include="UOExtensions\Kniha.cs" />
+    <Compile Include="UOExtensions\Invis.cs" />
+    <Compile Include="UOExtensions\BishopHat.cs" />
+    <Compile Include="UOExtensions\Loot.cs" />
+    <Compile Include="UOExtensions\MapLocation.cs" />
+    <Compile Include="UOExtensions\CharactersHits.cs" />
+    <Compile Include="UOExtensions\Mob.cs" />
+    <Compile Include="UOExtensions\MobCollection.cs" />
+    <Compile Include="UOExtensions\AsyncCounter.cs" />
+    <Compile Include="UOExtensions\Robot\UOPositionBase.cs" />
+    <Compile Include="UOExtensions\Robot\IUOPosition.cs" />
+    <Compile Include="UOExtensions\Robot\PathNodeList.cs" />
+    <Compile Include="UOExtensions\Robot\PathNode.cs" />
+    <Compile Include="UOExtensions\Robot\PathBuilder.cs" />
+    <Compile Include="UOExtensions\Simple\UOItemTypeBase.cs" />
+    <Compile Include="UOExtensions\Simple\IUOItemType.cs" />
+    <Compile Include="UOExtensions\UOItemType.cs" />
+    <Compile Include="UOExtensions\UOItemTypeCollection.cs" />
+    <Compile Include="UOExtensions\ChangeLog.cs" />
+    <Compile Include="UOExtensions\__TODOLIST.cs" />
+    <Compile Include="UOExtensions\WebWorldSaveTime.cs" />
+    <Compile Include="UOExtensions\Utils.cs" />
+    <Compile Include="UOExtensions\PhoenixExtension.cs" />
+    <Compile Include="UOExtensions\__Test.cs" />
+    <Compile Include="UOExtensions\StandAloneScripts.cs" />
+    <Compile Include="UOExtensions\Shoping.cs" />
+    <Compile Include="UOExtensions\ItemLibrary.cs" />
+    <Compile Include="UOExtensions\ItemHelper.cs" />
+    <Compile Include="UOExtensions\PotionCollection.cs" />
+    <Compile Include="UOExtensions\Potion.cs" />
+    <Compile Include="UOExtensions\ReagentCollection.cs" />
+    <Compile Include="UOExtensions\Reagent.cs" />
+    <Compile Include="UOExtensions\PlayerExtended.cs" />
+    <Compile Include="UOExtensions\Game.cs" />
+    <Compile Include="PlayerRoles\PlayerRole.cs" />
+    <Compile Include="UOExtensions\Robot\Robot.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Skills\Alchemy.cs" />
+    <Compile Include="Skills\Skill.cs" />
+    <Compile Include="Skills\Hiding.cs" />
+    <Compile Include="Skills\Magery.cs" />
+    <Compile Include="Skills\SkillsHelper.cs" />
+    <Compile Include="Status\ClientTitleBar.cs" />
+    <Compile Include="Status\FloatingWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Status\HealthBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Status\InGameWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Status\ItemCount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Status\StatusBar.cs" />
+    <Compile Include="Status\StatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Status\SupplyCounter.cs" />
+    <Compile Include="Status\WindowManager.cs" />
+    <Compile Include="UOExtensions\NonSortedExec.cs" />
+    <Compile Include="UOExtensions\Characters.cs" />
+    <Compile Include="UOExtensions\Targeting.cs" />
+    <Compile Include="XIndvidual\Requip.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Status\backgray.png" />
+    <Content Include="Status\default.cur" />
+    <Content Include="Status\target32.cur" />
+    <Content Include="Status\war.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\CalebGlobalConfigSettings.resx">
+      <DependentUpon>CalebGlobalConfigSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\CalebConfigSettings.resx">
+      <DependentUpon>CalebConfigSettings.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
