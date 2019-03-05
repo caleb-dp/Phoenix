@@ -25,7 +25,7 @@ namespace CalExtension.XIndividual
     public static Serial VAL_MojeGuild_BedinkaEquip = 0x40027BBD;
     public static Serial VAL_MojeBezpecna_RegPytlik = 0x40328131;
     public static Serial VAL_MojeBezpecna_BedinkaSvitky = 0x4021B3C0;
-    public static Serial VAL_MojeBezpecna_BedinkaIngoty = 0x401B9E24;  
+    public static Serial VAL_MojeBezpecna_BedinkaIngoty = 0x401B9E24; 
 
     //---------------------------------------------------------------------------------------------
 
