@@ -1242,7 +1242,7 @@ namespace CalExtension.UI.Status
 
     public void RegisterCounter()
     {
-      DisposeCounter();
+  //    DisposeCounter();
       RegisterCounter(false);
     }
     public void RegisterCounter(bool track)

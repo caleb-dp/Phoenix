@@ -157,6 +157,9 @@ namespace CalExtension.PlayerRoles
       if (Aliases.GetObject("LastStatusManual") == World.Player.Serial)
         Aliases.SetObject("LastStatusManual", Serial.Invalid);
 
+
+      Aliases.SetObject("SelectedMob", Serial.Invalid);
+
       lastMob = Serial.Invalid;
       lastInactiveMob = Serial.Invalid;
 
@@ -177,7 +180,8 @@ namespace CalExtension.PlayerRoles
       UOCharacter ch = new UOCharacter(mob);
       string name = null;
 
-      if (ch.Renamable && mob.IsValid && ch.Exist && ch.Distance < 15 && !String.IsNullOrEmpty(ch.Name))
+      TargetInfo t = Targeting.GetTarget(""); 
+      if (ch.Renamable && mob.IsValid && ch.Exist && ch.Distance < 18 && !String.IsNullOrEmpty(ch.Name))
       {
         ch.PrintMessage("[go...]");
         name = ch.Name;
@@ -197,7 +201,18 @@ namespace CalExtension.PlayerRoles
       if (!String.IsNullOrEmpty(name))
         command = name + " go";
 
-      UO.Say(Game.Val_GreenBlue, command);
+      if (t != null && t.Success)
+      {
+        UO.WaitTargetTile(t.StaticTarget.X, t.StaticTarget.Y, t.StaticTarget.Z, t.StaticTarget.Graphic);
+        if (t.Character != null && t.Character.Exist && Game.IsMob(t.Character.Serial))
+        {
+          Aliases.SetObject("SelectedMob", t.Character.Serial);
+        }
+        UO.Say(Game.Val_GreenBlue, command);
+      }
+
+
+
     }
 
     //---------------------------------------------------------------------------------------------

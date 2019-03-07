@@ -320,6 +320,7 @@ namespace CalExtension
           }
           else if (data[0] == 0x05)//OnAtack
           {
+            atackCounterEnabled = true;
             Game.RunScriptCheck(Targeting.DynamicAttackDelay);
           }
         }
@@ -1463,9 +1464,11 @@ namespace CalExtension
                     {
                       if (result.Serial == World.Player.Serial || !World.Player.Hidden || SkillsHelper.GetSkillValue("Healing").RealValue > 950)//Jen clerda muze s hidu
                       {
+                        Game.CurrentGame.atackCounterEnabled = false;
                         Game.Wait(150);
                         if (!CheckRunning())
                         {
+
                           if (Debug)
                             Game.PrintMessage("HEAL ... " + ScriptRunning);
 
@@ -1933,6 +1936,8 @@ namespace CalExtension
     public static JournalEntry LastEntry;
     public static List<JournalEntry> EntryHistory;
 
+    protected bool atackCounterEnabled = false;
+
     protected void Journal_EntryAdded(object sender, JournalEntryAddedEventArgs e)
     {
       if (EntryHistory == null)
@@ -2002,14 +2007,17 @@ namespace CalExtension
           textSafe.ToLower().StartsWith("You hit".ToLower()) 
         )
       {
-        if (Targeting.lastAttackTime.HasValue)
+        if (atackCounterEnabled)
         {
-          double diff = (DateTime.Now - Targeting.lastAttackTime.Value).TotalMilliseconds;
-          Targeting.lastDynamicAttackDelay = ((int)(diff / 50) * 50);
-        }
+          if (Targeting.lastAttackTime.HasValue)
+          {
+            double diff = (DateTime.Now - Targeting.lastAttackTime.Value).TotalMilliseconds;
+            Targeting.lastDynamicAttackDelay = ((int)(diff / 50) * 50);
+          }
 
-        Game.RunScript(Targeting.DynamicAttackDelay);
-        Targeting.lastAttackTime = DateTime.Now;
+          Game.RunScript(Targeting.DynamicAttackDelay);
+          Targeting.lastAttackTime = DateTime.Now;
+        }
       }
       #endregion
 
