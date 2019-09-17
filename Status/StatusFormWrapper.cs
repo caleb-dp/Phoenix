@@ -144,14 +144,14 @@ namespace CalExtension.UI.Status
     {
       List<UOCharacter> all = World.Characters.ToList();
 
-      lock (this.SyncRoot)
-      {
+      //lock (this.SyncRoot)
+      //{
         foreach (UOCharacter ch in all)
         {
           if (!this.toDispatchSerials.Contains(ch.Serial))
             toDispatchSerials.Add(ch.Serial);
         }
-      }
+      //}
 
     }
 
@@ -159,11 +159,11 @@ namespace CalExtension.UI.Status
 
     private void StatusBar_OnStatusShow(object sender, CharacterAppearedEventArgs e)
     {
-      lock (this.SyncRoot)
-      {
+      //lock (this.SyncRoot)
+      //{
         if (!this.toDispatchSerials.Contains(e.Serial))
           toDispatchSerials.Add(e.Serial);
-      }
+ //     }
       //RefreshForms();
     }
 
@@ -173,11 +173,11 @@ namespace CalExtension.UI.Status
     {
       if (this.Auto)
       {
-        lock(this.SyncRoot)
-        {
+        //lock(this.SyncRoot)
+        //{
           if (!this.toDispatchSerials.Contains(e.Serial))
             toDispatchSerials.Add(e.Serial);
-        }
+      //  }
 
       }
     }
@@ -185,13 +185,13 @@ namespace CalExtension.UI.Status
 
     //---------------------------------------------------------------------------------------------
 
-    private object SyncRoot = new object();
+  //  private object SyncRoot = new object();
     private List<Serial> toDispatchSerials = new List<Serial>();
 
     //---------------------------------------------------------------------------------------------
 
     private bool refreshing = false;
-
+    private static bool errorOccured = false;
     protected void RefreshForms()
     {
       if (refreshing)
@@ -210,8 +210,8 @@ namespace CalExtension.UI.Status
         List<Serial> currentChars = new List<Serial>();
         WindowManager defaultManager = WindowManager.GetDefaultManager();
 
-        lock (this.SyncRoot)
-        {
+        //lock (this.SyncRoot)
+        //{
           for (int i = this.toDispatchSerials.Count - 1; i >= 0; i--)
           {
             Serial s = this.toDispatchSerials[i];
@@ -224,7 +224,7 @@ namespace CalExtension.UI.Status
             if (!ch.Exist || ch.Distance > 30)
               this.toDispatchSerials.RemoveAt(i);
           }
-        }
+      //  }
 
         List<StatusForm> forms = WindowManager.GetDefaultManager().OwnedWindows.OfType<StatusForm>().Where(f => this.WrapperType == StatusWrapper.GetWrapperType(f.MobileId) && !currentChars.Contains(f.MobileId)).ToList();
         foreach (StatusForm sf in forms)
@@ -263,7 +263,8 @@ namespace CalExtension.UI.Status
             if (sf.Manual)
               priority += 100;
 
-            order.Add(s, priority);
+            if (!order.ContainsKey(s))
+              order.Add(s, priority);
           }
           else
             filteredSorted.RemoveAt(i);
@@ -376,9 +377,21 @@ namespace CalExtension.UI.Status
 
         this.registeredSerials = refresSerials;
       }
-      catch //(Exception e)
+      catch (Exception e)
       {
         Game.PrintMessage("Chyba v zalozkach", MessageType.Error);
+
+        if (!errorOccured)
+        {
+          Notepad.WriteLine("Chyba v zalozkach");
+          Notepad.WriteLine("" + e.Message);
+          Notepad.WriteLine();
+          Notepad.WriteLine("" + e.StackTrace);
+          Notepad.WriteLine("Inner: " + (e.InnerException != null ? e.InnerException.Message : ""));
+          Notepad.WriteLine();
+          Notepad.WriteLine((e.InnerException != null ? e.InnerException.StackTrace : ""));
+          errorOccured = true;
+        }
       }
       finally
       {

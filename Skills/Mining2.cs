@@ -483,7 +483,7 @@ namespace CalExtension.Skills
 
           bool opened = false;
           sychr = 0;
-          if (!MamSkladacku)
+          if (!MamSkladacku && World.Player.Backpack.AllItems.Count(KrumpacGraphic) == 0)
           {
             while (World.Player.Backpack.AllItems.Count(KrumpacGraphic) <= this.KumpLoad && sychr < this.KumpLoad * 2)
             {
@@ -502,6 +502,7 @@ namespace CalExtension.Skills
               else
                 break;
             }
+            
           }
 
           return PlayerExtended.GoByPath(this.ContainerPath, true, false) && this.BezLast();
@@ -1097,10 +1098,10 @@ namespace CalExtension.Skills
           continue;
         }
 
-        if (this.WeightLimitReached || (this.ForceVykladat && lastKop.Mined && FindOre(World.Player.Backpack.AllItems, (int)OreColor.Mytheril).Exist || FindOre(World.Player.Backpack.AllItems, (int)OreColor.BlackRock).Exist))
+        if (this.WeightLimitReached || (this.ForceVykladat && lastKop.Mined && FindOre(World.Player.Backpack.AllItems, (int)OreColor.Mytheril).Exist/* || FindOre(World.Player.Backpack.AllItems, (int)OreColor.BlackRock).Exist*/))
         {
           this.BezSmeltit();
-          if (this.WeightLimitReachedSmelted || (this.ForceVykladat && lastKop.Mined && (FindIngot(World.Player.Backpack.AllItems, (int)IgnotColor.Mytheril).Exist || FindIngot(World.Player.Backpack.AllItems, (int)IgnotColor.BlackRock).Exist)))
+          if (this.WeightLimitReachedSmelted || (this.ForceVykladat && lastKop.Mined && (FindIngot(World.Player.Backpack.AllItems, (int)IgnotColor.Mytheril).Exist/* || FindIngot(World.Player.Backpack.AllItems, (int)IgnotColor.BlackRock).Exist*/)))
             this.BezVylozit();
           returnToLast = true;
         }
@@ -1621,19 +1622,24 @@ namespace CalExtension.Skills
 
 //Dul 1
 //                  Kontejner  Pylik      Vstup       Start       Kontejner   Vyhen       Ress        Nespojitost Vyhaz  Forensic Krumpy Hiding Navstevnici 
-//exec StartMining2 0x40000CB9 0x402110BB "1367.2731" "1388.2704" "1369.2743" "1379.2705" "1376.2981" "1373.2712" "" 700 6 false false
+//exec StartMining2 0x40000CB9 0x402110BB "1367.2731" "1388.2704" "1369.2715|1367.2728|1366.2725|1369.2743.0" "1379.2705" "1376.2981" "1373.2712" "Iron" 700 6 false false
 
 //--------------------------------------------------------------------------------------------- 
 
 
 //Dul 2 - na N
-//                  Kontejner  Pylik      Vstup     Start     Kontejner Vyhen     Ress       Nespojitost Vyhaz  Forensic Krumpy Hiding Navstevnici
-//exec StartMining2 0x402CB29D 0x4007B7EC "2472.67" "2484.42" "2475.54|2475.63|2472.67|2469.91" "2475.54|2460.51" "2627.165" "2471.58|2462.48" "" 700 6 false false
+//                  Kontejner  Pylik      Vstup     Start     Kontejner Vyhen     Ress       Nespojitost Vyhaz  Forensic Kru[mpy Hiding Navstevnici
+//exec StartMining2 0x402CB29D 0x4007B7EC "2472.67" "2484.42" "2475.54|2475.63|2472.67|2469.91.0" "2475.54|2460.51" "2627.165" "2471.58|2462.48" "" 700 6 false false
 
 
 //Dul 2 - na W
 //                  Kontejner  Pylik      Vstup     Start     Kontejner Vyhen     Ress       Nespojitost Vyhaz  Forensic Krumpy Hiding Navstevnici
-//exec StartMining2 0x402CB29D 0x4007B7EC "2441.94" "2439.97" "2427.93|2444.94|2469.91" "2427.92" "2627.165" "2429.100" "" 700 6 false false "SN"
+//exec StartMining2 0x402CB29D 0x4007B7EC "2441.94" "2439.97" "2427.93|2444.94|2469.91.0" "2427.92" "2627.165" "2429.100" "" 700 6 false false "SN"
+
+//,exec startminingmultiple "c5|2471.68|2472.63|2472.62;0x402CB29D;0x4007B7EC;2472.67;2484.42;2475.54|2475.63|2472.67|2469.91.0;2475.54|2460.51;2627.165;2471.58|2462.48;Iron,Copper;700;6;false;false;EW;None;true;;false" "c5|2441.94;0x402CB29D;0x4007B7EC;2441.94;2439.97;2427.93|2444.94|2469.91.0;2427.92;2627.165;2429.100;Iron,Copper;700;6;false;false;SN;None;true;;false"  
+
+
+
 
 //Homare
 //c22|333.3368|378.3315|394.3293|425.3274|480.3271|486.3280|501.3279|502.3269

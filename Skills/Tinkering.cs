@@ -537,6 +537,8 @@ namespace CalExtension.Skills
 
       string[] menus = new string[] { "Tinkering", "Wires", "Wires", name + " Wire" };
 
+      List<double> times = new List<double>();
+
       while (!UO.Dead && itemMake < quantity)
       {
         if (!World.Player.Backpack.Items.FindType(t.Graphic, t.Color).Exist)
@@ -569,6 +571,9 @@ namespace CalExtension.Skills
           }
         }
 
+        DateTime start = DateTime.Now;
+
+
         UO.UseType(0x1EBC, 0x0000);
         UO.WaitMenu(menus);
 
@@ -578,17 +583,22 @@ namespace CalExtension.Skills
         else
           itemFail++;
 
+        times.Add((DateTime.Now - start).TotalMilliseconds);
+
         if (Journal.Contains("You can't make anything"))
         {
           Game.PrintMessage("Nemas suroviny");
           break;
         }
 
+        
+
 
         decimal okDivide = (itemMake / (itemMake + itemFail));
         decimal okPerc = okDivide * 100;
+        double etaMiliseconds = times.Average() * (double)(quantity - itemMake);
 
-        Game.PrintMessage("Ks: " + itemMake + "/" + (itemMake + itemFail) + " - " + String.Format("{0:n} %", okPerc));
+        Game.PrintMessage("Ks: " + itemMake + "/" + quantity + " - " + String.Format("{0:n} %", okPerc) + " ETA: " + (String.Format("{0:N2}", etaMiliseconds / 60000.0)));
 
 
         Journal.Clear();
@@ -866,5 +876,287 @@ namespace CalExtension.Skills
 
     //---------------------------------------------------------------------------------------------
 
+    [Executable]
+    public static void EnchantBySitickoBlood()
+    {
+      if (!World.Player.Backpack.Items.FindType(0x1EBC, 0x0000).Exist)
+      {
+        Game.PrintMessage("Nemas tools");
+        return;
+      }
+
+      if (!World.Player.Backpack.Items.FindType(0x0F9D, 0x047F).Exist)
+      {
+        Game.PrintMessage("Nemas magicke siticko");
+        return;
+      }
+
+      Game.PrintMessage("Vyber container s Blood, Rose, Shadow ingy");
+      UOItem containerIngotFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container s brnenim");
+      UOItem containerArmorFrom = new UOItem(UIManager.TargetObject());
+
+      containerArmorFrom.Use();
+      Game.Wait();
+      containerIngotFrom.Use();
+      Game.Wait();
+
+      List<UOItem> sourceItems = new List<UOItem>();
+      sourceItems.AddRange(containerArmorFrom.Items.ToArray());
+
+      int counter = 0;
+      List<double> times = new List<double>();
+
+      foreach (UOItem armor in sourceItems)
+      {
+        counter++;
+        DateTime start = DateTime.Now;
+
+        if (!armor.Move(1, World.Player.Backpack))
+          continue;
+
+        Game.Wait();
+
+        while (World.Player.Backpack.Items.FindType(0x1876, 0x0665).Amount < 15)
+        {
+          UO.DeleteJournal();
+
+          if (!World.Player.Backpack.Items.FindType(0x1BEF, 0x0665).Exist)
+          {
+            containerIngotFrom.Items.FindType(0x1BEF, 0x0665).Move(15, World.Player.Backpack);
+            Game.Wait();
+          }
+
+          string[] menus = new string[] { "Tinkering", "Wires", "Wires", "Rose Wire" };
+
+          UO.UseType(0x1EBC, 0x0000);
+          UO.WaitMenu(menus);
+
+          Journal.WaitForText(true, 8000, "You have failed to make anything", "You can't make anything", "You put", "Tinkering failed");
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            armor.Move(1, containerArmorFrom.Serial);
+            return;
+          }
+        }
+
+        while (World.Player.Backpack.Items.FindType(0x1876, 0x0770).Amount < 15)
+        {
+          UO.DeleteJournal();
+
+          if (!World.Player.Backpack.Items.FindType(0x1BEF, 0x0770).Exist)
+          {
+            containerIngotFrom.Items.FindType(0x1BEF, 0x0770).Move(15, World.Player.Backpack);
+            Game.Wait();
+          }
+
+          string[] menus = new string[] { "Tinkering", "Wires", "Wires", "Shadow Wire" };
+
+          UO.UseType(0x1EBC, 0x0000);
+          UO.WaitMenu(menus);
+
+          Journal.WaitForText(true, 8000, "You have failed to make anything", "You can't make anything", "You put", "Tinkering failed");
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            armor.Move(1, containerArmorFrom.Serial);
+            return;
+          }
+        }
+
+        while (World.Player.Backpack.Items.FindType(0x1876, 0x04C2).Amount < 15)
+        {
+          UO.DeleteJournal();
+
+          if (!World.Player.Backpack.Items.FindType(0x1BEF, 0x04C2).Exist)
+          {
+            containerIngotFrom.Items.FindType(0x1BEF, 0x04C2).Move(15, World.Player.Backpack);
+            Game.Wait();
+          }
+
+          string[] menus = new string[] { "Tinkering", "Wires", "Wires", "Blood Rock Wire" };
+
+          UO.UseType(0x1EBC, 0x0000);
+          UO.WaitMenu(menus);
+
+          Journal.WaitForText(true, 8000, "You have failed to make anything", "You can't make anything", "You put", "Tinkering failed");
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            armor.Move(1, containerArmorFrom.Serial);
+            return;
+          }
+        }
+
+        Game.Wait();
+
+        World.Player.Backpack.Items.FindType(0x0F9D, 0x047F).Use();
+        UO.WaitTargetObject(armor);
+
+        Game.Wait();
+        armor.Move(1, containerArmorFrom.Serial);
+        Game.Wait();
+
+        times.Add((DateTime.Now - start).TotalMilliseconds);
+
+        double etaMiliseconds = times.Average() * (double)(sourceItems.Count - counter);
+
+        Game.PrintMessage(counter+ "/" + sourceItems.Count + " ETA: " + (String.Format("{0:N2} min.", etaMiliseconds / 60000.0)));
+
+      }
+    }
+
+    [Executable]
+    public static void EnchantBySitickoBlack()
+    {
+      if (!World.Player.Backpack.Items.FindType(0x1EBC, 0x0000).Exist)
+      {
+        Game.PrintMessage("Nemas tools");
+        return;
+      }
+
+      if (!World.Player.Backpack.Items.FindType(0x0F9D, 0x047F).Exist)
+      {
+        Game.PrintMessage("Nemas magicke siticko");
+        return;
+      }
+
+      Game.PrintMessage("Vyber container s Blood, Rose, Shadow ingy");
+      UOItem containerIngotFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container s brnenim");
+      UOItem containerArmorFrom = new UOItem(UIManager.TargetObject());
+
+      containerArmorFrom.Use();
+      Game.Wait();
+      containerIngotFrom.Use();
+      Game.Wait();
+
+      List<UOItem> sourceItems = new List<UOItem>();
+      sourceItems.AddRange(containerArmorFrom.Items.ToArray());
+
+      int counter = 0;
+      List<double> times = new List<double>();
+
+      foreach (UOItem armor in sourceItems)
+      {
+        counter++;
+        DateTime start = DateTime.Now;
+
+        if (!armor.Move(1, World.Player.Backpack))
+          continue;
+
+        Game.Wait();
+
+        while (World.Player.Backpack.Items.FindType(0x1876, 0x0665).Amount < 15)
+        {
+          UO.DeleteJournal();
+
+          if (!World.Player.Backpack.Items.FindType(0x1BEF, 0x0665).Exist)
+          {
+            containerIngotFrom.Items.FindType(0x1BEF, 0x0665).Move(15, World.Player.Backpack);
+            Game.Wait();
+          }
+
+          string[] menus = new string[] { "Tinkering", "Wires", "Wires", "Rose Wire" };
+
+          UO.UseType(0x1EBC, 0x0000);
+          UO.WaitMenu(menus);
+
+          Journal.WaitForText(true, 8000, "You have failed to make anything", "You can't make anything", "You put", "Tinkering failed");
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            armor.Move(1, containerArmorFrom.Serial);
+            return;
+          }
+        }
+
+        while (World.Player.Backpack.Items.FindType(0x1876, 0x0770).Amount < 15)
+        {
+          UO.DeleteJournal();
+
+          if (!World.Player.Backpack.Items.FindType(0x1BEF, 0x0770).Exist)
+          {
+            containerIngotFrom.Items.FindType(0x1BEF, 0x0770).Move(15, World.Player.Backpack);
+            Game.Wait();
+          }
+
+          string[] menus = new string[] { "Tinkering", "Wires", "Wires", "Shadow Wire" };
+
+          UO.UseType(0x1EBC, 0x0000);
+          UO.WaitMenu(menus);
+
+          Journal.WaitForText(true, 8000, "You have failed to make anything", "You can't make anything", "You put", "Tinkering failed");
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            armor.Move(1, containerArmorFrom.Serial);
+            return;
+          }
+        }
+
+        while (World.Player.Backpack.Items.FindType(0x1876, 0x0455).Amount < 15)
+        {
+          UO.DeleteJournal();
+
+          if (!World.Player.Backpack.Items.FindType(0x1BEF, 0x0455).Exist)
+          {
+            containerIngotFrom.Items.FindType(0x1BEF, 0x0455).Move(15, World.Player.Backpack);
+            Game.Wait();
+          }
+
+          string[] menus = new string[] { "Tinkering", "Wires", "Wires", "Black Rock Wire" };
+
+          UO.UseType(0x1EBC, 0x0000);
+          UO.WaitMenu(menus);
+
+          Journal.WaitForText(true, 8000, "You have failed to make anything", "You can't make anything", "You put", "Tinkering failed");
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            armor.Move(1, containerArmorFrom.Serial);
+            return;
+          }
+        }
+
+        Game.Wait();
+
+        World.Player.Backpack.Items.FindType(0x0F9D, 0x047F).Use();
+        UO.WaitTargetObject(armor);
+
+        Game.Wait();
+        armor.Move(1, containerArmorFrom.Serial);
+        Game.Wait();
+
+        times.Add((DateTime.Now - start).TotalMilliseconds);
+
+        double etaMiliseconds = times.Average() * (double)(sourceItems.Count - counter);
+
+        Game.PrintMessage(counter + "/" + sourceItems.Count + " ETA: " + (String.Format("{0:N2} min.", etaMiliseconds / 60000.0)));
+
+      }
+    }
+
+    //---------------------------------------------------------------------------------------------
+
   }
 }
+//Serial: 0x400D1E39  Name: "Rose Wire crafted by Ungo"  Position: 70.68.0  Flags: 0x0000  Color: 0x0665  Graphic: 0x1876  Amount: 768  Layer: None  Container: 0x40155D7D
+//Serial: 0x400CF9AA  Name: "Rose Ingot"  Position: 74.51.0  Flags: 0x0000  Color: 0x0665  Graphic: 0x1BEF  Amount: 20897  Layer: None Container: 0x401B9E24
+
+//Serial: 0x400C8D55  Name: "Shadow Wire crafted by Ungo"  Position: 29.46.0  Flags: 0x0000  Color: 0x0770  Graphic: 0x1876  Amount: 788  Layer: None  Container: 0x40155D7D
+//Serial: 0x400CC90B  Name: "Shadow Ingot"  Position: 60.51.0  Flags: 0x0000  Color: 0x0770  Graphic: 0x1BEF  Amount: 23964  Layer: None Container: 0x401B9E24
+
+//Serial: 0x40227BF3  Name: "Blood Rock Wire crafted by Un"  Position: 38.92.0  Flags: 0x0000  Color: 0x04C2  Graphic: 0x1876  Amount: 1286  Layer: None  Container: 0x40155D7D
+//Serial: 0x402418A0  Name: "Blood Rock Ingot"  Position: 115.51.0  Flags: 0x0000  Color: 0x04C2  Graphic: 0x1BEF  Amount: 12790  Layer: None Container: 0x401B9E24
+
+//0x0455  

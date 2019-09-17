@@ -154,6 +154,40 @@ namespace Scripts.DarkParadise
       }
     }
 
+
+    [Executable]
+    [BlockMultipleExecutions]
+    public void UsumonLavaBomb2()
+    {
+      UOItem potionItem = World.Player.Backpack.AllItems.FindType(0x0F0D, 0x000E);
+
+      if (potionItem.Exist)
+      {
+        potionItem.DropHere();
+        UO.Wait(200);
+        potionItem.Move(1, (ushort)(potionItem.X + 1), (ushort)(potionItem.Y + 1), potionItem.Z);
+        UO.Wait(200);
+        potionItem.Move(1, World.Player.Backpack, 30, 30);
+        UO.Wait(200);
+      }
+      else if (World.Player.Backpack.AllItems.FindType(0x1843, 0x000E).Exist)
+      {
+        UOItem empty = UO.Backpack.Items.FindType(0x0F0E);
+        UO.WaitTargetObject(empty);
+        World.Player.Backpack.AllItems.FindType(0x1843, 0x000E).Use();
+        UO.Wait(250);
+
+        potionItem = World.Player.Backpack.Items.FindType(0x0F0D, 0x000E);
+
+      }
+
+      if (potionItem.Exist)
+      {
+        World.Player.Print("Unsumon lavabomb");
+        potionItem.Use();
+      }
+    }
+
     [Executable]
     public static void VyhodLavaBombuByTom()
     {

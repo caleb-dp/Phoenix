@@ -41,7 +41,11 @@ namespace CalExtension
 
     private static bool trainPoison;
 
+    private static string salatAlertHp;
+
+
     private static readonly DefaultPublicEvent propertyChanged = new DefaultPublicEvent();
+
 
     //private SynchronizedSettings globalsettings;
     /// <summary>
@@ -78,6 +82,7 @@ namespace CalExtension
       lootItemTypes = Config.Profile.UserSettings.GetAttribute(CalExtension.UOExtensions.Loot.LootDefaultItemTypes, "Value", "LootItemTypes");
       playerAliases = GetGlobalFile("PlayerAliases.txt", "");// Config.Profile.UserSettings.GetAttribute(String.Empty, "Value", "PlayerAliases");
 
+      salatAlertHp = Config.Profile.UserSettings.GetAttribute("33%", "Value", "SalatAlertHp");
 
       bakGlobalCalebConfig = globalCalebConfig = GetGlobalFile("globalCalebConfig.xml", "<Config></Config>");// Config.Profile.UserSettings.GetAttribute(String.Empty, "Value", "PlayerAliases");
 
@@ -115,6 +120,9 @@ namespace CalExtension
 
       useWallTime = Config.Profile.UserSettings.GetAttribute(true, "Value", "UseWallTime");
 
+
+      salatAlertHp = Config.Profile.UserSettings.GetAttribute("33%", "Value", "SalatAlertHp");
+
       lootItemTypes = Config.Profile.UserSettings.GetAttribute(CalExtension.UOExtensions.Loot.LootDefaultItemTypes, "Value", "LootItemTypes");
       // playerAliases = Config.Profile.UserSettings.GetAttribute(String.Empty, "Value", "PlayerAliases");
       playerAliases = GetGlobalFile("PlayerAliases.txt", "");
@@ -150,6 +158,8 @@ namespace CalExtension
 
       Config.Profile.UserSettings.SetAttribute(lootItemTypes, "Value", "LootItemTypes");
       //Config.Profile.UserSettings.SetAttribute(playerAliases, "Value", "PlayerAliases");
+
+      Config.Profile.UserSettings.SetAttribute(salatAlertHp, "Value", "SalatAlertHp");
 
       SaveGlobalFile("PlayerAliases.txt", playerAliases);
       try
@@ -389,6 +399,44 @@ namespace CalExtension
       }
     }
 
+    public static string SalatAlertHp
+    {
+      get { return salatAlertHp; }
+      set
+      {
+        if (value != salatAlertHp)
+        {
+          salatAlertHp = value;
+          OnPropertyChanged(EventArgs.Empty);
+        }
+      }
+    }
+
+    public static int  SalatAlertHpValue
+    {
+      get
+      {
+        string val = SalatAlertHp;
+        int outVal = 0;
+
+        if (!Int32.TryParse((val + String.Empty).Replace("%", "").Trim(), out outVal))
+          outVal = 0;
+
+        return outVal;
+      }
+    }
+
+    public static string SalatAlertHpKind
+    {
+      get
+      {
+        string val = SalatAlertHp;
+        if (val.Contains("%"))
+          return "perc";
+        else
+          return "abs";
+      }
+    }
 
     public static string PlayerAliases
     {
@@ -619,6 +667,19 @@ namespace CalExtension
 
     //---------------------------------------------------------------------------------------------
 
+    public static bool GetBooleanOrDefault(string code)
+    {
+      return GetBooleanOrDefault(code, true);
+    }
+
+    public static bool GetBooleanOrDefault(string code, bool defaultValue)
+    {
+      return GetGlobalConfigValueOrDefault("GlobalVariables/" + code, "Value", defaultValue);
+    }
+
+
+    //---------------------------------------------------------------------------------------------
+
     public static string GetGlobalConfigValue(string xpath, string attrName)
     {
       return GetGlobalConfigValueOrDefault(xpath, attrName, null);
@@ -727,7 +788,25 @@ namespace CalExtension
       }
       return defaultValue;
     }
-   
+
+    //---------------------------------------------------------------------------------------------
+
+    public static bool GetGlobalConfigValueOrDefault(string xpath, string attrName, bool defaultValue)
+    {
+      string val = GetGlobalConfigValue(xpath, attrName);
+
+      if (val != null)
+      {
+        try
+        {
+          bool c = bool.Parse(val);
+          return c;
+        }
+        catch { }
+      }
+      return defaultValue;
+    }
+
     //---------------------------------------------------------------------------------------------
 
   }

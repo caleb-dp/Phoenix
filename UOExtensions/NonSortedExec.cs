@@ -105,13 +105,22 @@ namespace CalExtension.UOExtensions
       }
       else if (World.Player.Layers[Layer.LeftHand].Graphic == 0x0A15/* && World.Player.Layers[Layer.LeftHand].Color == 0x0493*/)
       {
-        World.Player.Layers[Layer.LeftHand].Use();
-
-        World.Player.PrintMessage("[Lucerna...]", Game.Val_GreenBlue);
+        if (!World.Player.Hidden)
+        {
+          World.Player.Layers[Layer.LeftHand].Use();
+          World.Player.PrintMessage("[Lucerna...]", Game.Val_GreenBlue);
+        }
       }
       else
       {
-        Game.CurrentGame.CurrentPlayer.GetSkillInstance<Magery>().CastSpell(StandardSpell.NightSight, World.Player.Serial);
+        if (!World.Player.Hidden)
+        {
+
+
+          Game.CurrentGame.CurrentPlayer.GetSkillInstance<Magery>().CastSpell(StandardSpell.NightSight, World.Player.Serial);
+        }
+        else
+          World.Player.PrintMessage("Ale ale copak to delas!! ");
       }
     }
 

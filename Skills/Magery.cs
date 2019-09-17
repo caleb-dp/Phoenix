@@ -511,16 +511,16 @@ namespace CalExtension.Skills
         }
 
         bool waitForScrool = false;
-        if (info.Usage == CastUsage.Scrool && lastScrool.HasValue)
+        if (info.Usage == CastUsage.Scrool && lastScrool.HasValue)// && !forceScrool)
         {
           double currentTimeout = GetScroolTimeout();
           double currentTime = (DateTime.Now - lastScrool.Value).TotalSeconds;
 
           if (currentTime < currentTimeout)
           {
-            waitForScrool = true;
-            if (!forceScrool)
-              info.Usage = CastUsage.Head;
+//            waitForScrool = true;
+//            if (!forceScrool)
+//              info.Usage = CastUsage.Head;
             Game.PrintMessage(String.Format("Scroll za! {0:N1}s", currentTimeout - currentTime));
           }
         }
@@ -546,7 +546,7 @@ namespace CalExtension.Skills
             }
             else
             {
-              Magery.TrySetCastingSpell(new CastSpellInfo(spell, true, silence));
+              Magery.TrySetCastingSpell(new CastSpellInfo(spell, true, true));
 
               target.WaitTarget();
               //UO.WaitTargetObject(target);
@@ -587,7 +587,7 @@ namespace CalExtension.Skills
           }
           else
           {
-            Magery.TrySetCastingSpell(new CastSpellInfo(spell, false, silence));
+            Magery.TrySetCastingSpell(new CastSpellInfo(spell, false, true));
             target.WaitTarget();
             UO.Cast(spell);//, target);
 
@@ -690,17 +690,16 @@ namespace CalExtension.Skills
         target = Game.CurrentGame.CurrentHoverStatus;
 
       if (!target.IsStatic && (!target.IsValid || !new UOObject(target).Exist || new UOObject(target).Distance > 25))
+      {
+        Magery.TrySetCastingSpell(new CastSpellInfo(StandardSpell.SummonCreature, false, false));
         UO.SummonCreature(summonName);
+      }
       else
       {
+        Magery.TrySetCastingSpell(new CastSpellInfo(StandardSpell.SummonCreature, false, true));
         UIManager.WaitForMenu(new MenuSelection("What do you want to summon ?", summonName));
-
         target.WaitTarget();
-
         UO.Cast("Summ. Creature");
-
-        //target.WaitTarget();
-        //UO.SummonCreature(summonName);//, target);
 
         if (Journal.WaitForText(true, 150, "You can't see the target", "Target is not in line of sight"))
         {
@@ -796,6 +795,7 @@ namespace CalExtension.Skills
         dict.Add(StandardSpell.WallofStone, new UOColor(0x01e9));
         dict.Add(StandardSpell.EnergyField, new UOColor(0x03e5));
         dict.Add(StandardSpell.FlameStrike, new UOColor(0x30));
+        //
 
         return dict;
       }
@@ -823,6 +823,7 @@ namespace CalExtension.Skills
         dict.Add(StandardSpell.GreaterHeal, 0x1F49);
         dict.Add(StandardSpell.Heal, 0x1F31);
         dict.Add(StandardSpell.FlameStrike, 0x1F5F);
+        dict.Add(StandardSpell.ReactiveArmor, 0x1F2D);
         return dict;
       }
     }

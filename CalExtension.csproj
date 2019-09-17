@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\Paladin.cs" />
     <Compile Include="Abilities\Ranger.cs" />
     <Compile Include="Abilities\Guardian.cs" />
     <Compile Include="Abilities\Bishop.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Abilities\Necromancer.cs" />
     <Compile Include="Abilities\Vampire.cs" />
     <Compile Include="Abilities\Medic.cs" />
+    <Compile Include="Abilities\Warrior.cs" />
     <Compile Include="Cal\Business\Attributes\ParameterAttribute.cs" />
     <Compile Include="Cal\Business\Attributes\Require.cs" />
     <Compile Include="Cal\Business\Attributes\Unique.cs" />

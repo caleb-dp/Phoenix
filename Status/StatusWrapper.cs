@@ -68,11 +68,14 @@ namespace CalExtension.UI.Status
       if (serial == World.Player.Serial)
         return StatusFormWrapperType.None;
 
+      if (Game.IsMyMob(serial) && !Game.IsMobActive(serial))
+        return StatusFormWrapperType.None;
+
       UOCharacter mobile = new UOCharacter(serial);
 
       if (Game.IsMob(mobile))
         return StatusFormWrapperType.Mob;
-      else if (Game.CurrentGame.IsAlie(serial) || mobile.Notoriety == Notoriety.Innocent || mobile.Notoriety == Notoriety.Guild)
+      else if (Game.CurrentGame.IsAlie(serial) && !Game.IsMyMob(serial) || mobile.Notoriety == Notoriety.Innocent || mobile.Notoriety == Notoriety.Guild)
         return StatusFormWrapperType.Other;
       else return StatusFormWrapperType.Enemy;
     }

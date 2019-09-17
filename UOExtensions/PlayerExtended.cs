@@ -416,6 +416,11 @@ namespace CalExtension
             ItemHelper.OpenDoorAll();
             Game.Wait();
           }
+          else if (parm[parm.Length - 1].ToLower() == "useopendoor")
+          {
+            ItemHelper.OpenDoor();
+            Game.Wait();
+          }
         }
         else if (gotries < 5)
           return false;

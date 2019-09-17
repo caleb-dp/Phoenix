@@ -354,6 +354,7 @@ namespace CalExtension.UI.Status
         World.Player.PrintMessage("[ " + slot.ItemName + " ]");
         Game.CurrentGame.CurrentPlayer.SwitchWarmode();
         slot.Item.Use();
+        MobMaster.LasTimeUseKlamak = DateTime.Now;
         //itemKlamak.Use();
       }
     }
@@ -480,7 +481,10 @@ namespace CalExtension.UI.Status
           slotItem.Use();
           Game.Wait(100);
           if (UIManager.CurrentState != UIManager.State.Ready)
+          {
+            Targeting.CancelClientTarget();
             Targeting.ResetTarget();
+          }
 
           if (!String.IsNullOrEmpty(printAlias))
             World.Player.PrintMessage("[ " + printAlias + " ]");

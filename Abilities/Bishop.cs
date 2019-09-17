@@ -92,11 +92,11 @@ namespace CalExtension.Abilities
     [Executable]
     public static void ScepterOfPeacefulMind()
     {
-      UOItem scepter = World.Player.FindType(0x26BC, 0x0000);
+      UOItem scepter = World.Player.FindType(0x26BC, 0xFFFF);
 
       if (scepter.Exist && scepter.Layer == Layer.RightHand)
       {
-        World.Player.PrintMessage("[One Step VIM..]");
+        World.Player.PrintMessage("[One Step IVM..]");
         scepter.Use();
       }
       else

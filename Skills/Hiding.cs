@@ -54,13 +54,16 @@ namespace CalExtension.Skills
     }
 
     //---------------------------------------------------------------------------------------------
+    private static Graphic DropItemGraphic = Graphic.Invariant;
+    private static UOColor DropItemColor = UOColor.Invariant;
+
 
     public void Hide()
     {
-      Hide(1500, 0, 400);
+      Hide(1500, 0, 400, Graphic.Invariant, UOColor.Invariant);
     }
 
-    public void Hide(int highlightTime, ushort highlightColor, int counterStep)
+    public void Hide(int highlightTime, ushort highlightColor, int counterStep, Graphic dropItemGraphic, UOColor dropItemColor)
     {
 
       Journal.Clear();
@@ -97,14 +100,7 @@ namespace CalExtension.Skills
 
         Game.Wait(150);
       }
-      //UOItem whWepna = World.Player.FindColor(0x0B60, new Graphic[] { 0x143A, 0x1404, 0x0F62, 0x13B9, 0x0F5C, 0x1438, 0x0F60, 0x0F5E, 0x0E87 });        //Nightstone zbran u WJ
-      //if (whWepna.Exist && whWepna.Layer != Layer.LeftHand && whWepna.Layer != Layer.RightHand)
-      //{
-      //  whWepna.Use();
-      //  Game.Wait(150);
-      //  Targeting.ResetTarget();
 
-      //}
 
       Game.RunScript(3000);
 
@@ -116,13 +112,88 @@ namespace CalExtension.Skills
       if (highlightColor > 0)
         counter.HighlightColor = highlightColor;
 
+
+      if (!dropItemGraphic.IsInvariant)
+      {
+        int origDistance = World.FindDistance;
+        World.FindDistance = 3;
+        UOItem item = World.Ground.FindType(dropItemGraphic, dropItemColor);
+        if (item.Exist && item.Distance <= 3)
+        {
+          item.Move(item.Amount, World.Player.Backpack);
+        }
+        World.FindDistance = origDistance;
+      }
+
       Hiding.HideRunning = true;
       UO.UseSkill(usedSkill);
       Game.Wait(50);
+
+      if (!dropItemGraphic.IsInvariant && World.Player.Backpack.AllItems.FindType(dropItemGraphic, dropItemColor).Exist)
+      {
+        DropItemGraphic = dropItemGraphic;
+        DropItemColor = dropItemColor;
+
+        counter.RunComplete += Counter_RunComplete;
+      }
+
+
       counter.Step = counterStep;
       counter.StopMessage = "You can't seem to hide here,You have hidden yourself well";
       counter.StopMethod = IsHidden;
       counter.Run();
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    private void Counter_RunComplete(object sender, EventArgs e)
+    {
+      ((AsyncCounter)sender).RunComplete -= Counter_RunComplete;
+
+      //Game.PrintMessage("Counter_RunComplete");
+
+      if (World.Player.Hidden && !DropItemGraphic.IsInvariant)
+      {
+        UOItem item = World.Player.Backpack.Items.FindType(DropItemGraphic, DropItemColor);
+        if (item.Exist)
+        {
+          item.Move(1, World.Player.X, World.Player.Y, World.Player.Z);
+        }
+      }
+      Game.RunScript(5);
+
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void DropPickItem(Graphic dropItemGraphic, UOColor dropItemColor)
+    {
+      int origDistance = World.FindDistance;
+      World.FindDistance = 6;
+
+      UOItem item = World.Ground.FindType(dropItemGraphic, dropItemColor);
+      if (item.Exist)
+      {
+        if (item.Move(item.Amount, World.Player.Backpack))
+          World.Player.PrintMessage("[ pickitem ]");
+        else
+          World.Player.PrintMessage("[ pickitem ]", MessageType.Error);
+      }
+      else
+      {
+        item = World.Player.Backpack.Items.FindType(dropItemGraphic, dropItemColor);
+        if (item.Exist)
+        {
+          if (item.Move(item.Amount, World.Player.X, World.Player.Y, World.Player.Z))
+            World.Player.PrintMessage("[ dropitem ]");
+          else
+            World.Player.PrintMessage("[ dropitem ]", MessageType.Error);
+        }
+      }
+
+
+      World.FindDistance = origDistance;
     }
 
     //---------------------------------------------------------------------------------------------
@@ -200,6 +271,9 @@ namespace CalExtension.Skills
       UOItem helma = World.Player.Layers[Layer.Hat];
       UOItem bandana = World.Player.FindType(Bandana.CraftBandana);
 
+      if (!bandana.Exist)
+        bandana = World.Player.FindType(Bandana.CraftBandana.Graphic);
+
       if (bandana.Exist)
       {
         if (bandana.Layer == Layer.Hat)
@@ -213,7 +287,7 @@ namespace CalExtension.Skills
         else
         {
           bandana.Use();
-          Game.Wait(750);
+          Game.Wait(500);
 
           if (helma.Exist)
           {
@@ -249,7 +323,20 @@ namespace CalExtension.Skills
     [Executable("hide")]
     public static void ExecHide(int highlightTime, ushort highlightColor, int counterStep)
     {
-      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Hiding>().Hide(highlightTime, highlightColor, counterStep);
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Hiding>().Hide(highlightTime, highlightColor, counterStep, Graphic.Invariant, UOColor.Invariant);
+    }
+
+
+    [Executable("hidedrop")]
+    public static void ExecHideDrop(Graphic dropItemGraphic, UOColor dropItemColor)
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Hiding>().Hide(1500, 0, 400, dropItemGraphic, dropItemColor);
+    }
+
+    [Executable("hidedrop")]
+    public static void ExecHideDrop(int highlightTime, ushort highlightColor, int counterStep, Graphic dropItemGraphic, UOColor dropItemColor)
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Hiding>().Hide(highlightTime, highlightColor, counterStep, dropItemGraphic, dropItemColor);
     }
 
 

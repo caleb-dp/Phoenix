@@ -14,7 +14,7 @@ namespace CalExtension.Skills
   public class Blacksmithy : Skill
   {
 
-    public static UOItemType IronIngot { get { return new UOItemType() { Graphic = 0x1BEF , Color = 0x0000 }; } }
+    public static UOItemType IronIngot { get { return new UOItemType() { Graphic = 0x1BEF, Color = 0x0000 }; } }
     // Color: 0x0000  Graphic: 0x1BEF  
     public void Make(int quantity, params string[] menus)
     {
@@ -35,7 +35,7 @@ namespace CalExtension.Skills
         if (Journal.Contains("You can't make anything"))
         {
           Game.PrintMessage("Nemas suroviny");
-          break;  
+          break;
         }
 
 
@@ -69,7 +69,7 @@ namespace CalExtension.Skills
             ironIgnots.Move(100, World.Player.Backpack);
           else
           {
-            
+
             Game.PrintMessage("Nejsou ingoty");
             break;
           }
@@ -278,6 +278,82 @@ namespace CalExtension.Skills
     [Executable]
     public void MakeMagicSphere(int amount)
     {
+      Game.PrintMessage("Vyber container s Gold ingots a Shadow ingots");
+      UOItem containerIngyFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container se Saphires a Diamants");
+      UOItem containerSperkyFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container se Silver wires a Iron wires");
+      UOItem containerWiresFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container s Dark hides");
+      UOItem containerHidyFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container, kam to chces dat");
+      UOItem containerTo = new UOItem(UIManager.TargetObject());
+
+      int count = 0;
+      while (count < amount)
+      {
+        UO.DeleteJournal();
+
+        containerIngyFrom.AllItems.FindType(0x1BE9, 0x0000).Move(10, World.Player.Backpack); // presun Gold ingots
+        Game.Wait();
+
+        containerIngyFrom.AllItems.FindType(0x1BEF, 0x0770).Move(5, World.Player.Backpack); // presun Shadow ingots
+        Game.Wait();
+
+        containerSperkyFrom.AllItems.FindType(0x0F11, 0x0000).Move(2, World.Player.Backpack); // presun Saphires
+        Game.Wait();
+
+        containerSperkyFrom.AllItems.FindType(0x0F26, 0x0000).Move(2, World.Player.Backpack); // presun Diamants
+        Game.Wait();
+
+        containerWiresFrom.AllItems.FindType(0x1877, 0x0000).Move(20, World.Player.Backpack); // presun Silver wires
+        Game.Wait();
+
+        containerWiresFrom.AllItems.FindType(0x1876, 0x0000).Move(20, World.Player.Backpack); // presun Iron wires
+        Game.Wait();
+
+        if (World.Player.Backpack.Items.Count(0x1078, 0x0615) < 1)
+        {
+          containerHidyFrom.AllItems.FindType(0x1078, 0x0615).Move(2, World.Player.Backpack); // presun 2 Dark hidu, potreba jen 1, v IFu kvuli bugu ve hre - neumi vzit z tezkyho stacku 1 item kvuli vaze
+          Game.Wait();
+        }
+
+
+        UO.UseType(0x1EBC, 0x0000);
+        UO.WaitMenu("Tinkering", "Special Items", "Special Items", "Magic Sphere");
+
+        if (Journal.WaitForText(true, 8000, "You have failed to make anything", "You can't make anything", "You put"))
+        {
+          if (Journal.Contains("You put"))
+          {
+            count += 1;
+            World.Player.Backpack.AllItems.FindType(0x0E2E, 0x0B77).Move(1, containerTo);
+            Game.Wait(500);
+          }
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            break;
+          }
+        }
+
+        Game.PrintMessage("Vyrobeno sphere: " + count);
+
+      }
+
+      Game.PrintMessage("MakeMagicSphere - End");
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public void MakeMagicArmorSphere(int amount)
+    {
       Game.PrintMessage("Vyber container s Magic wire, Silver wire, Golden wire, Shadow wire a Rose wire.");
       UOItem containerWireFrom = new UOItem(UIManager.TargetObject());
 
@@ -334,7 +410,7 @@ namespace CalExtension.Skills
 
       }
 
-      Game.PrintMessage("MakeMagicSphere - End");
+      Game.PrintMessage("MakeMagicArmorSphere - End");
     }
 
     //---------------------------------------------------------------------------------------------

@@ -96,5 +96,108 @@ namespace CalExtension.Skills
     }
 
     //---------------------------------------------------------------------------------------------
+
+
+    [Executable]
+    public static void PoisonWeapons()
+    {
+      UOItem kit = World.Player.Backpack.Items.FindType(0x185B, 0x0B8B);
+      if (!kit.Exist)
+      {
+        Game.PrintMessage("Nemas kit!", MessageType.Error);
+        return;
+      }
+
+      UOItemExtInfo extInfo = ItemHelper.GetItemExtInfo(kit);
+
+      if (extInfo.Charges < 10)
+      {
+        Game.PrintMessage("Kit ma malo nabiti - " + extInfo.Charges, MessageType.Error);
+        return;
+      }
+
+      UO.Print("Kontainer se zbranemi >");
+      UOItem sourceCont = new UOItem(UIManager.Target().Serial);
+
+      UO.Print("Cilovy kontainer >");
+      UOItem targetCont= new UOItem(UIManager.Target().Serial);
+
+      if (!sourceCont.Exist)
+      {
+        Game.PrintMessage("Kontainer se zbranemi INVALID!", MessageType.Error);
+        return;
+      }
+
+      if (!targetCont.Exist)
+      {
+        Game.PrintMessage("Cilovy kontainer INVALID!", MessageType.Error);
+        return;
+      }
+
+      sourceCont.Use();
+      Game.Wait(250);
+      targetCont.Use();
+      Game.Wait(250);
+
+      List<UOItem> toPoisnList = sourceCont.AllItems.Where(p => p.Color == 0x08A1).ToList();
+      int maxCharges = extInfo.Charges.GetValueOrDefault() / 10;
+      decimal doneCount = 0;
+      int failCount = 0;
+      decimal fizzCount = 0;
+
+      Game.PrintMessage(String.Format("Poisn Start - Zbrani: {0}, Maxnabiti: {1}.", toPoisnList.Count, maxCharges));
+
+      for (int i = 0; i < toPoisnList.Count; i++)
+      {
+        bool end = false;
+
+        do
+        {
+          Journal.Clear();
+
+          UOItem toPois = toPoisnList[i];
+
+          UO.WaitTargetObject(toPois);
+          kit.Use();
+
+          if (Journal.WaitForText(true, 1000, "Uspesne jsi otravil zbran.", "Bohuzel, nepodarilo se ti otravit zbran.", "Tohle neni ani kad, ani zbran!"))
+          {
+            if (Journal.Contains(true, "Uspesne jsi otravil zbran."))
+            {
+              doneCount++;
+              end = true;
+              toPois.Move(1, targetCont);
+            }
+            else if (Journal.Contains(true, "Bohuzel, nepodarilo se ti otravit zbran."))
+            {
+              fizzCount++;
+            }
+            else
+            {
+              failCount++;
+              end = true;
+            }
+          }
+          else
+          {
+            failCount++;
+            end = true;
+          }
+
+          Game.Wait();
+        } while (!end);
+
+        Game.Wait(1000);
+        Game.PrintMessage(String.Format("Otraveno: {0}, Fail: {1}, Uspesnost: {2:N2}%", doneCount, failCount, (doneCount / (doneCount + fizzCount)) * 100));
+      }
+
+      Game.PrintMessage(String.Format("Poisn End - Otraveno: {0}, Fail: {1}, Uspesnost: {2:N2}%", doneCount, failCount, (doneCount / (doneCount + fizzCount)) * 100));
+    }
+
+
+    //Uspesne jsi otravil zbran.
+    //Bohuzel, nepodarilo se ti otravit zbran.
+    //Tohle neni ani kad, ani zbran!
+
   }
 }

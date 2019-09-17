@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Phoenix.WorldData;
@@ -66,8 +67,8 @@ namespace CalExtension.Skills
       Journal.Clear();
       CastResultInfo info = new CastResultInfo();
       info.Usage = CastUsage.Scrool;
-
-      if (EnsureNecroScroll(spell))
+      UOItem scroll = EnsureNecroScroll(spell);
+      if (scroll.Exist)
       {
         World.Player.PrintMessage(spell + "" /*+  " [" + World.Player.FindType(SpellScrool[spell]).Amount + "ks]"*/);//spis regy
         Game.RunScriptCheck(5000);
@@ -76,8 +77,6 @@ namespace CalExtension.Skills
 
         if (tInfo.Success)
         {
-          UOItem scroll = World.Player.FindType(SpellScrool[spell]);
-
           scroll.Use();
           if (tInfo.Object.Exist)
             UO.WaitTargetObject(tInfo);
@@ -114,17 +113,53 @@ namespace CalExtension.Skills
 
     //---------------------------------------------------------------------------------------------
 
-    private static bool EnsureNecroScroll(NecromancySpell spell)
+    private static UOItem EnsureNecroScroll(NecromancySpell spell)
     {
-      bool result = World.Player.FindType(SpellScrool[spell]).Exist;
+      UOItem result = World.Player.FindType(SpellScrool[spell]);
 
-      if (!result)
+      if (!result.Exist)
+      {
+        List<UOItem> scrools = World.Player.Backpack.Items.Where(i => i.Graphic == 0x0E35).ToList();//new List<UOItem>();
+        List<UOItem> exactScrool =
+          scrools.Where(i => !String.IsNullOrEmpty(i.Name)
+          && i.Name.ToLower().Replace(" ", "").StartsWith(Enum.GetName(typeof(NecromancySpell), spell).ToLower())).ToList();
+
+        if (exactScrool.Count > 0)
+        {
+          result = exactScrool[0];
+        }
+        else
+        {
+          foreach (UOItem possibleItem in scrools.Where(i => String.IsNullOrEmpty(i.Name)).ToArray())
+          {
+            possibleItem.Click();
+            Game.Wait(100);
+
+            if (!String.IsNullOrEmpty(possibleItem.Name))
+            {
+              if (possibleItem.Name.ToLower().Replace(" ", "").StartsWith(Enum.GetName(typeof(NecromancySpell), spell).ToLower()))//Nefunguje na nekro armor
+              {
+                result = possibleItem;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      if (!result.Exist)
       {
         if (BookOfDead.Exist)
         {
           Kniha.Current.DeadBookUse((uint)spell);
-          Game.Wait();
-          result = World.Player.FindType(SpellScrool[spell]).Exist;
+          Game.Wait(250);
+          result = World.Player.FindType(SpellScrool[spell]);
+          
+          if (result.Exist)
+          {
+            result.Move(result.Amount, World.Player.Backpack.Serial);
+            Game.Wait(250); 
+          }
         }
         else
           World.Player.PrintMessage("[Nemas Book of Dead..]", MessageType.Warning);

@@ -47,8 +47,12 @@ namespace CalExtension.UOExtensions
         XmlElement items = doc.DocumentElement.SelectSingleNode("IngameConsoleOverride/Items") as XmlElement;
         if (items != null && items != null)
         {
-          foreach (XmlElement item in items.ChildNodes)
+          foreach (XmlNode node in items.ChildNodes)
           {
+            XmlElement item = node as XmlElement;
+            if (item == null)
+              continue;
+
             ConsoleOverrideItem oItem = new ConsoleOverrideItem();
 
             string attrValue = item.GetAttribute("CompareType");

@@ -95,7 +95,7 @@ namespace CalExtension.UOExtensions
     {
       counter += 50;
 
-      if (lastLocation != null && GetRelativeVectorLength(World.Player.X, World.Player.Y, lastLocation.X, lastLocation.Y) > 4)
+      if (lastLocation != null && GetRelativeVectorLength(World.Player.X, World.Player.Y, lastLocation.X, lastLocation.Y) > 2)
       {
         UO.Print(0x0032, "Kop detect! Hide");
         Stop();
@@ -163,6 +163,41 @@ namespace CalExtension.UOExtensions
       }
       else
         UO.Print(0x0032, "Invis - Nemas invisku!!");
+    }
+
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void RunWaitForInvis(int time)
+    {
+      if (World.Player.Backpack.AllItems.Count(0x0F09, 0x0B77) == 0)
+      {
+        World.Player.PrintMessage("Nemas Invisku!", MessageType.Warning);
+        return;
+      }
+
+      bool hidden = World.Player.Hidden;
+
+      int counter = 0;
+      while (counter < time)
+      {
+        counter += 25;
+        UO.Wait(25);
+
+        if (!hidden && World.Player.Hidden)
+          hidden = true;
+
+        if (hidden && !World.Player.Hidden)
+        {
+          UO.UseType(0x0F09, 0x0B77);
+
+
+        }
+
+        if (counter % 2000 == 0)
+          UO.Print(0x0032, String.Format("Wait Invis ETA: {0:N1}", ((time - counter) / 1000.0m)));
+      }
     }
 
     //---------------------------------------------------------------------------------------------

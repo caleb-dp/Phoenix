@@ -57,6 +57,26 @@ namespace CalExtension
 
   public class UOItemTypeBaseCollection : List<UOItemTypeBase>
   {
+    public UOItemTypeBaseCollection()
+    {
+    }
+
+    public UOItemTypeBaseCollection(Graphic graphic) : this(graphic, 0xFFFF)
+    {
+    }
+
+    public UOItemTypeBaseCollection(Graphic graphic, UOColor color) : this(new UOItemTypeBase(graphic, color))
+    {
+    }
+
+    public UOItemTypeBaseCollection(params UOItemTypeBase[] items)
+    {
+      foreach (UOItemTypeBase item in items)
+      {
+        this.Add(item);
+      }
+    }
+
     public List<Graphic> GraphicList
     {
       get

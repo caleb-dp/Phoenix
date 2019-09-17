@@ -216,7 +216,7 @@ namespace CalExtension.UOExtensions
           Game.Wait(250);
         }
         UO.Attack(enemy.Serial);
-
+        Game.atackCounterEnabled = true;
 
         if (counter % 4 == 0)
         {
@@ -276,11 +276,11 @@ namespace CalExtension.UOExtensions
 
           if (serial.IsStatic || (serial.IsValid && o.Exist && o.Distance < 28))
           {
-            System.Diagnostics.Debug.WriteLine("Target: " + target + " - success [" + serial + ", " + o.Distance + ", " + o.Name + "]", "Caleb");
+           // System.Diagnostics.Debug.WriteLine("Target: " + target + " - success [" + serial + ", " + o.Distance + ", " + o.Name + "]", "Caleb");
             return serial;
           }
-          else
-            System.Diagnostics.Debug.WriteLine("Target: " + target + " - fail [" + serial + ", " + o.Distance + ", " + o.Name + "]", "Caleb");
+          //else
+          //  System.Diagnostics.Debug.WriteLine("Target: " + target + " - fail [" + serial + ", " + o.Distance + ", " + o.Name + "]", "Caleb");
         }
       }
       return Serial.Invalid;
@@ -466,22 +466,27 @@ namespace CalExtension.UOExtensions
 
     public static void ResetTarget()
     {
-      //if (UIManager.CurrentState == UIManager.State.ServerTarget)
-      //{
-      //  UO.Press(System.Windows.Forms.Keys.Escape);
-      //  Game.Wait(50);
-      //}
-
       UIManager.Reset();
+      //CancelClientTarget();
     }
 
     //---------------------------------------------------------------------------------------------
 
-    #region exec
-
-
-
+    public static void CancelClientTarget()
+    {
+      if (UIManager.CurrentState == UIManager.State.ServerTarget)
+      {
+        UO.Press(System.Windows.Forms.Keys.Escape);
+        //Game.Wait(50);
+      }
+    }
     //---------------------------------------------------------------------------------------------
+
+      #region exec
+
+
+
+      //---------------------------------------------------------------------------------------------
 
     [Command]
     public static void AllEnemyNames()

@@ -13,6 +13,7 @@ namespace CalExtension.Skills
 {
   public class Alchemy : Skill
   {
+    //,exec gmmortar "Total Mana Refresh (612 Eyes of Newt nebo 306 Blue Eyes of Newt)"
     //---------------------------------------------------------------------------------------------
 
     public static UOItem Mortar

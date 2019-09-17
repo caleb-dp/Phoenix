@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Phoenix.WorldData;
@@ -262,18 +263,26 @@ namespace CalExtension.Skills
     }
 
     //---------------------------------------------------------------------------------------------
-
     public void TrainTamingRecusive(int maxTries, params string[] positionsDefinition)
+    {
+      TrainTamingRecusive(maxTries, 6, positionsDefinition);
+    }
+
+
+    public void TrainTamingRecusive(int maxTries, int maxCharDistance, params string[] positionsDefinition)
     {
       Robot r = new Robot();
       r.UseTryGoOnly = true;
       r.UseMinWait = true;
       r.UseRun = true;
       r.SearchSuqareSize = 450;
+
       this.doneList = new List<Serial>();
 
-
       string[] locations = positionsDefinition;
+
+      Game.PrintMessage("TrainTamingRecusive START " + maxTries + ", " + maxCharDistance + ", " + positionsDefinition.Length);
+      Game.Wait(1000);
 
       foreach (string loc in locations)
       {
@@ -341,7 +350,7 @@ namespace CalExtension.Skills
           }
         }
 
-        for (int i = 1; i < options.Length; i++)
+        for (int i = (button > -1 ? 1 : 0); i < options.Length; i++)
         {
           if (UO.Dead)
             return;
@@ -379,7 +388,7 @@ namespace CalExtension.Skills
             }
 
             List<UOCharacter> characters = new List<UOCharacter>();
-            characters.AddRange(World.Characters);
+            characters.AddRange(World.Characters.Where(c => !doneList.Contains(c.Serial)));
             characters.Sort(delegate (UOCharacter char1, UOCharacter char2)
             {
               return char1.Distance.CompareTo(char2.Distance);
@@ -392,54 +401,52 @@ namespace CalExtension.Skills
 
               Game.Wait(50);
 
-              if (character.Distance < 6 && character.Serial != World.Player.Serial && !doneList.Contains(character.Serial) && character.Model != 0x0190 && character.Model != 0x0191 && character.Model != 0x0192)
+              if (character.Distance < maxCharDistance && character.Serial != World.Player.Serial && character.Model != 0x0190 && character.Model != 0x0191 && character.Model != 0x0192)
               {
+                doneList.Add(character);
 
                 SkillValue atSkill = SkillsHelper.GetSkillValue("Animal Taming");
                 bool isBird = character.Model == 0x0006;
+                bool tryKill = atSkill.RealValue > 450 && maxTries < 100;
+                bool tame = true;
 
-                World.Player.PrintMessage(isBird + " / " + atSkill.Value);
-
-                if (isBird && atSkill.RealValue > 450)
+                if (isBird)
                 {
-                  World.Player.PrintMessage("Try Kill.");
-                  UO.Cast(StandardSpell.Harm, character.Serial);
-                  Game.Wait(3000);
-
-                  if (character.Exist)
+                  if (tryKill)
                   {
+                    World.Player.PrintMessage("Try Kill.");
                     UO.Cast(StandardSpell.Harm, character.Serial);
-                    Game.Wait(2500);
+                    Game.Wait(3000);
+
+                    if (character.Exist)
+                    {
+                      UO.Cast(StandardSpell.Harm, character.Serial);
+                      Game.Wait(2500);
+                    }
                   }
+                  tame = atSkill.RealValue < 450;
                   //World.Player.PrintMessage("Try Kill result: " + KillCharacter(character));
                 }
-                else
-                {
+
+                if (Game.Debug) 
+                  Game.PrintMessage("Bird: "+ isBird + ", Tame: " + tame + ", Kill: " + tryKill + ", Skill: " + atSkill.Value);
+
+                if (tame && r.GoTo(character.GetPosition(), 2, 25))
                   this.TameCharacter(character, maxTries);
-                  doneList.Add(character);
-                }
-
-                //if (!isBird || atSkill.RealValue < 450)
-                //{
-
-                //}
-                //else
-                //{
-
-                //}
               }
 
             }
           }
-          //else
-          //  Phoenix.Runtime.RuntimeCore.Executions.Terminate(musicRun.ManagedThreadId);
         }
+
+        Game.PrintMessage("NextLocation");
+        Game.Wait(1000);
       }
 
       if (UO.Dead)
         return;
 
-      TrainTamingRecusive(maxTries, positionsDefinition);
+      TrainTamingRecusive(maxTries, maxCharDistance, positionsDefinition);
     }
 
     //---------------------------------------------------------------------------------------------
@@ -460,7 +467,8 @@ namespace CalExtension.Skills
       UOItem currentStaff = EnsuredTamingStaff;
       int tries = 0;
 
-      Game.PrintMessage(String.Format("{0}, {1}, {2}, {3}, {4}", character.Exist, character.RequestStatus(500), character.Hits, character.Distance, UO.Dead));
+      if (Game.Debug)
+        Game.PrintMessage(String.Format("{0}, {1}, {2}, {3}, {4}", character.Exist, character.RequestStatus(500), character.Hits, character.Distance, UO.Dead));
 
       while (character.Exist && character.RequestStatus(500) && character.Hits > 0 && character.Distance < 6 && !UO.Dead)
       {
@@ -469,18 +477,24 @@ namespace CalExtension.Skills
         bool end = false;
         bool kill = false;
 
-        if (character.Distance > 2 && keepDisttance)
+        if (character.Distance > 3 && keepDisttance)
         {
           r.GoTo(new UOPositionBase(character.X, character.Y, 0), 2, 2);
           Game.Wait(500);
         }
-        UO.Say("Baf");
-        Game.Wait();
 
         UO.UseSkill("Hiding");
-        Game.Wait();
+        Game.Wait(250);
+
+        if (World.Player.Hidden)
+        {
+          UO.Say(" ");
+          Game.Wait(250);
+        }
+
         IRequestResult result = UO.WaitTargetObject(character.Serial);
         currentStaff.Use();
+
         //Game.Wait(500);
         SkillValue tamingValue = SkillsHelper.GetSkillValue("AnimalTaming");
         UOItem robe = World.Player.Layers[Layer.OuterTorso];
@@ -495,7 +509,7 @@ namespace CalExtension.Skills
           "You are not able to tame",
           "Jsi moc daleko",
           "Jeste nemuzes pouzit hulku",
-          "toto zvire nelze ochocit",
+          "Toto zvire nelze ochocit",
           "Toto zvire nedokazes ochocit",
           "You are not able to tame this animal"
 
@@ -552,7 +566,7 @@ namespace CalExtension.Skills
               Game.PrintMessage("End - byl tamnut");
               end = true;
             }
-            else if (Journal.Contains(true, "not tamable") || Journal.Contains(true, "toto zvire nelze ochocit"))
+            else if (Journal.Contains(true, "not tamable") || Journal.Contains(true, "Toto zvire nelze ochocit"))
             {
 
               character.Click();
@@ -696,7 +710,8 @@ namespace CalExtension.Skills
 
           if (kill)
           {
-            this.KillCharacter(character);
+            if (!this.KillCharacter(character))
+              end = true;
           }
 
           if (end)
@@ -870,6 +885,22 @@ namespace CalExtension.Skills
     public static void ExecTrainTamingAuto(int maxTries, params string[] str)
     {
       Game.CurrentGame.CurrentPlayer.GetSkillInstance<Taming2>().TrainTamingRecusive(maxTries, str);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    [BlockMultipleExecutions]
+    public static void TameSpot(int perimeter)
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Taming2>().TrainTamingRecusive(100, perimeter, World.Player.X + "." + World.Player.Y + "|" + World.Player.X + "." + World.Player.Y);
+    }
+
+    [Executable]
+    [BlockMultipleExecutions]
+    public static void TameSpot(int perimeter, int maxTries)
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Taming2>().TrainTamingRecusive(maxTries, perimeter, World.Player.X + "." + World.Player.Y + "|" + World.Player.X + "." + World.Player.Y);
     }
 
 

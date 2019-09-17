@@ -21,6 +21,7 @@ namespace CalExtension.Abilities
     //---------------------------------------------------------------------------------------------
 
     [Executable]
+    [BlockMultipleExecutions]
     public static void EquipVendeta()
     {
       UOItem itmCharged = World.Player.FindType(VendetaCharged);
@@ -61,6 +62,8 @@ namespace CalExtension.Abilities
     public static void UseDarkSkull()
     {
       UOItem itm = World.Player.FindType(DarkSkull);
+      if (!itm.Exist)
+        itm = World.Player.FindType(DarkSkull.Graphic);
       UOItem hat = World.Player.Layers[Layer.Hat];
       UOItem mount = World.Player.Layers[Layer.Mount];
       bool mountDie = false;// mount.Exist && mount.Color == DarkOclock.Color; - dakroclock neda manu asi zadny sum ;]
@@ -97,18 +100,28 @@ namespace CalExtension.Abilities
               }
             }
 
-            itm.Use();
-            Game.Wait(200);
-            if (hat.Exist && hat.Serial != itm.Serial)
+            if (!World.Player.Layers[Layer.Mount].Exist)
             {
-              hat.Use();
-              Game.Wait(200);
-            }
+              if (!World.Player.Hidden)
+              {
+                UO.Say(0x0059, "rsh: >> HEAL Mystic <<");
+              }
 
-            if (dismount)
-            {
-              Mount.Current.UseMount();
+              itm.Use();
+              Game.Wait(200);
+              if (hat.Exist && hat.Serial != itm.Serial)
+              {
+                hat.Use();
+                Game.Wait(200);
+              }
+
+              if (dismount)
+              {
+                Mount.Current.UseMount();
+              }
             }
+            else
+              World.Player.PrintMessage("[ sedis na mountu ]", MessageType.Warning);
           }
           else
             World.Player.PrintMessage("[ malo HP ]", MessageType.Warning);

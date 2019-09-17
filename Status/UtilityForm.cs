@@ -895,7 +895,7 @@ namespace CalExtension.UI.Status
       this.btnNbCech.Name = "btnNbCech";
       this.btnNbCech.Location = new System.Drawing.Point(currentPosition, currentLine);
       this.btnNbCech.Enabled = true;
-      this.btnNbCech.Text = "Cech/Jlm";
+      this.btnNbCech.Text = "Arrange";
       this.btnNbCech.Font = fontSmall;
       this.btnNbCech.Size = new Size(buttonMiddleWidth, buttonHeight);
       //this.btnMixureLC.AutoSize = true;
@@ -1207,7 +1207,7 @@ namespace CalExtension.UI.Status
       this.btnRunInvis1.Name = "btnRunInvis1";
       this.btnRunInvis1.Location = new System.Drawing.Point(currentPosition, currentLine);
       this.btnRunInvis1.Enabled = true;
-      this.btnRunInvis1.Text = "Runinvis 1";
+      this.btnRunInvis1.Text = "Runinvis 0";
       this.btnRunInvis1.Font = fontSmall;
       this.btnRunInvis1.Size = new Size(buttonMiddleWidth, buttonHeight);
       //this.btnMixureLC.AutoSize = true;
@@ -1228,7 +1228,7 @@ namespace CalExtension.UI.Status
       this.btnVyhodKlamakNa.Name = "btnVyhodKlamakNa";
       this.btnVyhodKlamakNa.Location = new System.Drawing.Point(currentPosition, currentLine);
       this.btnVyhodKlamakNa.Enabled = true;
-      this.btnVyhodKlamakNa.Text = "Klamak na";
+      this.btnVyhodKlamakNa.Text = "IfiInvi";
       this.btnVyhodKlamakNa.Font = fontSmall;
       this.btnVyhodKlamakNa.Size = new Size(buttonMiddleWidth, buttonHeight);
       //this.btnMixureLC.AutoSize = true;
@@ -1755,7 +1755,7 @@ namespace CalExtension.UI.Status
       this.btnCorpseQuest.Name = "btnCorpseQuest";
       this.btnCorpseQuest.Location = new System.Drawing.Point(currentPosition, currentLine);
       this.btnCorpseQuest.Enabled = true;
-      this.btnCorpseQuest.Text = "C Quest";
+      this.btnCorpseQuest.Text = "Pick<=1";
       this.btnCorpseQuest.Font = fontSmall;
       this.btnCorpseQuest.Size = new Size(buttonMiddleWidth, buttonHeight);
       //this.btnMixureLC.AutoSize = true;
@@ -1929,7 +1929,7 @@ namespace CalExtension.UI.Status
       this.btnKokon.Name = "btnKokon";
       this.btnKokon.Location = new System.Drawing.Point(currentPosition, currentLine);
       this.btnKokon.Enabled = true;
-      this.btnKokon.Text = "Kokon";
+      this.btnKokon.Text = "3 pole";
       this.btnKokon.Font = fontSmall;
       this.btnKokon.Size = new Size(buttonMiddleWidth, buttonHeight);
       //this.btnMixureLC.AutoSize = true;
@@ -2116,11 +2116,16 @@ namespace CalExtension.UI.Status
 
     private void BtnCorpseQuest_MouseClick(object sender, MouseEventArgs e)
     {
+
+
       lastUsedMethod = BtnCorpseQuest_MouseClick;
       lastUsedObject = sender;
       lastUsedMouseEventArgs = e;
 
-      new Thread(new ThreadStart(CorpseQuest)).Start();
+
+      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["GrabGround"], 1);
+      //    GrabGround
+      //  new Thread(new ThreadStart(CorpseQuest)).Start();
     }
 
     //---------------------------------------------------------------------------------------------
@@ -2179,7 +2184,8 @@ namespace CalExtension.UI.Status
       lastUsedObject = sender;
       lastUsedMouseEventArgs = e;
 
-      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["SipkaKokonNew"]);
+     Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["SwitchAliePrintPlace2More"]);
+             // Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["SipkaKokonNew"]);
     }
 
 
@@ -2291,8 +2297,8 @@ namespace CalExtension.UI.Status
       lastUsedMouseEventArgs = e;
 
       //VyhodKlamakNa
-
-      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["VyhodKlamakNa"]);
+      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["RunWaitForInvis"], 10000000);// 
+      //  Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["VyhodKlamakNa"]);
     }
 
     //---------------------------------------------------------------------------------------------
@@ -2303,7 +2309,7 @@ namespace CalExtension.UI.Status
       lastUsedObject = sender;
       lastUsedMouseEventArgs = e;
 
-      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["RunInvis1"]);
+      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["RunInvis"]);
      // new Thread(new ThreadStart(Invis.RunInvis1)).Start();
     }
 
@@ -2595,7 +2601,13 @@ namespace CalExtension.UI.Status
       lastUsedObject = sender;
       lastUsedMouseEventArgs = e;
 
-      new Thread(new ThreadStart(UO.Latency)).Start();
+      if (!World.Player.Hidden)
+        new Thread(new ThreadStart(UO.Latency)).Start();
+      else
+      {
+        World.Player.PrintMessage("Ale ale, nejsi v Hidu?");
+        World.Player.PrintMessage(String.Format("Latency {0} ms", Core.Latency));
+      }
     }
 
     //---------------------------------------------------------------------------------------------
@@ -2701,21 +2713,22 @@ namespace CalExtension.UI.Status
       lastUsedObject = sender;
       lastUsedMouseEventArgs = e;
 
-      //Todo
-      if (KlicekRakev.Klicek.Exist)
-        KlicekRakev.Current.KlicekRakevUse("Chci domu");
-      else if (Kniha.CestovniKniha.Exist)
-      {
-        Kniha.Current.CestovniKnihaUse(1);
-        Game.Wait(500);
-        Kniha.Current.CestovniKnihaUse(4);
-      }
-      else if (Kniha.TravelBook.Exist)
-        Kniha.Current.TravelBookUse(3);
-      else if (Kniha.RuneBook.Exist)
-        Kniha.Current.RuneBookUse(1);
-      else
-        World.Player.PrintMessage("Neni cim!", MessageType.Error);
+      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.CommandList["arrange"], 250);
+      ////Todo
+      //if (KlicekRakev.Klicek.Exist)
+      //  KlicekRakev.Current.KlicekRakevUse("Chci domu");
+      //else if (Kniha.CestovniKniha.Exist)
+      //{
+      //  Kniha.Current.CestovniKnihaUse(1);
+      //  Game.Wait(500);
+      //  Kniha.Current.CestovniKnihaUse(4);
+      //}
+      //else if (Kniha.TravelBook.Exist)
+      //  Kniha.Current.TravelBookUse(3);
+      //else if (Kniha.RuneBook.Exist)
+      //  Kniha.Current.RuneBookUse(1);
+      //else
+      //  World.Player.PrintMessage("Neni cim!", MessageType.Error);
     }
 
     //---------------------------------------------------------------------------------------------

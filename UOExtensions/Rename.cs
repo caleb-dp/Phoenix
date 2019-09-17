@@ -12,6 +12,7 @@ using CalExtension.Skills;
 using Phoenix.Communication;
 using CalExtension.UI.Status;
 using System.Collections;
+using CalExtension.PlayerRoles;
 
 namespace CalExtension.UOExtensions
 {
@@ -41,6 +42,44 @@ namespace CalExtension.UOExtensions
         return;
 
       UOCharacter ch = new UOCharacter(e.Serial);
+
+      if (ch.Hits < 0)
+      {
+        //hallucination sychr
+
+        bool badBody =
+          World.Player.Model != 0x0190 && //Male
+          World.Player.Model != 0x0191 && //Female
+          World.Player.Model != 0x00D4; //Grizly //TODO srnka //Drak
+
+        if (badBody)
+        {
+          bool requestStat = false;
+          if (Magery.CastingSpellInfo != null)
+          {
+            if (
+              (
+              Magery.CastingSpellInfo.Spell == StandardSpell.SummonCreature ||
+              Magery.CastingSpellInfo.Spell == StandardSpell.SummonAirElemental ||
+              Magery.CastingSpellInfo.Spell == StandardSpell.SummonDaemon ||
+              Magery.CastingSpellInfo.Spell == StandardSpell.SummonFireElemental ||
+              Magery.CastingSpellInfo.Spell == StandardSpell.SummonWaterElemental ||
+              Magery.CastingSpellInfo.Spell == StandardSpell.SummonEarthElemental
+              )
+              && Magery.CastingSpellInfo.CastRunDuration < 5500)
+            {
+              requestStat = true;
+            }
+          }
+
+          if (MobMaster.LasTimeUseKlamak.HasValue && (DateTime.Now - MobMaster.LasTimeUseKlamak.Value).TotalMilliseconds < 1000)
+            requestStat = true;
+          //Vyhozeni klamaka
+
+          if (requestStat)
+            ch.RequestStatus(200);
+        }
+      }
 
       if (!Game.IsPossibleMob(ch))
         return;
@@ -92,7 +131,7 @@ namespace CalExtension.UOExtensions
     {
       get
       {
-        if (playerShortCode == null)
+        if (String.IsNullOrEmpty(playerShortCode))
         {
           if (String.IsNullOrEmpty(World.Player.Name))
           {
@@ -146,8 +185,8 @@ namespace CalExtension.UOExtensions
 
     public static bool IsRenamedByPlayer(string name)
     {
-      if (name != null)
-        return name.ToLower().StartsWith(PlayerShortCode.ToLower());
+      if (!String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(PlayerShortCode))
+        return name.ToLower().StartsWith(PlayerShortCode.ToLower()) && name.Length > 1 && name[name.Length - 1].ToString() == name[name.Length - 1].ToString().ToUpper();
 
       return false;
     }

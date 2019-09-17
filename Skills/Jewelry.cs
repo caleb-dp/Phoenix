@@ -18,6 +18,7 @@ namespace CalExtension.Skills
     public static UOItemType GRR = new UOItemType() { Graphic = 0x108A, Color = 0x0B21 };
     public static UOItemType GRR2 = new UOItemType() { Graphic = 0x108A, Color = 0x0B98 };
     public static UOItemType GGR = new UOItemType() { Graphic = 0x108A, Color = 0x0000 };
+    public static UOItemType HoDF = new UOItemType() { Graphic = 0x136C, Color = 0x0B89 };
     //0x1086 Bracelet
     //0x136C Heart of dark fortress
     //0x1088 Necklace
@@ -71,7 +72,7 @@ namespace CalExtension.Skills
     }
 
     //---------------------------------------------------------------------------------------------
-
+    //Serial: 0x40093F46  Name: "Heart of Dark Forest (0 charg"  Position: 119.144.0  Flags: 0x0020  Color: 0x0B89  Graphic: 0x136C  Amount: 1  Layer: None  Container: 0x4038402B
     UseJewleryInfo lastRRInfo;
 
     public bool UseReflexRing()
@@ -84,8 +85,12 @@ namespace CalExtension.Skills
         types.Add("GRR2");
       if (World.Player.Backpack.AllItems.FindType(RR.Graphic, RR.Color).Exist)
         types.Add("RR");
+      if (World.Player.Backpack.AllItems.FindType(HoDF.Graphic, HoDF.Color).Exist)
+        types.Add("HoDF");
+
 
       string useType = "GRR";
+      Graphic g = GRR.Graphic;
       UOColor c = GRR.Color;
 
       int index = 0;
@@ -105,10 +110,15 @@ namespace CalExtension.Skills
         c = GRR.Color;
       else if (useType == "GRR2")
         c = GRR2.Color;
+      else if (useType == "HoDF")
+      {
+        g = HoDF.Graphic;
+        c = HoDF.Color;
+      }
       else
         c = RR.Color;
 
-      lastRRInfo = UseJewlery(useType, 0x108A, c, "Ring");
+      lastRRInfo = UseJewlery(useType, g, c, "Ring");
 
       return lastRRInfo.Success;
     }
@@ -308,13 +318,14 @@ namespace CalExtension.Skills
           }
           else
           {
-            alt = World.Player.Backpack.AllItems.FindType(0x09CD, 0x0850);//zelena ryba
-            if (alt.Exist)
-            {
-              alt.Use();
+            //alt = World.Player.Backpack.AllItems.FindType(0x09CD, 0x0850);//zelena ryba
+            //if (alt.Exist)
+            //{
+            //  alt.Use();
 
-              World.Player.PrintMessage("Zelena ryba!");
-            }
+
+            //}
+            World.Player.PrintMessage("Nemas sperky/nastroj");
           }
         }
         else
@@ -341,13 +352,15 @@ namespace CalExtension.Skills
         }
         else
         {
-          alt = World.Player.Backpack.AllItems.FindType(0x09CD, 0x0850);//zelena ryba
-          if (alt.Exist)
-          {
-            alt.Use();
+          //alt = World.Player.Backpack.AllItems.FindType(0x09CD, 0x0850);//zelena ryba
+          //if (alt.Exist)
+          //{
+          //  alt.Use();
 
-            World.Player.PrintMessage("Zelena ryba!");
-          }
+          //  World.Player.PrintMessage("Zelena ryba!");
+          //}
+
+          World.Player.PrintMessage("Nemas sperky/nastroj");
         }
       }
       else World.Player.PrintMessage("Titan Neklak!");

@@ -91,11 +91,11 @@ namespace DP_Scripts
 
 
     //exec startlumber2 0x40178E62 0x4010DB1C "1216.2146" "1192.2155" "" "" 0 6 true "0,0,0,0"
-    //exec StartLumber2 0x402B77DF 0x402B77DF "3347.351" "3353.292|3353.288" "log" "" 0 6 true "0,0,3300,0"
+    //exec StartLumber2 0x402B77DF 0x402B77DF "3347.351" "3353.292|3353.288" "log" "" 0 6 true "0,0,0,0"
 
 
     //3353.292|3353.288 - muj barak Scerfice port resskriz
-    //exec StartLumber2 0x402B77DF 0x402B77DF "3347.351" "" "log" "3364.378|3364.384|3368.384|3372.381|3372.378" 700 6 true "0,0,3300,0" //debug
+    //exec StartLumber2 0x402B77DF 0x402B77DF "3347.351" "" "log" "3364.378|3364.384|3368.384|3372.381|3372.378" 700 6 true "0,0,0,0" //debug
 
     //Muj domek                        
     //                  Kontejner  Pylik      Kontejner  Ress Vyhaz  Forensic Sekyry Navstevnici Hranice E S W N

@@ -327,7 +327,7 @@ namespace CalExtension
 
         if (!handled && useDefault)
         {
-          RunScriptCheck(3000);
+          RunScriptCheck(4500);
         }
       }
       // }
@@ -522,6 +522,21 @@ namespace CalExtension
 
     //---------------------------------------------------------------------------------------------
 
+    [Executable]
+    public static void RefreshAllAlies()
+    {
+      DateTime start = DateTime.Now;
+      List<UOCharacter> alies = Game.CurrentGame.Alies;
+      foreach (UOCharacter alie in alies)
+      {
+        alie.RequestStatus(100);
+      }
+
+      Game.PrintMessage("Refresh duration: " + String.Format("{0:n1}", (DateTime.Now - start).TotalMilliseconds));
+    }  
+
+    //---------------------------------------------------------------------------------------------
+
     private List<UOCharacter> alies;
     public List<UOCharacter> Alies
     {
@@ -588,17 +603,21 @@ namespace CalExtension
 
     //---------------------------------------------------------------------------------------------
 
-    public static bool IsMob(Serial e)
+    public static bool IsMyMob(Serial e)
     {
       UOCharacter ch = new UOCharacter(e);
 
-      //if (Debug)
-      //  Game.PrintMessage("IsMob: {0}, {1}, {2}", MessageType.Info, ch.Name , IsMobActive(e), IsMobRenamed(e));
-
-      return IsMobActive(e) && (ch.Renamable || Rename.IsMobRenamed(e)); //IsMobRenamed(e); //;
+      return(ch.Renamable || Rename.IsMobRenamed(e)); //IsMobRenamed(e); //;
     }
 
+    //---------------------------------------------------------------------------------------------
 
+    public static bool IsMob(Serial e)
+    {
+      UOCharacter ch = new UOCharacter(e);
+      
+      return IsMobActive(e) && IsMyMob(e); //IsMobRenamed(e); //;
+    }
 
     //---------------------------------------------------------------------------------------------
     private Hashtable renameTryHt;
@@ -737,6 +756,20 @@ namespace CalExtension
       }
     }
 
+    public static bool AliePrintPlace2More = false;
+    [Executable]
+    [BlockMultipleExecutions]
+    public void SwitchAliePrintPlace2More()
+    {
+      AliePrintPlace2More = !AliePrintPlace2More;
+      string message = "OFF";
+
+      if (AliePrintPlace2More)
+        message = "ON";
+
+      Game.PrintMessage("Alert 3 policek " + message, Val_LightGreen);
+    }
+
     //---------------------------------------------------------------------------------------------
 
     private static bool CheckTreasure = false;
@@ -763,6 +796,7 @@ namespace CalExtension
 
       Game.PrintMessage("CheckTreasure " + message, Val_LightGreen);
     }
+
 
     //---------------------------------------------------------------------------------------------
 
@@ -972,9 +1006,10 @@ namespace CalExtension
       Hashtable wsPrints = new Hashtable();
       DateTime lastCleanBandageCheck = DateTime.Now;
       Hashtable lootBodies = new Hashtable();
-      Hashtable tryBodies = new Hashtable();
-      List<Serial> tryBodiesList = new List<Serial>();
+      //Hashtable tryBodies = new Hashtable();
+      //List<Serial> tryBodiesList = new List<Serial>();
       Hashtable cutedBodies = new Hashtable();
+      Hashtable doneBodies = new Hashtable();
 
 
 
@@ -1180,7 +1215,7 @@ namespace CalExtension
           {
             #region loot
 
-            bool lastIsTryBody = false;
+            //bool lastIsTryBody = false;
             if (CalebConfig.Loot != LootType.None)
             {
               Serial s = Serial.Invalid;
@@ -1196,8 +1231,14 @@ namespace CalExtension
                   bool isCorpse = item.Graphic == 0x2006;
                   bool isInCorpse = itemContainer.Exist && itemContainer.Graphic == 0x2006;
 
-                  if (tryBodies[item.GetUniqueKeyPostion()] != null && (string)tryBodies[item.GetUniqueKeyPostion()] == World.Player.GetUniqueKeyPostion())
+                  if (doneBodies[item.GetUniqueKeyPostion()] != null)
+                  {
+                    toDispatchItems.RemoveAt(i);
                     continue;
+                  }
+
+                  //if (tryBodies[item.GetUniqueKeyPostion()] != null && (string)tryBodies[item.GetUniqueKeyPostion()] == World.Player.GetUniqueKeyPostion())
+                  //  continue;
 
                   if (isCorpse)
                   {
@@ -1232,23 +1273,24 @@ namespace CalExtension
 
                 if (isCorpse && !lootItem.Opened)
                 {
-                  if (lastIsTryBody)
-                    Game.Wait(750);
+                  doneBodies[lootItem.GetUniqueKeyPostion()] = lootItem.Serial;
+                  //if (lastIsTryBody)
+                  //  Game.Wait(750);
 
-                  if (tryBodiesList.Contains(lootItem.Serial))
-                    lastIsTryBody = true;
-                  else
-                    lastIsTryBody = false;
+                  //if (tryBodiesList.Contains(lootItem.Serial))
+                  //  lastIsTryBody = true;
+                  //else
+                  //  lastIsTryBody = false;
 
                   lootItem.Use();
 
                   if (Journal.WaitForText(true, 175, "You can't reach"))
                   {
-                    if (!tryBodiesList.Contains(lootItem.Serial))
-                      tryBodiesList.Add(lootItem.Serial);
-                    tryBodies[lootItem.GetUniqueKeyPostion()] = World.Player.GetUniqueKeyPostion();
+                    //if (!tryBodiesList.Contains(lootItem.Serial))
+                    //  tryBodiesList.Add(lootItem.Serial);
+                    //tryBodies[lootItem.GetUniqueKeyPostion()] = World.Player.GetUniqueKeyPostion();
                     lootItem.PrintMessage("[ Can't reach ]", MessageType.Error);
-                    remove = false;
+                    //remove = false;
                   }
                   else
                   {
@@ -1434,24 +1476,35 @@ namespace CalExtension
               {
                 bool ableCurePoions = SkillsHelper.GetSkillValue("Healing").RealValue >= 850 || SkillsHelper.GetSkillValue("Veterinary").RealValue >= 850;
                 UOCharacter result = null;
-
                 int minDmg = CalebConfig.HealMinDamagePerc;
                 bool useMinDmg = minDmg > 0;
 
-                List<CharHealPriority> chhpList = Healing.GetCharHealPriorityList(5.5, true, CalebConfig.HealMoby ? Game.CurrentGame.HealAlies : null);
-                if (useMinDmg)
-                  chhpList = chhpList.Where(c => c.Char.Serial == World.Player.Serial || c.Char.Poisoned && ableCurePoions || c.DamagePerc >= minDmg).ToList();
 
-                var sortedList = chhpList.Where(c => !skip.Contains(c.Char.Serial) && !dennyMobs.Contains(c.Char.Serial)).ToList();
-
-                if (sortedList.Count == 0)
+                TargetAliasResult hover = Targeting.ParseTargets("hover");
+                if (hover.IsValid && hover.Serial.IsValid)
                 {
-                  skip.Clear();
-                  sortedList = chhpList.Where(c => !skip.Contains(c.Char.Serial) && !dennyMobs.Contains(c.Char.Serial)).ToList();
+                  UOCharacter hoverChar = new UOCharacter(hover.Serial);
+                  if (!hoverChar.Dead && hoverChar.Hits > 0 && (hoverChar.Notoriety != Notoriety.Murderer && hoverChar.Notoriety != Notoriety.Enemy) && hoverChar.Exist && hoverChar.Distance <= 5 && (hoverChar.Hits < hoverChar.MaxHits || hoverChar.Poisoned && ableCurePoions))
+                    result = hoverChar;
                 }
 
-                if (sortedList.Count > 0)
-                  result = sortedList[0].Char;
+                if (result == null)
+                {
+                  List<CharHealPriority> chhpList = Healing.GetCharHealPriorityList(5.5, true, CalebConfig.HealMoby ? Game.CurrentGame.HealAlies : null);
+                  if (useMinDmg)
+                    chhpList = chhpList.Where(c => c.Char.Serial == World.Player.Serial || c.Char.Poisoned && ableCurePoions || c.DamagePerc >= minDmg).ToList();
+
+                  var sortedList = chhpList.Where(c => !skip.Contains(c.Char.Serial) && !dennyMobs.Contains(c.Char.Serial)).ToList();
+
+                  if (sortedList.Count == 0)
+                  {
+                    skip.Clear();
+                    sortedList = chhpList.Where(c => !skip.Contains(c.Char.Serial) && !dennyMobs.Contains(c.Char.Serial)).ToList();
+                  }
+
+                  if (sortedList.Count > 0)
+                    result = sortedList[0].Char;
+                }
 
                 if (result != null && result.ExistCust())
                 {
@@ -1464,7 +1517,7 @@ namespace CalExtension
                     {
                       if (result.Serial == World.Player.Serial || !World.Player.Hidden || SkillsHelper.GetSkillValue("Healing").RealValue > 950)//Jen clerda muze s hidu
                       {
-                        Game.CurrentGame.atackCounterEnabled = false;
+                        Game.atackCounterEnabled = false;
                         Game.Wait(150);
                         if (!CheckRunning())
                         {
@@ -1698,7 +1751,10 @@ namespace CalExtension
       {
         Game.Wait(100);
         if (UIManager.CurrentState != UIManager.State.Ready)
+        {
+          Targeting.CancelClientTarget();
           Targeting.ResetTarget();
+        }
       }
     }
 
@@ -1935,8 +1991,9 @@ namespace CalExtension
     //private DateTime? lastShamanMorfTime;
     public static JournalEntry LastEntry;
     public static List<JournalEntry> EntryHistory;
+    public static DateTime? lastRefreshRequest= null;
 
-    protected bool atackCounterEnabled = false;
+    public static bool atackCounterEnabled = false;
 
     protected void Journal_EntryAdded(object sender, JournalEntryAddedEventArgs e)
     {
@@ -1996,6 +2053,17 @@ namespace CalExtension
         if (!found)
           World.Player.PrintMessage("[Haluze OK]", Game.Val_GreenBlue);
       }
+      else if (textSafe.StartsWith("rsh:"))
+      {
+        //lastRefreshRequest
+        UOCharacter chr = new UOCharacter(e.Entry.Serial);
+        if (chr.Exist && (!lastRefreshRequest.HasValue || (DateTime.Now - lastRefreshRequest.Value).TotalMilliseconds > 350))
+        {
+          lastRefreshRequest = DateTime.Now;
+          new UOCharacter(e.Entry.Serial).RequestStatus(150);
+        }
+      }
+
       #region attack
       else if 
         (

@@ -138,17 +138,35 @@ namespace CalExtension.UOExtensions
       if (item.Graphic == 0x09B0 && item.Color == 0x0493)//KPZ
         return false;
       //0x0E75  
-      return item.Serial == World.Player.Backpack.Serial || 
-        item.Graphic == 0x0E40 || 
-        item.Graphic == 0x0E41 || 
-        item.Graphic == 0x09B0 || 
-        item.Graphic == 0x0E76 || 
-        item.Graphic == 0x0E75 || 
-        item.Graphic == 0x0E77 || 
-        item.Graphic == 0x0E78 || 
-        item.Graphic == 0x0E79 || 
-        item.Graphic == 0x0E7D;
+      return item.Serial == World.Player.Backpack.Serial ||
+        item.Graphic == 0x0E40 ||
+        item.Graphic == 0x0E41 ||
+        item.Graphic == 0x0E42 || //wooden chest
+        item.Graphic == 0x0E43 || //wooden chest
+        item.Graphic == 0x0E3C || //crate
+        item.Graphic == 0x0E3E || //crate
+        item.Graphic == 0x09AA || //wooden box
+        item.Graphic == 0x09A8 && item.Color == 0x049B || //Treasure Box
+        item.Graphic == 0x09B0 || //Random Skill Book
+        item.Graphic == 0x0E76 || //bag
+        item.Graphic == 0x0E75 || //backpack
+        item.Graphic == 0x0E77 ||
+        item.Graphic == 0x0E78 ||
+        item.Graphic == 0x0E79 || //belt pouch
+        item.Graphic == 0x0E80 || //strong box
+
+        item.Graphic == 0x0E7D; //wooden box
     }
+
+    //item.Graphic == 0x0E40 || 
+    //    item.Graphic == 0x0E41 || 
+    //    item.Graphic == 0x09B0 || 
+    //    item.Graphic == 0x0E76 || 
+    //    item.Graphic == 0x0E75 || 
+    //    item.Graphic == 0x0E77 || 
+    //    item.Graphic == 0x0E78 || 
+    //    item.Graphic == 0x0E79 || 
+    //    item.Graphic == 0x0E7D;
 
     //---------------------------------------------------------------------------------------------
 
@@ -347,6 +365,9 @@ namespace CalExtension.UOExtensions
         Game.Wait();
 
       if (ItemLibrary.BeltPouch.MoveBackpack(0, 180, 130, 0, World.Player.Backpack))
+        Game.Wait();
+
+      if (ItemLibrary.BeltPouch2.MoveBackpack(0, 180, 132, 0, World.Player.Backpack))
         Game.Wait();
 
       if (ItemLibrary.NbRuna.Move(0, 180, 140, 0, World.Player.Backpack))
@@ -2342,7 +2363,7 @@ namespace CalExtension.UOExtensions
         if (ItemHelper.IsContainer(item))
         {
           EnsureContainer(item);
-
+          Game.Wait(250);
 
           if (item.Items.ToArray().Length > 0)
             continue;
@@ -2377,10 +2398,6 @@ namespace CalExtension.UOExtensions
       Game.PrintMessage("Presouvam");
       foreach (UOItem item in itemsFound)
       {
-
-
-
-
         item.Move(60000, targetCont);
         Game.Wait();
       }
@@ -2878,8 +2895,6 @@ namespace CalExtension.UOExtensions
       return obj;
     }
 
-
-
     //---------------------------------------------------------------------------------------------\
 
     public static UOItemExtInfo GetItemExtInfo(UOItem item)
@@ -3125,6 +3140,9 @@ namespace CalExtension.UOExtensions
 
       foreach (UOItem item in items)
       {
+        if (item == null)
+          continue;
+
         UOItemExtInfo extInfo = ItemHelper.GetItemExtInfo(item);
 
         if (IsContainer(item) || item.Items.Count() > 0)
@@ -3256,12 +3274,111 @@ namespace CalExtension.UOExtensions
     [Executable]
     public static void SortItemByType(int w, int h, int slowW, int slotH)
     {
+      SortItemByType(w, h, slowW, slotH, 0);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void SortItemByType(int w, int h, int slowW, int slotH, int rowFrom)
+    {
       Game.PrintMessage("Bagl z >");
 
       UOItem containerFrom = new UOItem(UIManager.TargetObject());
-      Game.PrintMessage("Bagl do >");
+      Game.PrintMessage("Bagl do > (ESC = z)");
 
-      ContainerFrame frameTo = new ContainerFrame(UIManager.TargetObject(), w, h, slowW, slowW);
+      UOItem containerTo = new UOItem(UIManager.TargetObject());
+      if (!containerTo.Exist)
+        containerTo = containerFrom;
+
+      ContainerFrame frameTo = new ContainerFrame(containerTo, w, h, slowW, slowW);
+      List<ContainerSlot> slots = new List<ContainerSlot>();
+
+      Game.PrintMessage("frameTo Rows: " + frameTo.Rows.Count);
+
+
+      for (int i = rowFrom; i < frameTo.Rows.Count; i++) //each (List<ContainerSlot> row in frameTo.Rows)
+      {
+        List<ContainerSlot> row = frameTo.Rows[i];
+        foreach (ContainerSlot slot in row)
+        {
+          if (containerFrom.Serial == containerTo.Serial || slot.Empty)
+            slots.Add(slot);
+        }
+      }
+
+      Game.PrintMessage("frameTo slots: " + slots.Count);
+      var sortedItems = containerFrom.Items.OrderBy(i => i.Graphic + "|" + i.Color).ToList();
+      Game.PrintMessage("sortedItems : " + sortedItems.Count);
+
+      for (int i = 0; i < Math.Min(sortedItems.Count, slots.Count); i++)
+      {
+        Game.PrintMessage(slots[i].X + " / " + slots[i].Y);
+        slots[i].Push(sortedItems[i]);
+        Game.Wait();
+      }
+      Game.PrintMessage("Konec");
+
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void SortItemById(int w, int h, int slowW, int slotH)
+    {
+      SortItemById(w, h, slowW, slotH, 0);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void SortItemById(int w, int h, int slowW, int slotH, int rowFrom)
+    {
+      Game.PrintMessage("Bagl z >");
+
+      UOItem containerFrom = new UOItem(UIManager.TargetObject());
+      Game.PrintMessage("Bagl do > (ESC = z)");
+
+      UOItem containerTo = new UOItem(UIManager.TargetObject());
+      if (!containerTo.Exist)
+        containerTo = containerFrom;
+
+      ContainerFrame frameTo = new ContainerFrame(containerTo, w, h, slowW, slowW);
+      List<ContainerSlot> slots = new List<ContainerSlot>();
+
+      Game.PrintMessage("frameTo Rows: " + frameTo.Rows.Count);
+
+
+      for (int i = rowFrom; i < frameTo.Rows.Count; i++) //each (List<ContainerSlot> row in frameTo.Rows)
+      {
+        List<ContainerSlot> row = frameTo.Rows[i];
+        foreach (ContainerSlot slot in row)
+        {
+          if (containerFrom.Serial == containerTo.Serial || slot.Empty)
+            slots.Add(slot);
+        }
+      }
+
+      Game.PrintMessage("frameTo slots: " + slots.Count);
+      var sortedItems = containerFrom.Items.OrderBy(i => i.Serial + "").ToList();
+      Game.PrintMessage("sortedItems : " + sortedItems.Count);
+
+      for (int i = 0; i < Math.Min(sortedItems.Count, slots.Count); i++)
+      {
+        Game.PrintMessage(slots[i].X + " / " + slots[i].Y);
+        slots[i].Push(sortedItems[i]);
+        Game.Wait();
+      }
+      Game.PrintMessage("Konec");
+
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void SortItemByType(UOItem cont, int w, int h, int slowW, int slotH)
+    {
+      ContainerFrame frameTo = new ContainerFrame(cont, w, h, slowW, slowW);
       List<ContainerSlot> slots = new List<ContainerSlot>();
 
       Game.PrintMessage("frameTo Rows: " + frameTo.Rows.Count);
@@ -3276,7 +3393,7 @@ namespace CalExtension.UOExtensions
       }
 
       Game.PrintMessage("frameTo slots: " + slots.Count);
-      var sortedItems = containerFrom.Items.OrderBy(i => i.Graphic + "|" + i.Color).ToList();
+      var sortedItems = cont.Items.OrderBy(i => i.Graphic + "|" + i.Color).ToList();
       Game.PrintMessage("sortedItems : " + sortedItems.Count);
 
       for (int i = 0; i < Math.Min(sortedItems.Count, slots.Count); i++)
@@ -3319,6 +3436,150 @@ namespace CalExtension.UOExtensions
 
     //---------------------------------------------------------------------------------------------
 
+      [Executable]
+    public static void najdiregy()
+    {
+      UO.Print("Kam >");
+      UOItem targetCont = new UOItem(UIManager.Target().Serial);
+
+      UO.Print("kde >");
+      UOItem sourceCont = new UOItem(UIManager.Target().Serial);
+
+      if (!targetCont.Exist)
+        return;
+
+      if (!sourceCont.Exist)
+        return;
+
+      UO.Print("Jedem..");
+
+      Dictionary<string, int> counter = new Dictionary<string, int>();
+
+      sourceCont.Use();
+      Game.Wait();
+
+      moveregrecursive(targetCont, sourceCont, ref counter);
+
+      foreach (KeyValuePair<string, int>  kvp in counter)
+      {
+        Notepad.WriteLine(kvp.Key + ": " + kvp.Value);
+      }
+
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    protected static void moveregrecursive(UOItem to, UOItem from, ref Dictionary<string, int> counter)
+    {
+      from.Use();
+      Game.Wait(250);
+
+      foreach (UOItem item in from.Items)
+      {
+        if (IsContainer(item))
+          moveregrecursive(to, item, ref counter);
+        else if (ReagentCollection.Reagents.FindReagent(item) != null)//.Contains(item))
+        {
+          Reagent r = ReagentCollection.Reagents.FindReagent(item);
+
+          string key = r.Name;
+          if (counter.ContainsKey(key))
+            counter[key] += item.Amount;
+          else
+            counter.Add(key, item.Amount);
+
+          item.Move(item.Amount, to.Serial);
+          Game.Wait(250);
+
+        }
+
+      }
+
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void GrabGround(int distance)
+    {
+      int origFindDistance = World.FindDistance;
+
+      World.FindDistance = 2;
+
+      List<UOItem> items = World.Ground.Where(i => i.Distance <= 1).ToList();
+
+      Game.PrintMessage("GrabGround: " + items.Count);
+
+      foreach (UOItem item in items)
+      {
+        item.Click();
+        Game.Wait();
+
+        int ydiff = World.Player.Y - item.Y;
+        if (ydiff < 0 || ydiff > 2)
+        {
+          Game.PrintMessage("Grab " + ydiff + " / " + item.Distance + ": Skip - " + item.Name, MessageType.Warning);
+          continue;
+        }
+
+
+        bool grab = item.Move(100, World.Player.Backpack);
+        Game.PrintMessage("Grab " + ydiff + " / " + item.Distance + ": " + (grab ? "OK" : "Fail" + " - " + item.Name), grab ? MessageType.Info : MessageType.Error);
+        Game.Wait();
+      }
+
+
+      World.FindDistance = origFindDistance;
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void PrintBankSerial()
+    {
+      UO.Print("BankID: " + World.Player.Layers[Layer.Bank]);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void PrintGrountType(ushort g, ushort c, int maxZ)
+    {
+      int origDistance = World.FindDistance;
+      World.FindDistance = 10;
+
+      List<UOItem> found = World.Ground.Where(i => i.Z <= maxZ).ToList(); // new List<UOItem>();
+
+      if (g != 0xFFFF)
+        found = found.Where(i => i.Graphic == g).ToList();
+
+      if (c != 0xFFFF && c != 0x0000)
+        found = found.Where(i => i.Color == c).ToList();
+
+      Notepad.WriteLine("Nalezeno: " + found.Count);
+
+      for (int i = 0; i < found.Count; i++)
+      {
+        UOItem itm = found[i];
+        if (String.IsNullOrEmpty(itm.Name))
+        {
+          itm.Click();
+          Game.Wait(100);
+        }
+
+        itm.PrintMessage("" + i);
+        Notepad.WriteLine("Index: {0}, {1}, {2}.{3}.{4} - {5:x}", i, itm.Name, itm.X, itm.Y, itm.Z, itm.Serial);
+
+
+      }
+
+      World.FindDistance = origDistance;
+
+    }
+
+
+    //---------------------------------------------------------------------------------------------
+
   }
   //  Serial: 0x402F2C62  Name: "Spirit of the Rain"  Position: 34.67.0  Flags: 0x0000  Color: 0x049D  Graphic: 0x0E26  Amount: 1  Layer: None Container: 0x4031522D
 
@@ -3331,7 +3592,7 @@ namespace CalExtension.UOExtensions
 
   //---------------------------------------------------------------------------------------------
 
-  
+  //---------------------------------------------------------------------------------------------
 
   //---------------------------------------------------------------------------------------------
 

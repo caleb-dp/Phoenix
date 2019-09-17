@@ -83,31 +83,31 @@ namespace CalExtension.Skills
       if (charsSource != null)
       {
         chars.AddRange(charsSource);
-        if (Healing.LastCharacter != null)
-        {
-          if (Healing.LastCharacter.Hits >= Healing.LastCharacter.MaxHits && !Healing.LastCharacter.Poisoned)
-            Healing.LastCharacter = null;
-          else if (chars.Where(c => c.Serial == Healing.LastCharacter).ToArray().Length == 0)
-            chars.Add(LastCharacter);
-        }
+    //    if (Healing.LastCharacter != null)
+    //    {
+    //      if (Healing.LastCharacter.Hits >= Healing.LastCharacter.MaxHits && !Healing.LastCharacter.Poisoned)
+    //        Healing.LastCharacter = null;
+    //      else if (chars.Where(c => c.Serial == Healing.LastCharacter).ToArray().Length == 0)
+    //        chars.Add(LastCharacter);
+    //    }
 
-        UOCharacter hover = new UOCharacter(Serial.Invalid);
-        if (Game.CurrentGame.CurrentHoverStatus != null)
-          hover = new UOCharacter(Game.CurrentGame.CurrentHoverStatus);
+    //    UOCharacter hover = new UOCharacter(Serial.Invalid);
+    //    if (Game.CurrentGame.CurrentHoverStatus != null)
+    //      hover = new UOCharacter(Game.CurrentGame.CurrentHoverStatus);
 
-        if (hover.ExistCust() && 
-          (
-          Game.CurrentGame.IsHealAlie(hover) ||
-          Game.CurrentGame.IsAlie(hover) || 
-          hover.Notoriety == Notoriety.Guild ||
-          hover.Notoriety == Notoriety.Neutral || 
-          hover.Notoriety == Notoriety.Innocent
-          ) &&
-    chars.Where(c => c.Serial == Game.CurrentGame.CurrentHoverStatus).ToArray().Length == 0
-    )
-        {
-          chars.Add(new UOCharacter(Game.CurrentGame.CurrentHoverStatus));
-        }
+    //    if (hover.ExistCust() && 
+    //      (
+    //      Game.CurrentGame.IsHealAlie(hover) ||
+    //      Game.CurrentGame.IsAlie(hover) || 
+    //      hover.Notoriety == Notoriety.Guild ||
+    //      hover.Notoriety == Notoriety.Neutral || 
+    //      hover.Notoriety == Notoriety.Innocent
+    //      ) &&
+    //chars.Where(c => c.Serial == Game.CurrentGame.CurrentHoverStatus).ToArray().Length == 0
+    //)
+    //    {
+    //      chars.Add(new UOCharacter(Game.CurrentGame.CurrentHoverStatus));
+    //    }
       }
 
       List<CharHealPriority> chhpList = new List<CharHealPriority>();
@@ -124,11 +124,11 @@ namespace CalExtension.Skills
           chhp.HitsPercRelative = (decimal)ch.Hits / (decimal)World.Player.MaxHits;
 
 
-          if (Healing.LastCharacter != null && Healing.LastCharacter.Serial == ch.Serial)
-            chhp.Priority = 1000;
+          //if (Healing.LastCharacter != null && Healing.LastCharacter.Serial == ch.Serial)
+          //  chhp.Priority = 1000;
 
-          if (Game.CurrentGame.CurrentHoverStatus != null && Game.CurrentGame.CurrentHoverStatus == ch.Serial)
-            chhp.Priority = 900;
+          //if (Game.CurrentGame.CurrentHoverStatus != null && Game.CurrentGame.CurrentHoverStatus == ch.Serial)
+          //  chhp.Priority = 900;
 
           if (ch.Serial == World.Player.Serial)
             chhp.Priority += 500;

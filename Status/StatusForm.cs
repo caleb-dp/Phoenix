@@ -49,12 +49,18 @@ namespace CalExtension.UI.Status
     private Button btnY;
 
     private Label runLabel;
-    private Label notifiyLabel;
+    private Label placeLabel;
+    //  private Label infoLabel;
+
+
+    private Label notifyLabel;
 
     private UOCharacter mobile;
     private HealthBar healthBar;
     private ManaBar manaBar;
     private StaminaBar staminaBar;
+
+    private StaminaBar progressBar;
 
     private WorldLocation lastloc;
     private bool lastWar;
@@ -85,7 +91,7 @@ namespace CalExtension.UI.Status
 
     public bool MouseHovering
     {
-      get { return this.mouseHovering;  }
+      get { return this.mouseHovering; }
     }
 
     //---------------------------------------------------------------------------------------------
@@ -106,7 +112,7 @@ namespace CalExtension.UI.Status
 
     public DateTime InitTime
     {
-      get { return this.initTime;  }
+      get { return this.initTime; }
     }
 
 
@@ -134,7 +140,7 @@ namespace CalExtension.UI.Status
 
     public StatusForm(Serial id/*, StatusFormWrapper wrapper*/) : this(id, null, null) // tStatusForm(id, null, null);
     {
-     
+
     }
 
     public StatusForm(Serial id, int? x, int? y/*, StatusFormWrapper wrapper*/)
@@ -169,6 +175,8 @@ namespace CalExtension.UI.Status
       else
         this.StatusType = StatusType.Enemy;
 
+
+
       lastMaxHits = mobile.MaxHits;
 
       if (this.StatusType != StatusType.Player)
@@ -187,7 +195,7 @@ namespace CalExtension.UI.Status
         }
         else if (this.StatusType == StatusType.Friend)
         {
-          if (mobile.Notoriety == Notoriety.Guild)
+          if (mobile.Notoriety == Notoriety.Guild || mobile.Notoriety == Notoriety.Innocent)
           {
             this.chbxKeep.Checked = true;
             this.chbxAlie.Checked = true;
@@ -303,6 +311,201 @@ namespace CalExtension.UI.Status
 
     //---------------------------------------------------------------------------------------------
 
+    private static Dictionary<string, Color> placeColors;
+    public static Dictionary<string, Color> PlaceColors
+    {
+      get
+      {
+        if (placeColors == null)
+          placeColors = new Dictionary<string, Color>();
+        return placeColors;
+      }
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    private static Dictionary<string, DateTime> placeAlert;
+    public static Dictionary<string, DateTime> PlaceAlert
+    {
+      get
+      {
+        if (placeAlert == null)
+          placeAlert = new Dictionary<string, DateTime>();
+        return placeAlert;
+      }
+    }
+
+
+    //---------------------------------------------------------------------------------------------
+
+    public static List<Color> PossiblePlaceColors
+    {
+      get
+      {
+        List<Color> list = new List<Color>();
+        list.Add(Color.Coral);
+        list.Add(Color.CornflowerBlue);
+        list.Add(Color.Beige);
+        list.Add(Color.HotPink);
+        list.Add(Color.Crimson);
+        list.Add(Color.DarkGray);
+        list.Add(Color.DarkCyan);
+        list.Add(Color.DarkSeaGreen);
+        list.Add(Color.DeepSkyBlue);
+        list.Add(Color.MediumSpringGreen);
+        list.Add(Color.OrangeRed);
+        list.Add(Color.SpringGreen);
+        list.Add(Color.SlateBlue);
+        list.Add(Color.Orange);
+
+        return list.Where(c => PlaceColors.Values.Count(pc => c.Name == pc.Name) == 0).ToList();
+      }
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    private List<UOCharacter> GetPlaceChars()
+    {
+      List<UOCharacter> chars = new List<UOCharacter>();
+
+      if (this.mobile.X > 0 && this.mobile.X < 10000)
+      {
+        chars.AddRange(Game.CurrentGame.Alies.ToArray());
+        chars.Add(World.Player);
+      }
+
+
+      return chars.Where(a => a.X == this.mobile.X && a.Y == this.mobile.Y && a.Serial != this.mobile.Serial && a.Hits > 0).ToList();
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    private void CheckUpdatePlaceCount()
+    {
+      if (!placeRefreshTime.HasValue || (DateTime.Now - placeRefreshTime.Value).TotalMilliseconds > 150)
+        UpdatePlaceCount();
+    }
+
+    //---------------------------------------------------------------------------------------------
+    private DateTime? placeRefreshTime;
+    private DateTime runeAlertTime = DateTime.MinValue;
+    private string runeAlertPositionKey = String.Empty;
+    private string prevKey;
+    private void UpdatePlaceCount()
+    {
+      //if (!Game.AliePrintPlace2More)
+      //  return;
+
+      if (this.StatusType != StatusType.Friend && this.StatusType != StatusType.Player)
+        return;
+
+      placeRefreshTime = DateTime.Now;
+
+      try
+      {
+        List<UOCharacter> chars = GetPlaceChars();
+        int count = chars.Count;
+        string key = this.mobile.X + "," + this.mobile.Y;
+
+        if (count == 0)
+        {
+          if (this.placeLabel.Visible)
+          {
+            this.placeLabel.Visible = false;
+            this.placeLabel.BackColor = Color.Transparent;
+            this.placeLabel.Text = "";
+            this.placeLabel.Invalidate();
+          }
+          if (PlaceColors.ContainsKey(key))
+            PlaceColors.Remove(key);
+
+          if (!String.IsNullOrEmpty(prevKey))
+          {
+            if (PlaceColors.ContainsKey(prevKey))
+              PlaceColors.Remove(prevKey);
+          }
+
+          List<StatusForm> refresh = WindowManager.GetDefaultManager().OwnedWindows.OfType<StatusForm>().ToList();
+          foreach (StatusForm r in refresh)
+            WindowManager.GetDefaultManager().BeginInvoke(r.CheckUpdatePlaceCount);
+
+          prevKey = null;
+        }
+        else
+        {
+          prevKey = key;
+          this.placeLabel.Visible = true;
+          Color c = Color.Transparent;
+          if (PlaceColors.ContainsKey(key))
+          {
+            PlaceColors.TryGetValue(key, out c);
+          }
+          else
+          {
+            List<Color> colors = PossiblePlaceColors;
+            if (colors.Count > 0)
+            {
+              c = colors[0];
+              PlaceColors.Add(key, c);
+            }
+          }
+          this.placeLabel.BackColor = c;
+
+          if (Game.AliePrintPlace2More && count > 1)
+          {
+            if (!PlaceAlert.ContainsKey(key) || (DateTime.Now - PlaceAlert[key]).TotalMilliseconds > 3000)
+            {
+              this.mobile.PrintMessage("[!3 Hraci!]", MessageType.Error);
+              if (PlaceAlert.ContainsKey(key))
+                PlaceAlert[key] = DateTime.Now;
+              else
+                PlaceAlert.Add(key, DateTime.Now);
+            }
+          }
+          else
+          {
+            if (PlaceAlert.ContainsKey(key))
+            {
+              PlaceAlert.Remove(key);
+            }
+          }
+
+          List<StatusForm> refresh = WindowManager.GetDefaultManager().OwnedWindows.OfType<StatusForm>().Where(sf => chars.Count(ch => ch.Serial == sf.MobileId) > 0).ToList();
+          foreach (StatusForm r in refresh)
+          {
+            WindowManager.GetDefaultManager().BeginInvoke(r.CheckUpdatePlaceCount);
+          }
+
+        }
+
+        string newText = String.Format("{0:N0}", 1 + count);
+        if (newText != this.placeLabel.Text)
+        {
+          this.placeLabel.Text = newText;
+          this.placeLabel.Invalidate();
+        }
+
+        int origFindDistance = World.FindDistance;
+        World.FindDistance = 1;
+        string runeKey = key + "," + World.Player.Z;
+
+        if (!World.Player.Dead && this.StatusType == StatusType.Player && World.Ground.Count(r=> r.Graphic == 0x0E5C && r.X == World.Player.X && r.Y == World.Player.Y && r.Z == World.Player.Z) > 0 && ((DateTime.Now - runeAlertTime).TotalMilliseconds > 1000 || runeKey != runeAlertPositionKey))
+        {
+          runeAlertTime = DateTime.Now;
+          runeAlertPositionKey = runeKey;
+          this.mobile.PrintMessage("[ Y runa ! ]", MessageType.Error);
+
+        }
+        World.FindDistance = origFindDistance;
+        //Serial: 0x400233E7  Name: "glowing rune"  Position: 6071.2199.-28  Flags: 0x0000  Color: 0x0000  Graphic: 0x0E5C  Amount: 0  Layer: None  Container: 0x00000000
+
+
+      }
+      catch { }
+    }
+
+    //---------------------------------------------------------------------------------------------
+
     private void UpdatePositionAndDirection()
     {
       if (this.StatusType != StatusType.Player)
@@ -358,12 +561,17 @@ namespace CalExtension.UI.Status
         //-/|\---↖↗↘↙↑← →↓
         string runLabelText = String.Format("{0:N0}", distance);
         runLabelText += " " + sufix;
-        this.runLabel.Text = runLabelText;
-        this.runLabel.Invalidate();
+
+        if (runLabelText != this.runLabel.Text)
+        {
+          this.runLabel.Text = runLabelText;
+          this.runLabel.Invalidate();
+        }
       }
     }
 
     //---------------------------------------------------------------------------------------------
+
 
     private void UpdateStats()
     {
@@ -409,6 +617,7 @@ namespace CalExtension.UI.Status
 
         if (this.StatusType == StatusType.Player)
         {
+          UpdatePlaceCount();
           mana.Text = String.Format("{0}/{1}", mobile.Mana, mobile.MaxMana);
           manaBar.Mana = mobile.Mana;
           manaBar.MaxMana = mobile.MaxMana;
@@ -421,10 +630,39 @@ namespace CalExtension.UI.Status
 
           ar.Text = String.Format("ar: {0}", World.Player.Armor);
           weight.Text = String.Format("w: {0}", World.Player.Weight);
+
+          if (CalebConfig.SalatAlertHpValue > 0)
+          {
+            bool show = false;
+
+            if (CalebConfig.SalatAlertHpKind == "abs")
+              show = this.mobile.Hits <= CalebConfig.SalatAlertHpValue;
+            else
+            {
+              try { show = (((double)this.mobile.Hits / (double)this.mobile.MaxHits) * 100.0) <= CalebConfig.SalatAlertHpValue; }
+              catch { }
+            }
+
+            if (!this.notifyLabel.Visible && show)
+            {
+              this.notifyLabel.Text = " SALAT TIME! VEGAN POWR!";
+              this.notifyLabel.Visible = true;
+              this.ClientSize = new Size(this.OriginalWidth, this.OriginalHeight + 20);
+              this.Invalidate();
+            }
+            else if (this.notifyLabel.Visible && !show)
+            {
+              this.notifyLabel.Text = " --- ";
+              this.notifyLabel.Visible = false;
+              this.ClientSize = new Size(this.OriginalWidth, this.OriginalHeight);
+              this.Invalidate();
+            }
+          }
         }
         else
         {
           UpdatePositionAndDirection();
+          UpdatePlaceCount();
 
           if (this.chbxAlie.Checked)
           {
@@ -458,12 +696,14 @@ namespace CalExtension.UI.Status
         {
           staminaBar.Unknown = true;
           manaBar.Unknown = true;
+          UpdatePlaceCount();
         }
         else
         {
           if (this.chbxKeep.Checked)
           {
             UpdatePositionAndDirection();
+            UpdatePlaceCount();
           }
           else
           {
@@ -567,14 +807,39 @@ namespace CalExtension.UI.Status
       if (currRunArg != null)
       {
         bool change = false;
+        decimal totalDuration = currRunArg.Count + currRunArg.Duration;
+
+    //    Game.PrintMessage("" + totalDuration);
+
         if (currRunArg.IsStoped)
         {
           change = true;
           this.runLabel.Text = String.Format("{0:N1}", 0);
           this.runLabel.BackColor = Color.Transparent;
+
+          if (this.progressBar != null)
+          {
+            this.progressBar.Unknown = true;
+            this.progressBar.Stam = 0;
+          }
         }
-        else if (currRunArg.Count == 0 || currRunArg.Count % 50 == 0)
+        else if (currRunArg.Count == 0 || currRunArg.Count % 50 == 0 || totalDuration < 50)
         {
+          if (this.progressBar != null)
+          {
+            if (totalDuration < 50)
+            {
+              this.progressBar.Unknown = true;
+              this.progressBar.Stam = 0;
+            }
+            else if (totalDuration > 0)
+            {
+              decimal v = (currRunArg.Duration / totalDuration) * 100;
+              this.progressBar.Unknown = false;
+              this.progressBar.Stam = (int)v;
+            }
+          }
+           
           change = true;
           this.runLabel.Text = String.Format("{0:N1}", (currRunArg.Duration / 1000m));
           this.runLabel.BackColor = Color.Coral;
@@ -583,7 +848,9 @@ namespace CalExtension.UI.Status
         if (change)
         {
           this.runLabel.Invalidate();
+       //  this.progressBar.Invalidate();
         }
+
       }
     }
 
@@ -719,18 +986,34 @@ namespace CalExtension.UI.Status
       this.chbxHeal.Checked = false;
       this.AddRemoveHealAlie();
       this.AddRemoveAlie();
+
+      int count = GetPlaceChars().Count;
+      string key = this.mobile.X + "," + this.mobile.Y;
+
+      if (count == 0)
+      {
+        this.placeLabel.BackColor = Color.Transparent;
+        if (PlaceColors.ContainsKey(key))
+          PlaceColors.Remove(key);
+
+      }
+
+
       base.Dispose(disposing);
     }
 
-
-
     //---------------------------------------------------------------------------------------------
-
+    private DateTime? lastAppearedTime = null;
     protected void World_CharacterAppeared(object sender, CharacterAppearedEventArgs e)
     {
       if (e.Serial == mobile.Serial)
       {
-        UpdateStats();
+        if (!lastAppearedTime.HasValue || (DateTime.Now - lastAppearedTime.Value).TotalMilliseconds > 1000)
+        {
+          lastAppearedTime = DateTime.Now;
+          mobile.RequestStatus(100);
+        }
+        //UpdateStats();
       }
     }
 
@@ -766,6 +1049,7 @@ namespace CalExtension.UI.Status
       Aliases.SetObject("CurrentHoverStatus", mobile.Serial);
 
       UpdatePositionAndDirection();
+      UpdatePlaceCount();
       BackColor = Color.BlueViolet;
 
       if (prevEnter.IsValidCust() && new UOCharacter(prevEnter).ExistCust() && (DateTime.Now - prevEnterTime).TotalSeconds < 3 && prevEnter != this.MobileId)
@@ -900,7 +1184,11 @@ namespace CalExtension.UI.Status
       this.chbxHeal = new CheckBox();
       this.chbxAlie = new CheckBox();
       this.runLabel = new System.Windows.Forms.Label();
-      this.notifiyLabel = new Label();
+      this.placeLabel = new Label();
+      this.placeLabel.Visible = false;
+      this.notifyLabel = new Label();
+      this.progressBar = new StaminaBar();
+      
 
       this.SuspendLayout();
 
@@ -918,14 +1206,26 @@ namespace CalExtension.UI.Status
         this.runLabel.TabIndex = 0;
         this.runLabel.Text = "-";
 
-        this.notifiyLabel.AutoSize = true;
-        this.notifiyLabel.BackColor = System.Drawing.Color.Transparent;
-        this.notifiyLabel.Enabled = false;
-        this.notifiyLabel.Font = font;
-        this.notifiyLabel.Name = "notifiyLabel";
-        this.notifiyLabel.Size = new System.Drawing.Size(20, 14);
-        this.notifiyLabel.TabIndex = 0;
-        this.notifiyLabel.Text = "";
+        this.placeLabel.AutoSize = true;
+        this.placeLabel.BackColor = System.Drawing.Color.Transparent;
+        this.placeLabel.Enabled = false;
+        this.placeLabel.Font = font;
+        this.placeLabel.Name = "placeLabel";
+        this.placeLabel.Size = new System.Drawing.Size(20, 14);
+        this.placeLabel.TabIndex = 0;
+        this.placeLabel.Text = "";
+
+        this.notifyLabel.AutoSize = false;
+        this.notifyLabel.BackColor = System.Drawing.Color.Transparent;
+        this.notifyLabel.Enabled = false;
+        this.notifyLabel.Font = font.Clone() as Font;
+        this.notifyLabel.TextAlign = ContentAlignment.MiddleCenter;
+        this.notifyLabel.Name = "notifiyLabel";
+        this.notifyLabel.ClientSize = new System.Drawing.Size(184, 14);
+
+        this.notifyLabel.TabIndex = 0;
+        this.notifyLabel.Text = " (x_x) ";
+        this.notifyLabel.BackColor = Color.Coral;
 
 
         //-4 -2
@@ -1010,7 +1310,18 @@ namespace CalExtension.UI.Status
         this.staminaBar.Text = "staminaBar1";
         this.staminaBar.Unknown = false;
 
-
+        if (this.progressBar != null)
+        {
+          this.progressBar.Enabled = false;
+          this.progressBar.Stam = 0;
+          //       this.staminaBar.Location = new System.Drawing.Point(56, 48);
+          this.progressBar.MaxStam = 100;
+          this.progressBar.Name = "progressBar";
+          this.progressBar.Size = new System.Drawing.Size(184, 4);
+          this.progressBar.TabIndex = 2;
+          this.progressBar.Text = "run";
+          this.progressBar.Unknown = false;
+        }
         // 
         // hits
         // 
@@ -1059,7 +1370,7 @@ namespace CalExtension.UI.Status
 
 
 
-        this.ClientSize = new System.Drawing.Size(190, lastY + 20);
+        this.ClientSize = new System.Drawing.Size(190, lastY + (this.progressBar != null ? 30 : 25));
         this.Controls.Add(this.manaBar);
         this.Controls.Add(this.mana);
 
@@ -1074,11 +1385,22 @@ namespace CalExtension.UI.Status
         this.Controls.Add(this.btnY);
 
         this.Controls.Add(this.runLabel);
-        //   this.Controls.Add(this.notifiyLabel); TODO
+        this.Controls.Add(this.placeLabel);
+         this.Controls.Add(this.notifyLabel); //TODO
+
 
         this.runLabel.Location = new Point(3, lastY);
+        this.placeLabel.Location = new Point(33, lastY);
+   //     this.Controls.Add(this.placeLabel);
 
+        if (this.progressBar != null)
+        {
+          this.Controls.Add(this.progressBar);
+          this.progressBar.Location = new Point(3, lastY + 20);
+        }
 
+        this.notifyLabel.Location = new Point(3, lastY + 30);
+    //    this.notifyLabel.Visible = false;
 
 
 
@@ -1212,6 +1534,16 @@ namespace CalExtension.UI.Status
         this.runLabel.Text = "-";
         this.runLabel.Location = new Point(minPading, 28);
 
+        this.placeLabel.AutoSize = true;
+        this.placeLabel.BackColor = System.Drawing.Color.Transparent;
+        this.placeLabel.Enabled = false;
+        this.placeLabel.Font = font;
+        this.placeLabel.Name = "placeLabel";
+        //this.runLabel.Size = new System.Drawing.Size(20, 8);
+        this.placeLabel.TabIndex = 0;
+        this.placeLabel.Text = "-";
+        this.placeLabel.Location = new Point(minPading + 30, 28);
+
         int lastY = 0;
 
         int chbxBoxSize = 11;
@@ -1304,6 +1636,7 @@ namespace CalExtension.UI.Status
         this.Controls.Add(this.chbxKeep);
 
         this.Controls.Add(this.runLabel);
+        this.Controls.Add(this.placeLabel);
 
         this.ClientSize = new System.Drawing.Size(158, 44);
       }

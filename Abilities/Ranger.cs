@@ -12,6 +12,7 @@ namespace CalExtension.Abilities
 {
   public static class Ranger
   {
+    //   jinak recept je takové skoro tajemství protože moc lidí už ani neví že to existuje.. takže to zbytečně nešiřte ven ale je to cob, latky, nite, kuze.. a v cepickach :) 
     //---------------------------------------------------------------------------------------------
     //Serial: 0x40069137  Name: "Arrow quiver (1400) sipu"  Position: 135.78.0  Flags: 0x0000  Color: 0x0747  Graphic: 0x1EA0  Amount: 1  Layer: None  Container: 0x4029398B
 

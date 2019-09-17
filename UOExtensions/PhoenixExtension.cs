@@ -209,10 +209,30 @@ namespace CalExtension.UOExtensions
 
     public static UOItem FindType(this ItemsCollection items, IUOItemType itemType)
     {
-      if (!itemType.Color.IsConstant)
+      bool typeOnly = itemType.Color == 0x0000 || itemType.Color == 0xFFFF || !itemType.Color.IsConstant;
+
+      if (typeOnly)//!itemType.Color.IsConstant)//Spis ==0x000 0 nebo 0xFFFF
         return items.FindType(itemType.Graphic);
       else
         return items.FindType(itemType.Graphic, itemType.Color);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    public static UOItem FindType(this ItemsCollection items, UOColor color)
+    {
+      foreach (UOItem item in items)
+      {
+        if (item.Color == color)
+          return item;
+      }
+
+      return new UOItem(Serial.Invalid);
+
+      //if (typeOnly)//!itemType.Color.IsConstant)//Spis ==0x000 0 nebo 0xFFFF
+      //  return items.FindType(itemType.Graphic);
+      //else
+      //  return items.FindType(itemType.Graphic, itemType.Color);
     }
 
     //---------------------------------------------------------------------------------------------

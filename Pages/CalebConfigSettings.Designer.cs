@@ -51,7 +51,8 @@ namespace CalExtension
       this.label9 = new System.Windows.Forms.Label();
       this.chbxAutoTrainPoison = new System.Windows.Forms.CheckBox();
 
-
+      this.label19 = new System.Windows.Forms.Label();
+      this.tbxSalatAlertHp = new System.Windows.Forms.TextBox();
 
 
       this.label10 = new System.Windows.Forms.Label();
@@ -198,6 +199,10 @@ namespace CalExtension
       this.groupBox1.Controls.Add(this.label18);
       this.groupBox1.Controls.Add(this.tbxPlayerAliases);
 
+
+      this.groupBox1.Controls.Add(this.label19);
+      this.groupBox1.Controls.Add(this.tbxSalatAlertHp);
+
       this.groupBox1.Location = new System.Drawing.Point(376, 10);
       this.groupBox1.Name = "groupBox1";
       //this.groupBox1.Size = new System.Drawing.Size(420, 600);
@@ -244,20 +249,40 @@ namespace CalExtension
       this.label6.TabIndex = 4;
       this.label6.Text = "Min Dmg %:";
 
+
+      // 
+      // label19
+      // 
+      this.label19.AutoSize = true;
+      this.label19.Location = new System.Drawing.Point(6, 110);
+      this.label19.Name = "label19";
+      this.label19.Size = new System.Drawing.Size(89, 13);
+      //this.label10.TabIndex = 12;
+      this.label19.Text = "Salat alert (10 or 10%):";
+
+      // 
+      // tbxSalatAlertHp
+      // 
+      this.tbxSalatAlertHp.Location = new System.Drawing.Point(135, 110);
+      this.tbxSalatAlertHp.Name = "tbxSalatAlertHp";
+      this.tbxSalatAlertHp.Size = new System.Drawing.Size(54, 20);
+      this.tbxSalatAlertHp.TabIndex = 5;
+      this.tbxSalatAlertHp.TextChanged += new System.EventHandler(this.TbxSalatAlertHp_TextChanged);
+
       // 
       // label18
       // 
       this.label18.AutoSize = true;
-      this.label18.Location = new System.Drawing.Point(6, 110);
+      this.label18.Location = new System.Drawing.Point(6, 135);
       this.label18.Name = "label18";
       this.label18.Size = new System.Drawing.Size(89, 13);
       //this.label10.TabIndex = 12;
       this.label18.Text = "Aliasy hracu:";
 
       // 
-      // label16
+      // tbxPlayerAliases
       // 
-      this.tbxPlayerAliases.Location = new System.Drawing.Point(6, 135);
+      this.tbxPlayerAliases.Location = new System.Drawing.Point(6, 160);
       this.tbxPlayerAliases.Name = "tbxPlayerAliases";
       this.tbxPlayerAliases.Size = new System.Drawing.Size(350, 350);
       this.tbxPlayerAliases.TabIndex = 5;
@@ -289,6 +314,7 @@ namespace CalExtension
       this.groupBox2.Controls.Add(this.label15);
       this.groupBox2.Controls.Add(this.label16);
       this.groupBox2.Controls.Add(this.label17);
+
 
       this.groupBox2.Controls.Add(this.cbxCastMessageType);
       this.groupBox2.Controls.Add(this.cbxEnemyHitsMessageType);
@@ -609,6 +635,9 @@ namespace CalExtension
 
     private System.Windows.Forms.Label label18;
     private System.Windows.Forms.TextBox tbxPlayerAliases;
+
+    private System.Windows.Forms.Label label19;
+    private System.Windows.Forms.TextBox tbxSalatAlertHp;
 
   }
 }

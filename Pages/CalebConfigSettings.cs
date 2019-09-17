@@ -28,6 +28,8 @@ namespace CalExtension
       renameCbx.SelectedValue = (int)CalebConfig.Rename;
       tbxHealMinDmg.Text = CalebConfig.HealMinDamagePerc.ToString();
 
+      tbxSalatAlertHp.Text = CalebConfig.SalatAlertHp;
+
       tbxAttackDelay.Text = CalebConfig.AttackDelay.ToString();
       chbxUseWatcher.Checked = CalebConfig.UseWatcher;
 
@@ -61,6 +63,7 @@ namespace CalExtension
       chbxHandleFrozen.Checked = CalebConfig.HandleFrozen;
 
       tbxHealMinDmg.Text = CalebConfig.HealMinDamagePerc.ToString();
+      tbxSalatAlertHp.Text = CalebConfig.SalatAlertHp;
       tbxAttackDelay.Text = CalebConfig.AttackDelay.ToString();
       chbxUseWatcher.Checked = CalebConfig.UseWatcher;
 
@@ -138,6 +141,14 @@ namespace CalExtension
       if (Int32.TryParse(tbxHealMinDmg.Text, out val))
         CalebConfig.HealMinDamagePerc = val;
     }
+
+
+    private void TbxSalatAlertHp_TextChanged(object sender, System.EventArgs e)
+    {
+        CalebConfig.SalatAlertHp = tbxSalatAlertHp.Text;
+    }
+
+
 
     private void TbxAttackDelay_TextChanged(object sender, System.EventArgs e)
     {

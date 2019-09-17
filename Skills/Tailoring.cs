@@ -19,8 +19,8 @@ namespace CalExtension.Skills
     public static UOItemType SewingKit { get { return new UOItemType() { Graphic = 0x0F9D, Color = 0x0000 }; } }
     public static UOItemType Nuzky { get { return new UOItemType() { Graphic = 0x0F9E, Color = 0x0000 }; } }
     public static UOItemType Bandana { get { return new UOItemType() { Graphic = 0x153F, Color = 0x0000 }; } }
-      
-      
+
+
     //---------------------------------------------------------------------------------------------
 
     public void TailoringTrain()
@@ -59,7 +59,7 @@ namespace CalExtension.Skills
         UO.WaitMenu("Cloth", "Headwear", "Headwear", "Bandana");
 
         Journal.WaitForText(true, 5000, "You have failed to make anything", "You can't make anything", "You put");
-        if (Journal.Contains("You put")) 
+        if (Journal.Contains("You put"))
         {
           while (World.Player.Backpack.Items.FindType(Bandana.Graphic).Exist)
           {
@@ -79,11 +79,123 @@ namespace CalExtension.Skills
       Game.PrintMessage("Konec treninku Tailor");
     }
 
-    //---------------------------------------------------------------------------------------------
-
     #region exec
 
+
     //---------------------------------------------------------------------------------------------
+    [Executable]
+    public void MakeBloodRobeF(int amount)
+    {
+      Game.PrintMessage("Vyber container s Blood ingy");
+      UOItem containerIngyFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container s Cloth");
+      UOItem containerClothFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container s Thread");
+      UOItem containerThreadFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container, kam to chces dat");
+      UOItem containerTo = new UOItem(UIManager.TargetObject());
+
+      int count = 0;
+      while (count < amount)
+      {
+        UO.DeleteJournal();
+
+        containerIngyFrom.AllItems.FindType(0x1BEF, 0x04C2).Move(15, World.Player.Backpack); // presun Blood ingots
+        Game.Wait();
+
+        containerClothFrom.AllItems.FindType(0x175D, 0x0000).Move(15, World.Player.Backpack); // presun Cloth
+        Game.Wait();
+
+        containerThreadFrom.AllItems.FindType(0x0FA0, 0x0000).Move(5, World.Player.Backpack); // presun Thread
+        Game.Wait();
+
+        UO.UseType(SewingKit.Graphic);
+        UO.WaitTargetType(FoldedCloth.Graphic);
+        UO.WaitMenu("Cloth", "Colored Robe", "Colored Robes", "Damske kovovky", "Damske kovovky", "Blood Rock Robe");
+
+        if (Journal.WaitForText(true, 8000, "You have failed to make anything", "Tailoring failed", "You can't make anything", "You put"))
+        {
+          if (Journal.Contains("You put"))
+          {
+            count += 1;
+            World.Player.Backpack.AllItems.FindType(0x1F01, 0x04C2).Move(1, containerTo);
+            Game.Wait(500);
+          }
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            break;
+          }
+        }
+
+        Game.PrintMessage("Vyrobeno rob: " + count);
+
+      }
+
+      Game.PrintMessage("MakeBloodRobeF - End");
+    }
+
+    //---------------------------------------------------------------------------------------------
+    [Executable]
+    public void MakeBloodRobeM(int amount)
+    {
+      Game.PrintMessage("Vyber container s Blood ingy");
+      UOItem containerIngyFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container s Cloth");
+      UOItem containerClothFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container s Thread");
+      UOItem containerThreadFrom = new UOItem(UIManager.TargetObject());
+
+      Game.PrintMessage("Vyber container, kam to chces dat");
+      UOItem containerTo = new UOItem(UIManager.TargetObject());
+
+      int count = 0;
+      while (count < amount)
+      {
+        UO.DeleteJournal();
+
+        containerIngyFrom.AllItems.FindType(0x1BEF, 0x04C2).Move(15, World.Player.Backpack); // presun Blood ingots
+        Game.Wait();
+
+        containerClothFrom.AllItems.FindType(0x175D, 0x0000).Move(15, World.Player.Backpack); // presun Cloth
+        Game.Wait();
+
+        containerThreadFrom.AllItems.FindType(0x0FA0, 0x0000).Move(5, World.Player.Backpack); // presun Thread
+        Game.Wait();
+
+        UO.UseType(SewingKit.Graphic);
+        UO.WaitTargetType(FoldedCloth.Graphic);
+        UO.WaitMenu("Cloth", "Colored Robe", "Colored Robes", "Panske kovovky", "Panske kovovky", "Blood Rock Robe");
+
+        if (Journal.WaitForText(true, 8000, "You have failed to make anything", "Tailoring failed", "You can't make anything", "You put"))
+        {
+          if (Journal.Contains("You put"))
+          {
+            count += 1;
+            World.Player.Backpack.AllItems.FindType(0x1F03, 0x04C2).Move(1, containerTo);
+            Game.Wait(500);
+          }
+
+          if (Journal.Contains("You can't make anything"))
+          {
+            Game.PrintMessage("Nemas suroviny");
+            break;
+          }
+        }
+
+        Game.PrintMessage("Vyrobeno rob: " + count);
+
+      }
+
+      Game.PrintMessage("MakeBloodRobeM - End");
+    }
+
 
     [Executable("TailoringTrain")]
     [BlockMultipleExecutions]

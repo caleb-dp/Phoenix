@@ -466,9 +466,83 @@ namespace CalExtension.UOExtensions
     //---------------------------------------------------------------------------------------------
 
     [Executable]
+    public static void RefullToulce()
+    {
+      RefullToulce(Serial.Invalid, 700);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void RefullToulce(Serial zdrojBagl, int pocet)
+    {
+
+      UOItem zdrojKont = new UOItem(zdrojBagl);
+
+      if (zdrojKont.Serial == Serial.Invalid)
+      {
+        Game.PrintMessage("Vyber bednu s zdrojem:");
+        zdrojKont = new UOItem(UIManager.TargetObject());
+      }
+
+      Game.PrintMessage("Nacitam Itemy ...");
+      List<UOItem> items = ItemHelper.OpenContainerRecursive(zdrojKont);
+
+      UOItem boltq = World.Player.Backpack.Items.FindType(0x1EA0, 0x083A);
+      UOItem arrowq = World.Player.Backpack.Items.FindType(0x1EA0, 0x0747);
+
+      UOItem bolt = zdrojKont.AllItems.FindType(0x1BFB, 0x0000);
+      UOItem arrow = zdrojKont.AllItems.FindType(0x0F3F, 0x0000);
+
+      if (boltq.Exist)
+      {
+        UOItemExtInfo boltqInfo = ItemHelper.GetItemExtInfo(boltq);
+        int tofill = pocet - boltqInfo.Charges.GetValueOrDefault();
+
+        if (tofill > 0)
+        {
+
+          bolt.Move((ushort)tofill, World.Player.Backpack);
+          Game.Wait();
+          for (int i = World.Player.Backpack.Items.FindType(0x1BFB, 0x0000).Amount; i > 0; i = i - 100)
+          {
+            boltq.Use();
+            Game.Wait(250);
+          }
+          //21:14 Star Lord: 100 sipu bylo vydano z magickeho toulce.
+        }
+      }
+
+
+      if (arrowq.Exist && arrow.Exist)
+      {
+        UOItemExtInfo arrowqInfo = ItemHelper.GetItemExtInfo(arrowq);
+        int tofill = pocet - arrowqInfo.Charges.GetValueOrDefault();
+
+        if (tofill > 0)
+        {
+
+          arrow.Move((ushort)tofill, World.Player.Backpack);
+          Game.Wait();
+          for (int i = World.Player.Backpack.Items.FindType(0x0F3F, 0x0000).Amount; i > 0; i = i - 100)
+          {
+            arrowq.Use();
+            Game.Wait(250);
+          }
+          //21:14 Star Lord: 100 sipu bylo vydano z magickeho toulce.
+        }
+
+      }
+    }
+
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
     public static void RefullCommon(params string[] options)
     {
       RefullCommon(Serial.Invalid, Serial.Invalid, options);
+
     }
 
     //---------------------------------------------------------------------------------------------
@@ -537,8 +611,8 @@ namespace CalExtension.UOExtensions
 
         ushort moveAmount = 0;
         int moveDirection = 1;
-        int itmAmount = cilKont.Items.Where(ia => ia.Graphic == info.Graphic && ia.Color == info.Color).Sum(ia => ia.Amount);
-        int itmCount = cilKont.Items.Count(ia => ia.Graphic == info.Graphic && ia.Color == info.Color);
+        int itmAmount = cilKont.Items.Where(ia => (ia.Graphic == info.Graphic) && ia.Color == info.Color).Sum(ia => ia.Amount);
+        int itmCount = cilKont.Items.Count(ia => (ia.Graphic == info.Graphic) && ia.Color == info.Color);
         string messageFormat = "Info {0} {1} {2}, Stav: {3}>{4}";
         string directionMessage = "Nezmeneno..";
 
@@ -568,7 +642,7 @@ namespace CalExtension.UOExtensions
 
 
             //src.Move(moveAmount, cilKont);
-            UOItem[] srcItems = zdrojKont.AllItems.Where(srcItem => srcItem.Graphic == info.Graphic && srcItem.Color == info.Color).ToArray();
+            UOItem[] srcItems = zdrojKont.AllItems.Where(srcItem => (srcItem.Graphic == info.Graphic) && srcItem.Color == info.Color).ToArray();
 
             foreach (UOItem srcItm in srcItems)
             {
@@ -592,7 +666,7 @@ namespace CalExtension.UOExtensions
             //Game.PrintMessage("Info " + info.Name + " Vracim... " + moveAmount);
             //itm.Move(moveAmount, zdrojKont);
 
-            UOItem[] srcItems = cilKont.AllItems.Where(srcItem => srcItem.Graphic == info.Graphic && srcItem.Color == info.Color).ToArray();
+            UOItem[] srcItems = cilKont.AllItems.Where(srcItem => (srcItem.Graphic == info.Graphic) && srcItem.Color == info.Color).ToArray();
             foreach (UOItem srcItm in srcItems)
             {
               if (moveAmount <= 0)
@@ -614,7 +688,7 @@ namespace CalExtension.UOExtensions
 
         Game.PrintMessage(messageFormat, MessageType.Info, info.Name, directionMessage, moveAmount, itmAmount, cilKont.Items.FindType(info.Graphic, info.Color).Amount);
 
-        info.Items.AddRange(cilKont.Items.Where(i => i.Graphic == info.Graphic && i.Color == info.Color).Select(i => i.Serial).ToArray());
+        info.Items.AddRange(cilKont.Items.Where(i => (i.Graphic == info.Graphic) && i.Color == info.Color).Select(i => i.Serial).ToArray());
 
         foreach (Serial s in info.Items)
         {

@@ -21,6 +21,7 @@ namespace CalExtension.UOExtensions
     public static UOItemType KnightCloakGold { get { return new UOItemType() { Graphic = 0x1515, Color = 0x0BAC, Name = "Knight Cloak - Gold" }; } }
     public static UOItemType KnightCloakBlack { get { return new UOItemType() { Graphic = 0x1515, Color = 0x0BB8, Name = "Knight Cloak - Black" }; } }
     public static UOItemType GoldenscaleShield { get { return new UOItemType() { Graphic = 0x1B72, Color = 0x049B, Name = "Goldenscale Shield" }; } }
+    public static UOItemType GoldenscaleSupina { get { return new UOItemType() { Graphic = 0x0E28, Color = 0x049B, Name = "Goldenscale supina" }; } }
 
     #endregion
     //---------------------------------------------------------------------------------------------
@@ -90,7 +91,10 @@ namespace CalExtension.UOExtensions
         //summi.Add(new UOItemType() { Graphic = 0x0005, Color = 0x0BA4, Name = "phoenix" });//phoenix
         summi.Add(new UOItemType() { Graphic = 0x00D4, Color = 0x0712, Name = "grizzly bear" });//grizzly
         summi.Add(new UOItemType() { Graphic = 0x00D3, Color = 0x0712, Name = "brown bear" });//brown bear
+        summi.Add(new UOItemType() { Graphic = 0x00D4, Color = 0x0901, Name = "black bear" });//brown bear
         summi.Add(new UOItemType() { Graphic = 0x00E1, Color = 0x0712, Name = "wolf" });//wolf
+        summi.Add(new UOItemType() { Graphic = 0x00DD, Color = 0x0712, Name = "walrus" });//walrus
+
         summi.Add(new UOItemType() { Graphic = 0x0005, Color = 0x0712, Name = "hawk" });//orel
         summi.Add(new UOItemType() { Graphic = 0x0015, Color = 0x0757, Name = "giant viper" });//giant viper
         summi.Add(new UOItemType() { Graphic = 0x0030, Color = 0x0751, Name = "giant scorpion" });//giant scorpion
@@ -144,6 +148,7 @@ namespace CalExtension.UOExtensions
         summi.Add(new UOItemTypeBase(0x00D6, 0x0000));// Cougar
         summi.Add(new UOItemTypeBase(0x00E1, 0x0000));// Wolf
         summi.Add(new UOItemTypeBase(0x00D4, 0x0000));// Grilzy
+        summi.Add(new UOItemTypeBase(0x00D4, 0x0901));// Black bear
         summi.Add(new UOItemTypeBase(0x0005, 0x0847));// Skyhawk
 
         return summi;
@@ -203,6 +208,8 @@ namespace CalExtension.UOExtensions
 
         items.Add(new UOItemType() { Graphic = 0x00D2, Color = 0x0000, Name = "Ock" });
         items.Add(new UOItemType() { Graphic = 0x00DB, Color = 0x0000, Name = "Ock" });
+        items.Add(new UOItemType() { Graphic = 0x00C8, Color = 0x0000, Name = "Dragon Must" });
+        
 
         return items;
       }
@@ -223,6 +230,8 @@ namespace CalExtension.UOExtensions
         items.Add(new UOItemType() { Graphic = 0x2135, Color = 0x0000, Name = "???" });
         items.Add(new UOItemType() { Graphic = 0x2136, Color = 0x0000, Name = "???" });
         items.Add(new UOItemType() { Graphic = 0x2137, Color = 0x0000, Name = "???" });
+        items.Add(new UOItemType() { Graphic = 0x20DD, Color = 0x0000, Name = "Dragon must like" });
+        
 
         return items;
       }
@@ -241,6 +250,88 @@ namespace CalExtension.UOExtensions
       }
     }
 
+
+    //---------------------------------------------------------------------------------------------
+
+    public static Dictionary<string, Dictionary<string, UOItemTypeBaseCollection>> ShrinkKlamaciByLevel
+    {
+      get
+      {
+        Dictionary<string, Dictionary<string, UOItemTypeBaseCollection>> dict = new Dictionary<string, Dictionary<string, UOItemTypeBaseCollection>>();
+        dict.Add("Level1", new Dictionary<string, UOItemTypeBaseCollection>());
+        dict.Add("Level2", new Dictionary<string, UOItemTypeBaseCollection>());
+        dict.Add("Level3", new Dictionary<string, UOItemTypeBaseCollection>());
+        dict.Add("Level4", new Dictionary<string, UOItemTypeBaseCollection>());
+        dict.Add("Level5", new Dictionary<string, UOItemTypeBaseCollection>());
+        dict.Add("Mounts", new Dictionary<string, UOItemTypeBaseCollection>());
+        dict.Add("NonLevel", new Dictionary<string, UOItemTypeBaseCollection>());
+
+        Dictionary<string, UOItemTypeBaseCollection> lvl1 = dict["Level1"];
+        Dictionary<string, UOItemTypeBaseCollection> lvl2 = dict["Level2"];
+        Dictionary<string, UOItemTypeBaseCollection> lvl3 = dict["Level3"];
+        Dictionary<string, UOItemTypeBaseCollection> lvl4 = dict["Level4"];
+        Dictionary<string, UOItemTypeBaseCollection> lvl5 = dict["Level5"];
+        Dictionary<string, UOItemTypeBaseCollection> mounts = dict["Mounts"];
+        Dictionary<string, UOItemTypeBaseCollection> nonlvl = dict["NonLevel"];
+
+        lvl1.Add("Bird", new UOItemTypeBaseCollection());//TODO
+        lvl1.Add("Chicken", new UOItemTypeBaseCollection(0x20D1, 0x0000));
+        lvl1.Add("Rat", new UOItemTypeBaseCollection(0x2123, 0x01BB));
+        lvl1.Add("Rabbit", new UOItemTypeBaseCollection(new UOItemTypeBase(0x2125, 0xFFFF), new UOItemTypeBase(0x20E2, 0xFFFF)));
+        lvl1.Add("Sewer rat", new UOItemTypeBaseCollection(0x2123, 0x01BB));
+        lvl1.Add("Giant Rat", new UOItemTypeBaseCollection(0x20D0));
+
+        lvl2.Add("Bull frog", new UOItemTypeBaseCollection(0x2130, 0x0000));
+        lvl2.Add("Pig", new UOItemTypeBaseCollection(0x2101, 0x0000));
+        lvl2.Add("Squirrel", new UOItemTypeBaseCollection(0x2D97, 0x0000));
+        lvl2.Add("Dog", new UOItemTypeBaseCollection(0x211C, 0x0000));
+        lvl2.Add("Cat", new UOItemTypeBaseCollection(0x211B, 0xFFFF));
+        lvl2.Add("Gray Wolf", new UOItemTypeBaseCollection(0x20EA, 0x03B2));
+        lvl2.Add("Mountain Goat", new UOItemTypeBaseCollection(0x2108, 0x0481));
+        lvl2.Add("Black Cat", new UOItemTypeBaseCollection(0x211B, 0x0001));
+        lvl2.Add("Lamb", new UOItemTypeBaseCollection(0x20E6, 0x0000));
+        lvl2.Add("Jackrabbit", new UOItemTypeBaseCollection(0x20E2, 0x01BB));
+        lvl2.Add("Boar", new UOItemTypeBaseCollection(0x2101, 0x0000));
+
+        lvl3.Add("Cow", new UOItemTypeBaseCollection(new UOItemTypeBase(0x20EB, 0x0000), new UOItemTypeBase(0x2103, 0x0000)));//TODO vsechny typy
+        lvl3.Add("Bull", new UOItemTypeBaseCollection(new UOItemTypeBase(0x20EF, 0x0000), new UOItemTypeBase(0x20EF, 0x0901)));//TODO vsechny typy
+        lvl3.Add("Sheep", new UOItemTypeBaseCollection(0x20EB, 0x0000));
+        lvl3.Add("Goat", new UOItemTypeBaseCollection(0x2108, 0x0000));
+        lvl3.Add("Gorilla", new UOItemTypeBaseCollection(0x20F5, 0x0000));
+        lvl3.Add("Dolphin", new UOItemTypeBaseCollection());//TODO
+        lvl3.Add("Walrus", new UOItemTypeBaseCollection());//TODO
+        lvl3.Add("Hind", new UOItemTypeBaseCollection(0x20D4, 0x0000));
+        lvl3.Add("Hart", new UOItemTypeBaseCollection(0x20D4, 0x0000));
+        lvl3.Add("Black Bear", new UOItemTypeBaseCollection(0x2118, 0xFFFF));//TODO
+        lvl3.Add("Brown Bear", new UOItemTypeBaseCollection(0x20CF, 0x01BB));
+
+        lvl4.Add("White Wolf", new UOItemTypeBaseCollection());//TODO
+        lvl4.Add("Timber Wolf", new UOItemTypeBaseCollection(0x20EA, 0x01BB));
+        lvl4.Add("Panther", new UOItemTypeBaseCollection(0x2119, 0x0901));
+        lvl4.Add("Eagle", new UOItemTypeBaseCollection(0x211D, 0x0000));
+        lvl4.Add("Cougar", new UOItemTypeBaseCollection(0x2119, 0x0000));
+        lvl4.Add("Snow Leopard", new UOItemTypeBaseCollection());//TODO
+
+        lvl5.Add("Grizzly Bear", new UOItemTypeBaseCollection(0x211E, 0x0000));
+        lvl5.Add("Polar Bear", new UOItemTypeBaseCollection(0x20E1, 0x0000));//TODO
+        lvl5.Add("Snake", new UOItemTypeBaseCollection(0x20FC, 0xFFFF));
+        lvl5.Add("Leopard", new UOItemTypeBaseCollection(0x2119, 0x0972));
+        lvl5.Add("Alligator", new UOItemTypeBaseCollection(0x2131, 0x0000));
+
+        nonlvl.Add("Skyhawk", new UOItemTypeBaseCollection(0x211D, 0x0847));
+
+        mounts.Add("Mount1", new UOItemTypeBaseCollection(0x211F));
+        mounts.Add("Mount2", new UOItemTypeBaseCollection(0x2121));
+        mounts.Add("Mount3", new UOItemTypeBaseCollection(0x2124));
+        mounts.Add("Mount4", new UOItemTypeBaseCollection(0x20F6));
+        mounts.Add("Mount5", new UOItemTypeBaseCollection(0x2135));
+        mounts.Add("Mount6", new UOItemTypeBaseCollection(0x2136));
+        mounts.Add("Mount7", new UOItemTypeBaseCollection(0x2137));
+        mounts.Add("Mount8", new UOItemTypeBaseCollection(0x20DD));
+
+        return dict;
+      }
+    }
 
 
     //---------------------------------------------------------------------------------------------
@@ -263,9 +354,12 @@ namespace CalExtension.UOExtensions
         items.Add(new UOItemType() { Graphic = 0x20D1, Color = 0x0000, Name = "Chicken" });
         items.Add(new UOItemType() { Graphic = 0x20EF, Color = 0x0000, Name = "Bull" });
         items.Add(new UOItemType() { Graphic = 0x20CF, Color = 0x01BB, Name = "Brown Bear" });
+
         items.Add(new UOItemType() { Graphic = 0x2101, Color = 0x0000, Name = "Pig" });
         items.Add(new UOItemType() { Graphic = 0x2125, Color = 0x090C, Name = "Rabbit" });
         items.Add(new UOItemType() { Graphic = 0x20E2, Color = 0x0000, Name = "Rabbit" });
+        items.Add(new UOItemType() { Graphic = 0x2125, Color = 0x0000, Name = "Rabbit" });
+
         items.Add(new UOItemType() { Graphic = 0x211C, Color = 0x0000, Name = "Dog" });
         items.Add(new UOItemType() { Graphic = 0x2D97, Color = 0x0000, Name = "Squirrel" });
         items.Add(new UOItemType() { Graphic = 0x20EA, Color = 0x03B2, Name = "Gray Wolf" });
@@ -286,8 +380,6 @@ namespace CalExtension.UOExtensions
         items.Add(new UOItemType() { Graphic = 0x2131, Color = 0x0000, Name = "Alligator" });
         items.Add(new UOItemType() { Graphic = 0x20E2, Color = 0x01BB, Name = "Jackrabbit" });
         items.Add(new UOItemType() { Graphic = 0x20EA, Color = 0x01BB, Name = "Timber Wolf" });
-
-        items.Add(new UOItemType() { Graphic = 0x2125, Color = 0x0000, Name = "Rabbit" });
 
 
 
@@ -737,7 +829,8 @@ namespace CalExtension.UOExtensions
     public static UOItemType DuchPralesa { get { return new UOItemType() { Graphic = 0x0E26, Color = 0x0B83, Name = "DuchPralesa" }; } }
 
     public static UOItemType BeltPouch  { get { return new UOItemType() { Graphic = 0x0E79, Color = 0x0000, Name = "BeltPouch" }; } }
-
+    public static UOItemType BeltPouch2 { get { return new UOItemType() { Graphic = 0x09B0, Color = 0x0000, Name = "BeltPouch2" }; } }
+      
     public static UOItemType EmptyBottle { get { return new UOItemType() { Graphic = 0x0F0E, Color = 0x0000, Name = "EmptyBottle" }; } }
     public static UOItemType DungeonScrool { get { return new UOItemType() { Graphic = 0x227A, Color = 0x0498, Name = "DungeonScrool" }; } }
     public static UOItemType MagickyBrk { get { return new UOItemType() { Graphic = 0x0FBF, Color = 0x0000, Name = "MagickyBrk" }; } }

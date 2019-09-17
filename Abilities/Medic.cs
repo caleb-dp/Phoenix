@@ -58,6 +58,8 @@ namespace CalExtension.Abilities
           if (castInfo.Success)
           {
             Healing.LastCharacter = info.Character;
+            Game.Wait(250);
+            info.Character.RequestStatus(250);
           }
         }
       }

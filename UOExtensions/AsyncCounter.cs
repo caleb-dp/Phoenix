@@ -52,6 +52,8 @@ namespace CalExtension.UOExtensions
       decimal counter = 0;
       Journal.Clear();
       int time = 0;
+      //bool succees = false;
+
       for (int i = 1; i <= MaxTries; i++)
       {
 
@@ -67,9 +69,19 @@ namespace CalExtension.UOExtensions
             World.Player.PrintMessage(String.Format(PrefixText + "{0:#0.00}", counter));
         }
         if (!String.IsNullOrEmpty(StopMessage) && ContainMessages())// || StopMethod.Invoke()/* || (StopMethod != null && StopMethod())*/)
+        {
+    //     succees = true;
           break;
+        }
       }
+
+
+      if (RunComplete != null)
+        RunComplete(this, EventArgs.Empty);
     }
+
+
+    public event EventHandler RunComplete;
 
     //---------------------------------------------------------------------------------------------
 

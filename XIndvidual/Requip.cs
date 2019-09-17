@@ -15,7 +15,7 @@ using CalExtension.UOExtensions;
 
 namespace CalExtension.XIndividual
 {
-  public class Requip
+  public partial class Requip
   {
     //---------------------------------------------------------------------------------------------
 
@@ -25,17 +25,21 @@ namespace CalExtension.XIndividual
     public static Serial VAL_MojeGuild_BedinkaEquip = 0x40027BBD;
     public static Serial VAL_MojeBezpecna_RegPytlik = 0x40328131;
     public static Serial VAL_MojeBezpecna_BedinkaSvitky = 0x4021B3C0;
-    public static Serial VAL_MojeBezpecna_BedinkaIngoty = 0x401B9E24; 
+    public static Serial VAL_MojeBezpecna_BedinkaIngoty = 0x401B9E24;  
 
     //---------------------------------------------------------------------------------------------
 
     [Executable]
     public static void lownekrorefull(int magRegy)
     {
+      
+
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
-
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -47,8 +51,7 @@ namespace CalExtension.XIndividual
       Game.Wait();
       UO.UseObject(VAL_MojeBezpecna_RegPytlik);
       Game.Wait();
-
-
+      
 
       UOItem prazdneLahve = World.Player.FindType(0x0F0E);
 
@@ -90,6 +93,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -109,8 +115,9 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((45 - prazdneLahve.Amount), 0));
 
       List<string> lahve = new List<string>();
-      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 4");
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 8");
       lahve.Add("Name: Invisibility, Quality: None, MaxItem: 2");
+
 
       if (!Potion.LavaBomb.ContainsTopKad(cilBag))
         lahve.Add("Name: Lava Bomb, MaxItem: 8");
@@ -148,7 +155,7 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: " + magRegy + ", X: 15, Y: 180");
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 8", "Name: Great Diamant Bracelet, Count: 2, Amount: 8", "Name: Great Gold Ring, Count: 1, Amount: 8");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 8, X: 20, Y: 120", "Name: Panther, Count: 20, X: 40, Y: 120", "Name: Leopard, Count: 6, X: 60, Y: 120");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 8, X: 20, Y: 120", "Name: Cougar|Panther, Count: 20, X: 40, Y: 120", "Name: Leopard, Count: 6, X: 60, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 50");
@@ -170,6 +177,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -189,7 +199,7 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((45 - prazdneLahve.Amount), 0));
 
       List<string> lahve = new List<string>();
-      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 4");
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 8");
       lahve.Add("Name: Invisibility, Quality: None, MaxItem: 2");
 
       if (!Potion.LavaBomb.ContainsTopKad(cilBag))
@@ -213,22 +223,23 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: " + bandy);
 
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: teleportvitek, Amount: 8, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: resssvitek, Amount: 8, Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: paralyze, Amount: 4, Graphic: " + Magery.SpellScrool[StandardSpell.Paralyze] + ", Color: 0x0000, X: 15, Y: 90");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: teleportvitek, Amount: 12, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: resssvitek, Amount: 4, Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
+      //ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: paralyze, Amount: 4, Graphic: " + Magery.SpellScrool[StandardSpell.Paralyze] + ", Color: 0x0000, X: 15, Y: 90");
 
-      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: locky, Amount: 14, Graphic: 0x14FB, Color: 0x0000, X: 137, Y: 65");
-      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: magiclocky, Amount: 15, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: locky, Amount: 20, Graphic: 0x14FB, Color: 0x0000, X: 137, Y: 65");
+     // ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: magiclocky, Amount: 15, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 110");
-      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 110");
+      //      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 110");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Harp of Bless, Amount: 1, Graphic: 0x0EB2, Color: 0x0000, X: 120, Y: 110");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: salat, Amount: 1, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Verite s speara, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 150, Y: 180");
 
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: " + magRegy + ", X: 15, Y: 180");
 
-      ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 8", "Name: Great Diamant Bracelet, Count: 2, Amount: 8", "Name: Great Gold Ring, Count: 1, Amount: 8");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 8, X: 20, Y: 120", "Name: Bull, Count: 12, X: 40, Y: 120", "Name: Hind|Hart, Count: 20, X: 60, Y: 120");
+      ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 8", "Name: Heart of Dark Forest, Count: 1, Amount: 8", "Name: Great Diamant Bracelet, Count: 2, Amount: 8", "Name: Great Gold Ring, Count: 1, Amount: 8");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 15, X: 20, Y: 120", "Name: Cow, Count: 25, X: 40, Y: 120", "Name: Hart|Hind, Count: 15, X: 60, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 50");
@@ -250,6 +261,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -308,7 +322,7 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: " + magRegy + ", X: 15, Y: 180");
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 6", "Name: Great Diamant Bracelet, Count: 1, Amount: 6");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Dog|Cat, Count: 5, X: 40, Y: 120", "Name: Bull, Count: 10, X: 60, Y: 120");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Squirrel, Count: 5, X: 40, Y: 120", "Name: Bull, Count: 10, X: 60, Y: 120");
 
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 100");
@@ -332,6 +346,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -375,19 +392,19 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: teleportvitek, Amount: 8, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: resssvitek, Amount: 6, Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: paralyze, Amount: 8, Graphic: " + Magery.SpellScrool[StandardSpell.Paralyze] + ", Color: 0x0000, X: 15, Y: 90");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: paralyze, Amount: 6, Graphic: " + Magery.SpellScrool[StandardSpell.Paralyze] + ", Color: 0x0000, X: 15, Y: 90");
 
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: locky, Amount: 25, Graphic: 0x14FB, Color: 0x0000, X: 137, Y: 65");
       //ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: magiclocky, Amount: 15, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 110");
-      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 110");
+    //j  ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 110");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 150, Y: 180");
 
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: " + magRegy + ", X: 15, Y: 180");
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 8", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Pig|Dog, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 10, X: 60, Y: 120", "Name: Dog|Cat, Count: 5, X: 60, Y: 120");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Sheep, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 10, X: 60, Y: 120", "Name: Squirrel, Count: 5, X: 60, Y: 120");
 
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 100");
@@ -410,6 +427,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -428,7 +448,7 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((75 - prazdneLahve.Amount), 0));
       List<string> lahve = new List<string>();
-      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 6");
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 8");
       lahve.Add("Name: Invisibility, Quality: None, MaxItem: 2");
 
       if (!Potion.LavaBomb.ContainsTopKad(cilBag))
@@ -470,8 +490,93 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: " + magRegy + ", X: 15, Y: 180");
 
-      ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 10", "Name: Reflex Ring, Count: 1, Amount: 10", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Chicken, Count: 10, X: 40, Y: 120", "Name: Boar|Goat, Count: 5, X: 60, Y: 120");
+      ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 7", "Name: Reflex Ring, Count: 1, Amount: 5", "Name: Great Diamant Bracelet, Count: 1, Amount: 10", "Name: Great Gold Ring, Count: 1, Amount: 10");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Chicken, Count: 5, X: 40, Y: 120", "Name: Squirrel, Count: 5, X: 40, Y: 120", "Name: Boar|Goat, Count: 5, X: 60, Y: 120");
+
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 100");
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 100");
+      ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
+      ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
+      ItemRequip.RefullKade(0, cilBag, "Name: Total Mana Refresh, Quality: None, Amount: 50");
+      ItemRequip.RefullKade(0, cilBag, "Name: Mana Refresh, Quality: None, Amount: 100");
+      ItemRequip.RefullKade(0, cilBag, "Name: Shrink, Quality: None, Amount: 50");
+
+      ItemHelper.SortBasicBackpack();
+      Jewelry.SetridSperky();
+    }
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void maxwhrefull(int magRegy, int bandy)
+    {
+      TargetInfo cilBag = new TargetInfo();
+      Game.PrintMessage("Vyberte cilovy bag:");
+      cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
+
+      UO.UseObject(VAL_MojeBezpecna);
+      Game.Wait();
+      UO.UseObject(VAL_MojeGuild);
+      Game.Wait();
+      UO.UseObject(VAL_MojeGuild_BedinkaEquip);
+      Game.Wait();
+      UO.UseObject(VAL_MojeBezpecna_BedinkaAnimalBoxy);
+      Game.Wait();
+      UO.UseObject(VAL_MojeBezpecna_RegPytlik);
+      Game.Wait();
+      UO.UseObject(VAL_MojeBezpecna_BedinkaSvitky);
+      Game.Wait();
+
+      UOItem prazdneLahve = World.Player.FindType(0x0F0E);
+
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((75 - prazdneLahve.Amount), 0));
+      List<string> lahve = new List<string>();
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 8");
+      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 2");
+
+      if (!Potion.LavaBomb.ContainsTopKad(cilBag))
+        lahve.Add("Name: Lava Bomb, MaxItem: 10");
+
+      if (!Potion.Heal.ContainsTopKad(cilBag))
+        lahve.Add("Name: Heal, Quality: Greater, MaxItem: 15");
+
+      if (!Potion.Strength.ContainsTopKad(cilBag))
+        lahve.Add("Name: Strength, Quality: Greater, MaxItem: 15");
+
+      if (!Potion.Refresh.ContainsTopKad(cilBag))
+        lahve.Add("Name: Refresh, Quality: Total, MaxItem: 12");
+
+      if (!Potion.Shrink.ContainsTopKad(cilBag))
+        lahve.Add("Name: Shrink, Quality: None, MaxItem: 2");
+
+      ItemRequip.RefullLahve(0, cilBag, lahve.ToArray());
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: 6");
+
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: " + bandy);
+
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: teleportvitek, Amount: 8, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: resssvitek, Amount: 6, Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
+      //ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: wallofstone, Amount: 10, Graphic: " + Magery.SpellScrool[StandardSpell.WallofStone] + ", Color: 0x0000, X: 15, Y: 75");
+      //ItemRequip.RefullCommon(VAL_MojeBezpecna_BedinkaSvitky, cilBag, "Name: paralyze, Amount: 4, Graphic: " + Magery.SpellScrool[StandardSpell.Paralyze] + ", Color: 0x0000, X: 15, Y: 90");
+
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: locky, Amount: 25, Graphic: 0x14FB, Color: 0x0000, X: 137, Y: 65");
+      // ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: magiclocky, Amount: 15, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 110");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 110");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 150, Y: 180");
+
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: bubinek, Amount: 1, Graphic: 0x0E9C, Color: 0x0000  , X: 120, Y: 135");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: harfa, Amount: 1, Graphic: 0x0EB2, Color: 0x0000  , X: 140, Y: 135");
+      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: loutna, Amount: 1, Graphic: 0x0EB3, Color: 0x0000  , X: 160, Y: 135");
+
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: " + magRegy + ", X: 15, Y: 180");
+
+      ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 2, Amount: 10", "Name: Reflex Ring, Count: 2, Amount: 10", "Name: Great Diamant Bracelet, Count: 1, Amount: 10", "Name: Great Gold Ring, Count: 1, Amount: 10");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Chicken, Count: 5, X: 40, Y: 120", "Name: Squirrel, Count: 5, X: 40, Y: 120", "Name: Boar|Goat, Count: 5, X: 60, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 100");
@@ -493,6 +598,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -511,7 +619,7 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((50 - prazdneLahve.Amount), 0));
       List<string> lahve = new List<string>();
-      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 2");
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 4");
       lahve.Add("Name: Invisibility, Quality: None, MaxItem: 2");
 
       if (!Potion.LavaBomb.ContainsTopKad(cilBag))
@@ -551,17 +659,17 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(magRegy, 1665) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(magRegy, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 2040) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 3765) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(magRegy, 615) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(magRegy, 1355) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(magRegy, 425) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 500) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 1525) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(magRegy, 1025) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 1625) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
 
 
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 8");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 15, X: 20, Y: 120", "Name: Bull, Count: 15, X: 40, Y: 120");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 15, X: 40, Y: 120");
 
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 150");
@@ -585,6 +693,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -639,15 +750,15 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(magRegy, 1430) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(magRegy, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 2015) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 3740) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(magRegy, 540) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(magRegy, 1330) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(magRegy, 200) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 475) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 1525) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(magRegy, 800) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 1600) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 8");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 15, X: 20, Y: 120", "Name: Bull, Count: 15, X: 40, Y: 120");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 15, X: 40, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 150");
       ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 100");
@@ -670,6 +781,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -688,11 +802,11 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((45 - prazdneLahve.Amount), 0));
       List<string> lahve = new List<string>();
-      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 4");
-      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 2");
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 6");
+      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 4");
 
       if (!Potion.LavaBomb.ContainsTopKad(cilBag))
-        lahve.Add("Name: Lava Bomb, MaxItem: 2");
+        lahve.Add("Name: Lava Bomb, MaxItem: 4");
 
       if (!Potion.Heal.ContainsTopKad(cilBag))
         lahve.Add("Name: Heal, Quality: Greater, MaxItem: 10");
@@ -719,33 +833,33 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: locky, Amount: 10, Graphic: 0x14FB, Color: 0x0000, X: 137, Y: 65");
       //ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: magiclocky, Amount: 15, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 110");
-      ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 110");
+      //ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 110");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 180");
 
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: vialofblood, Amount: 200, Graphic: 0x0F7D, Color:  0x0000, X: 20, Y: 140");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: bone, Amount: 100, Graphic: 0x0F7E, Color:  0x0000, X: 30, Y: 140");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: excap, Amount: 100, Graphic: 0x0F83, Color:  0x0000, X: 40, Y: 140");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: vialofblood, Amount: " + GetRefullAmountReserve(magRegy, 300) + ", Graphic: 0x0F7D, Color:  0x0000, X: 20, Y: 140");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: bone, Amount: " + GetRefullAmountReserve(magRegy, 150) + ", Graphic: 0x0F7E, Color:  0x0000, X: 30, Y: 140");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: excap, Amount: " + GetRefullAmountReserve(magRegy, 150) + ", Graphic: 0x0F83, Color:  0x0000, X: 40, Y: 140");
 
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(magRegy, 2075) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(magRegy, 1200) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 2305) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(magRegy, 1355) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(magRegy, 555) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(magRegy, 875) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 1755) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 475) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(magRegy, 1900) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(magRegy, 1000) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 2400) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(magRegy, 1100) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(magRegy, 1000) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(magRegy, 1200) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 2300) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 1000) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 8");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Giant Rat|Rat|Chicken, Count: 4, X: 20, Y: 120");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Rabbit|Rat|Chicken, Count: 6, X: 20, Y: 120");
 
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 50");
       ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 50");
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
-      ItemRequip.RefullKade(0, cilBag, "Name: Total Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(magRegy, 282));
-      ItemRequip.RefullKade(0, cilBag, "Name: Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(magRegy, 282) * 2);
+      ItemRequip.RefullKade(0, cilBag, "Name: Total Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(magRegy, 175));
+      ItemRequip.RefullKade(0, cilBag, "Name: Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(magRegy, 175) * 2);
       ItemRequip.RefullKade(0, cilBag, "Name: Shrink, Quality: None, Amount: 50");
 
 
@@ -761,6 +875,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -779,11 +896,11 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((45 - prazdneLahve.Amount), 0));
       List<string> lahve = new List<string>();
-      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 4");
-      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 2");
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 6");
+      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 4");
 
       if (!Potion.LavaBomb.ContainsTopKad(cilBag))
-        lahve.Add("Name: Lava Bomb, MaxItem: 2");
+        lahve.Add("Name: Lava Bomb, MaxItem: 4");
 
       if (!Potion.Heal.ContainsTopKad(cilBag))
         lahve.Add("Name: Heal, Quality: Greater, MaxItem: 10");
@@ -821,12 +938,12 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(magRegy, 1605) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(magRegy, 3155) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 1650) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(magRegy, 2775) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(magRegy, 950) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(magRegy, 2750) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 180");
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(magRegy, 800) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 1275) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 475) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(magRegy, 2400) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 180");
+      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(magRegy, 1600) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 180");
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 6");
       ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Chicken, Count: 6, X: 20, Y: 120");
@@ -852,6 +969,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -906,7 +1026,7 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: " + magRegy + ", X: 15, Y: 180");
 
       ItemRequip.RefullSperkyClear(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 10", "Name: Reflex Ring, Count: 1, Amount: 10", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
-      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Pig|Dog, Count: 5, X: 20, Y: 120", "Name: Chicken, Count: 5, X: 40, Y: 120", "Name: Gray Wolf|Boar, Count: 5, X: 60, Y: 120", "Name: Bull, Count: 15, X: 60, Y: 120");
+      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Sheep, Count: 10, X: 20, Y: 120", "Name: Cat, Count: 5, X: 40, Y: 120", "Name: Bull, Count: 5, X: 60, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 100");
@@ -928,6 +1048,9 @@ namespace CalExtension.XIndividual
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
 
       UO.UseObject(VAL_MojeBezpecna);
       Game.Wait();
@@ -966,6 +1089,169 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: magregy, Amount: 250, X: 15, Y: 180");
     }
 
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void klamakyreff(int amount)
+    {
+      TargetInfo destroBag = new TargetInfo();
+      Game.PrintMessage("Destro bag container:");
+      destroBag.GetTarget();
+
+      TargetInfo prskBag = new TargetInfo();
+      Game.PrintMessage("Prsk bag container:");
+      prskBag.GetTarget();
+
+      TargetInfo warBag = new TargetInfo();
+      Game.PrintMessage("War bag container:");
+      warBag.GetTarget();
+
+      TargetInfo palVampBag = new TargetInfo();
+      Game.PrintMessage("PalVamp bag container:");
+      palVampBag.GetTarget();
+
+      TargetInfo ostroBag = new TargetInfo();
+      Game.PrintMessage("Ostrobag bag container:");
+      ostroBag.GetTarget();
+
+      TargetInfo shamanBag = new TargetInfo();
+      Game.PrintMessage("Shaman bag container:");
+      shamanBag.GetTarget();
+
+      TargetInfo contPackage = new TargetInfo();
+      Game.PrintMessage("Container package:");
+      contPackage.GetTarget();
+
+
+      UO.UseObject(VAL_MojeBezpecna);
+      Game.Wait();
+      UO.UseObject(VAL_MojeGuild);
+      Game.Wait();
+      UO.UseObject(VAL_MojeGuild_BedinkaEquip);
+      Game.Wait();
+      UO.UseObject(VAL_MojeBezpecna_BedinkaAnimalBoxy);
+      Game.Wait();
+      UO.UseObject(VAL_MojeBezpecna_RegPytlik);
+      Game.Wait();
+      UO.UseObject(VAL_MojeBezpecna_BedinkaSvitky);
+      Game.Wait();
+
+      for (int i = 0; i < amount; i++)
+      {
+        UOItem bag = null;
+        //0x0E76  
+
+        if (destroBag.Item.Exist)
+        {
+          //Destro
+          bag = GetBagFromPackage(contPackage.Item);
+          if (bag == null)
+            break;
+
+          ItemRequip.RefullKlamaky(VAL_MojeBezpecna_BedinkaAnimalBoxy, bag, "Name: Chicken, Count: 10, X: 20, Y: 120");//, "Name: Cat, Count: 5, X: 40, Y: 120", "Name: Bull, Count: 5, X: 60, Y: 120");
+          bag.Move(1, destroBag);
+          Game.Wait();
+        }
+
+        if (prskBag.Item.Exist)
+        {
+          //Destro
+          bag = GetBagFromPackage(contPackage.Item);
+          if (bag == null)
+            break;
+
+          ItemRequip.RefullKlamaky(VAL_MojeBezpecna_BedinkaAnimalBoxy, bag, "Name: Rabbit|Rat|Chicken, Count: 6, X: 20, Y: 120");
+          bag.Move(1, prskBag);
+          Game.Wait();
+        }
+
+        if (warBag.Item.Exist)
+        {
+          //Destro
+          bag = GetBagFromPackage(contPackage.Item);
+          if (bag == null)
+            break;
+
+          ItemRequip.RefullKlamaky(VAL_MojeBezpecna_BedinkaAnimalBoxy, bag, "Name: Gray Wolf|Pig|Boar, Count: 10, X: 20, Y: 120", "Name: Bull frog|Lamb|Jackrabbit|Squirrel, Count: 5, X: 40, Y: 120");
+          bag.Move(1, warBag);
+          Game.Wait();
+        }
+
+        if (palVampBag.Item.Exist)
+        {
+          //Destro
+          bag = GetBagFromPackage(contPackage.Item);
+          if (bag == null)
+            break;
+
+          ItemRequip.RefullKlamaky(VAL_MojeBezpecna_BedinkaAnimalBoxy, bag, "Name: Bull, Count: 15, X: 20, Y: 120", "Name: Hind|Hart|Sheep|Goat, Count: 5, X: 40, Y: 120");
+          bag.Move(1, palVampBag);
+          Game.Wait();
+        }
+
+        if (ostroBag.Item.Exist)
+        {
+          //Destro
+          bag = GetBagFromPackage(contPackage.Item);
+          if (bag == null)
+            break;
+
+          ItemRequip.RefullKlamaky(VAL_MojeBezpecna_BedinkaAnimalBoxy, bag, "Name: Bull, Count: 25, X: 20, Y: 120", "Name: Hind|Hart|Sheep|Goat, Count: 5, X: 40, Y: 120");
+          bag.Move(1, ostroBag);
+          Game.Wait();
+        }
+
+        if (shamanBag.Item.Exist)
+        {
+          //Destro
+          bag = GetBagFromPackage(contPackage.Item);
+          if (bag == null)
+            break;
+
+          ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, bag, "Name: Cat|Squirrel, Count: 5, X: 20, Y: 120", "Name: Timber Wolf|Cougar|Panther, Count: 20, X: 40, Y: 120", "Name: Leopard, Count: 5, X: 60, Y: 120");
+          bag.Move(1, shamanBag);
+          Game.Wait();
+        }
+      }
+      //      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Rabbit|Rat|Chicken, Count: 6, X: 20, Y: 120");
+      //      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat, Count: 15, X: 20, Y: 120", "Name: Cow, Count: 25, X: 40, Y: 120", "Name: Hart|Hind, Count: 15, X: 60, Y: 120");
+    
+      //      ItemRequip.RefullKlamakyClear(VAL_MojeBezpecna_BedinkaAnimalBoxy, cilBag, "Name: Cat|Squirrel, Count: 5, X: 20, Y: 120", "Name: Timber Wolf|Cougar|Panther, Count: 20, X: 40, Y: 120", "Name: Leopard, Count: 5, X: 60, Y: 120");
+
+      if (destroBag.Item.Exist)
+        ItemHelper.SortItemByType(destroBag, 150, 150, 8, 8);
+
+      if (prskBag.Item.Exist)
+        ItemHelper.SortItemByType(prskBag, 150, 150, 8, 8);
+
+      if (warBag.Item.Exist)
+        ItemHelper.SortItemByType(warBag, 150, 150, 8, 8);
+
+      if (palVampBag.Item.Exist)
+        ItemHelper.SortItemByType(palVampBag, 150, 150, 8, 8);
+
+      if (ostroBag.Item.Exist)
+        ItemHelper.SortItemByType(ostroBag, 150, 150, 8, 8);
+
+      if (shamanBag.Item.Exist)
+        ItemHelper.SortItemByType(shamanBag, 150, 150, 8, 8);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    protected static UOItem GetBagFromPackage(UOItem contPack)
+    {
+      UOItem bag = null;
+      contPack.Use();
+      UO.WaitTargetSelf();
+      Game.Wait();
+      bag = World.Player.Backpack.Items.FindType(0x0E76);
+
+      return bag;
+    }
+    
+
     //---------------------------------------------------------------------------------------------
 
     public static int GetRefullAmountReserve(int percentReserve, int amount)
@@ -982,7 +1268,9 @@ namespace CalExtension.XIndividual
       {
         double reserve = amount * d * sign;
         Game.PrintMessage("reserve: " + reserve, MessageType.Warning);
-        result =  (int)Math.Round((amount + reserve) / 100, 0) * 100;
+
+        if (reserve > 200)
+          result =  (int)Math.Round((reserve) / 10, 0) * 10;
       }
       catch (Exception ex)
       {

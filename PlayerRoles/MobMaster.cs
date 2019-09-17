@@ -18,7 +18,7 @@ namespace CalExtension.PlayerRoles
   public class MobMaster : PlayerRole
   {
     public object SyncRoot;
-
+    public static DateTime? LasTimeUseKlamak;
     //---------------------------------------------------------------------------------------------
     public MobMaster()
     {
@@ -714,7 +714,7 @@ namespace CalExtension.PlayerRoles
             continue;//Mounti / Packy
 
           itemKlamak = UO.Backpack.AllItems.FindType(klamak);
-          if (itemKlamak.Exist && itemKlamak.Graphic != 0x2119 && (itemKlamak.Color != 0x0BB5 || itemKlamak.Color != 0x0530 || itemKlamak.Color != 0x0B45))
+          if (itemKlamak.Exist && itemKlamak.Graphic != 0x2119 && (itemKlamak.Color != 0x0BB5 || itemKlamak.Color != 0x0530 || itemKlamak.Color != 0x0B45))//vyjimka pro Basety
             break;
         }
       }
@@ -739,11 +739,13 @@ namespace CalExtension.PlayerRoles
         World.Player.PrintMessage("Vyhazuji kalamaka");
         Game.CurrentGame.CurrentPlayer.SwitchWarmode();
         itemKlamak.Use();
+        MobMaster.LasTimeUseKlamak = DateTime.Now;
       }
       else
       {
         World.Player.PrintMessage("Neni klamak");
       }
+      Game.RunScript(5);
     }
 
     //---------------------------------------------------------------------------------------------
@@ -770,19 +772,27 @@ namespace CalExtension.PlayerRoles
         Game.RunScriptCheck(1500);
         World.Player.PrintMessage("Kam klamaka?");
         StaticTarget st = UIManager.Target();
-        if (st.X > 0)
+
+
+
+        if (st.X > 0 && st.X < 8000)
         {
+          Game.PrintMessage("KPosition: [" + st.X + ", " + st.Y + "]");
           Game.RunScriptCheck(1500);
           itemKlamak.Move(1, st.X, st.Y, st.Z);
           Game.Wait(400);
           Game.CurrentGame.CurrentPlayer.SwitchWarmode();
           itemKlamak.Use();
+          MobMaster.LasTimeUseKlamak = DateTime.Now;
         }
+        else
+          Game.PrintMessage("KPosition: Cancel");
       }
       else
       {
         World.Player.PrintMessage("Neni klamak");
       }
+      Game.RunScript(5);
     }
 
     //---------------------------------------------------------------------------------------------

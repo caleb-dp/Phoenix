@@ -429,11 +429,11 @@ namespace CalExtension.UOExtensions
 
         //return;
 
-        if (hasLootBag || lootAll) //item.Items.FindType(0x0E76, 0x049A).Exist)// lootbag
+        if (hasLootBag || lootAll || item.Distance <= 1) //item.Items.FindType(0x0E76, 0x049A).Exist)// lootbag
         {
           UO.PrintObject(item.Serial, Game.Val_LightGreen, "[Looting...]");
 
-          if (DwarfKnife.Exist && item.Distance <= 3 && !lootAll)//TODO predelat nejak jinak, ted kvuly tamingu aby to nelotovalo maso a kuze
+          if (DwarfKnife.Exist && (hasLootBag || item.Distance <= 1) && !lootAll)//TODO predelat nejak jinak, ted kvuly tamingu aby to nelotovalo maso a kuze
           {
             toDo--;
             done++;
@@ -469,14 +469,14 @@ namespace CalExtension.UOExtensions
           }
         }
 
-        cutedBodies.Add(item.Serial);
+        //cutedBodies.Add(item.Serial);
       }
 
       World.Player.PrintMessage(String.Format("Bodies remain [{0}]", toDo), Game.Val_LightGreen);
 
       foreach (UOItem item in World.Ground)
       {
-        if (item.Distance <= 6 && IsLootItem(item))
+        if (item.Distance <= 6 && item.Graphic == 0x0E76 && item.Color == 0x049A)//IsLootItem(item))//jen lootbag
         {
           item.Move(60000, LootBag);
           Game.Wait(425);

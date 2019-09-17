@@ -14,6 +14,8 @@ namespace CalExtension.Skills
 {
   //,exec TrainInscription "" "" "Total Mana Refresh" true 50 "Spell Circles" "Spell Circle 7" "Spell Circle 7" "Energy Field"
   //,exec TrainInscription "" "" "Mana Refresh" true 10 "Spell Circles" "Spell Circle 1" "Spell Circle 1" "Heal"
+  
+    //,exec TrainInscription "Mana Refresh" "" "" false 50 "Spell Circles" "Spell Circle 4" "Spell Circle 4" "Recall"
   public class Inscription : Skill
   {
 
