@@ -97,6 +97,7 @@
     <Compile Include="Pages\CalebGlobalConfigSettings.Designer.cs">
       <DependentUpon>CalebGlobalConfigSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlayerRoles\Fighter.cs" />
     <Compile Include="Quests\Drticka.cs" />
     <Compile Include="External\TimerList.cs" />
     <Compile Include="Pages\CalebConfigSettings.cs">
@@ -106,7 +107,6 @@
       <DependentUpon>CalebConfigSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Pages\CalebConfig.cs" />
-    <Compile Include="PlayerRoles\Fighter.cs" />
     <Compile Include="PlayerRoles\GolemMaster.cs" />
     <Compile Include="PlayerRoles\MobMaster.cs" />
     <Compile Include="Quests\Mikulas.cs" />
