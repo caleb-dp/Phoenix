@@ -8,7 +8,6 @@ namespace CaveofMadness
 {
     public class Madness
     {
-
         bool mamcil = false;
         UOItem cil;
        
@@ -60,5 +59,7 @@ namespace CaveofMadness
             UO.Print("Nemam CIL.");
           }
         }
-    }     
+   
+
+  }     
 }

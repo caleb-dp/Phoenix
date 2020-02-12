@@ -42,6 +42,7 @@ namespace CalExtension.UOExtensions
         return;
 
       UOCharacter ch = new UOCharacter(e.Serial);
+      bool requestStat = false;
 
       if (ch.Hits < 0)
       {
@@ -54,7 +55,6 @@ namespace CalExtension.UOExtensions
 
         if (badBody)
         {
-          bool requestStat = false;
           if (Magery.CastingSpellInfo != null)
           {
             if (
@@ -72,13 +72,12 @@ namespace CalExtension.UOExtensions
             }
           }
 
-          if (MobMaster.LasTimeUseKlamak.HasValue && (DateTime.Now - MobMaster.LasTimeUseKlamak.Value).TotalMilliseconds < 1000)
-            requestStat = true;
-          //Vyhozeni klamaka
 
-          if (requestStat)
-            ch.RequestStatus(200);
+          //Vyhozeni klamaka
         }
+
+        if (MobMaster.LasTimeUseKlamak.HasValue && (DateTime.Now - MobMaster.LasTimeUseKlamak.Value).TotalMilliseconds < 1000 && !ch.Renamable)
+          requestStat = true;
       }
 
       if (!Game.IsPossibleMob(ch))
@@ -87,6 +86,11 @@ namespace CalExtension.UOExtensions
       if (Rename.IsMobRenamed(ch.Serial))
         return;
 
+      if (Game.IsPossibleMob(ch) && MobMaster.LasTimeUseKlamak.HasValue && (DateTime.Now - MobMaster.LasTimeUseKlamak.Value).TotalMilliseconds < 1000 && !ch.Renamable)
+        requestStat = true;
+
+      if (requestStat)
+        ch.RequestStatus(200);
 
       if (!Rename.RenameCharacter(ch.Serial))
       {

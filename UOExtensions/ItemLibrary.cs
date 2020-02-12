@@ -91,7 +91,7 @@ namespace CalExtension.UOExtensions
         //summi.Add(new UOItemType() { Graphic = 0x0005, Color = 0x0BA4, Name = "phoenix" });//phoenix
         summi.Add(new UOItemType() { Graphic = 0x00D4, Color = 0x0712, Name = "grizzly bear" });//grizzly
         summi.Add(new UOItemType() { Graphic = 0x00D3, Color = 0x0712, Name = "brown bear" });//brown bear
-        summi.Add(new UOItemType() { Graphic = 0x00D4, Color = 0x0901, Name = "black bear" });//brown bear
+        summi.Add(new UOItemType() { Graphic = 0x00D4, Color = 0x0901, Name = "black; bear" });//brown bear
         summi.Add(new UOItemType() { Graphic = 0x00E1, Color = 0x0712, Name = "wolf" });//wolf
         summi.Add(new UOItemType() { Graphic = 0x00DD, Color = 0x0712, Name = "walrus" });//walrus
 
@@ -130,6 +130,9 @@ namespace CalExtension.UOExtensions
         summi.Add(new UOItemType() { Graphic = 0x0032, Color = 0x0000, Name = "Skeleton" });//Skeleton
         summi.Add(new UOItemType() { Graphic = 0x0018, Color = 0x0000, Name = "Liche" });//Liche
         summi.Add(new UOItemType() { Graphic = 0x0003, Color = 0x0000, Name = "Zombie" });//Zombie
+
+
+
 
         return summi;
       }
@@ -184,9 +187,16 @@ namespace CalExtension.UOExtensions
         items.Add(new UOItemType() { Graphic = 0x00E1, Color = 0x0000, Name = "Timber Wolf" });
         items.Add(new UOItemType() { Graphic = 0x00D0, Color = 0x0000, Name = "Chicken" });
         items.Add(new UOItemType() { Graphic = 0x00D3, Color = 0x01BB, Name = "Brown Bear" });
+        items.Add(new UOItemType() { Graphic = 0x00E7, Color = 0x01BB, Name = "Bull" });
         items.Add(new UOItemType() { Graphic = 0x00E8, Color = 0x01BB, Name = "Bull" });
+        items.Add(new UOItemType() { Graphic = 0x00E9, Color = 0x01BB, Name = "Bull" });
         items.Add(new UOItemType() { Graphic = 0x00C9, Color = 0x0000, Name = "Cat" });
-        
+
+       // Serial: 0x0033DE6E  Name: "Bull"  Position: 3167.45.0  Flags: 0x0000  Color: 0x01BB  Model: 0x00E8  Renamable: False Notoriety: Neutral HP: -1 / -1, Distance: 1
+
+
+        //
+        //   Serial: 0x0007AB28  Name: "plal3tKL"  Position: 5499.658.30  Flags: 0x0000  Color: 0x01BB  Model: 0x00E8  Renamable: True Notoriety: Neutral HP: 178 / 178, Distance: 0
         return items;
       }
     }
@@ -209,6 +219,7 @@ namespace CalExtension.UOExtensions
         items.Add(new UOItemType() { Graphic = 0x00D2, Color = 0x0000, Name = "Ock" });
         items.Add(new UOItemType() { Graphic = 0x00DB, Color = 0x0000, Name = "Ock" });
         items.Add(new UOItemType() { Graphic = 0x00C8, Color = 0x0000, Name = "Dragon Must" });
+
         
 
         return items;
@@ -226,6 +237,9 @@ namespace CalExtension.UOExtensions
         items.Add(new UOItemType() { Graphic = 0x2121, Color = 0x0000, Name = "???" });
         items.Add(new UOItemType() { Graphic = 0x2124, Color = 0x0000, Name = "???" });
         items.Add(new UOItemType() { Graphic = 0x20F6, Color = 0x0000, Name = "???" });
+        items.Add(new UOItemType() { Graphic = 0x2120, Color = 0x0000, Name = "???" });
+     //   items.Add(new UOItemType() { Graphic = 0x2120, Color = 0x0000, Name = "???" });
+
 
         items.Add(new UOItemType() { Graphic = 0x2135, Color = 0x0000, Name = "???" });
         items.Add(new UOItemType() { Graphic = 0x2136, Color = 0x0000, Name = "???" });
@@ -687,7 +701,7 @@ namespace CalExtension.UOExtensions
         items.Add(new UOItemType() { Graphic = 0x0F43, Color = 0x0000, Name = "Hatchet" });//hatchet
         items.Add(new UOItemType() { Graphic = 0x2D28, Color = 0x0000, Name = "Daemon Bane" });
         items.Add(new UOItemType() { Graphic = 0x13AF, Color = 0x0000, Name = "War Axe" });
-
+        items.Add(new UOItemType() { Graphic = 0x2D29, Color = 0xFFFF, Name = "Machette of Lightshield" });
 
         //items.Add(new UOItemType() { Graphic = 0x1400, Color = 0x0000, Name = "Kryss" });
 
@@ -842,6 +856,7 @@ namespace CalExtension.UOExtensions
     public static UOItemType StoneKad { get { return new UOItemType() { Graphic = 0x1843, Color = 0x04CC, Name = "StoneKad" }; } }
     public static UOItemType GreeziArtefakt { get { return new UOItemType() { Graphic = 0x1B17, Color = 0x0493, Name = "GreeziArtefakt" }; } }
 
+    public static UOItemType KapsarskeNaradicko { get { return new UOItemType() { Graphic = 0x1EB8, Color = 0x0749, Name = "Kapsarske naradicko" }; } }
     //public static UOItemType HumanModel { get { return new UOItemType() { Graphic = 0x0190 }; } }
     //public static UOItemTemplate GinsengSalad { get { return new UOItemTemplate() { Graphic = 0x09EC, Color = 0x06AB, Name = "GinsengSalad" }; } }
   }

@@ -15,7 +15,8 @@ namespace CalExtension.UOExtensions
 
   public class AsyncCounter
   {
-    public static AsyncCounter Current;
+    public static AsyncCounter CurrentA;
+    public static AsyncCounter CurrentB;
 
     public AsyncCounter()
     {
@@ -23,25 +24,43 @@ namespace CalExtension.UOExtensions
     }
 
     public int MaxTries = 20;
+    public string PrintType = "Player";
     public int Step = 250;
     public int HighlightTime = 0;
     public ushort HighlightColor = 0x0020;
     public string StopMessage = "";
     public string PrefixText = "Time: ";
+    public bool ForceCounter = true;
     public delegate bool AsyncCounterEndMethod();
     public AsyncCounterEndMethod StopMethod;
     private Thread spearateTh;
     public void Run()
     {
-      if (Current != null)
+      if (this.PrintType == "Player")
       {
-        if (Current.spearateTh != null && Current.spearateTh.IsAlive)
-          Current.spearateTh.Abort();
-      }
 
-      spearateTh = new Thread(new ThreadStart(Start));
-      spearateTh.Start();
-      Current = this;
+        if (CurrentA != null)
+        {
+          if (CurrentA.spearateTh != null && CurrentA.spearateTh.IsAlive)
+            CurrentA.spearateTh.Abort();
+        }
+
+        spearateTh = new Thread(new ThreadStart(Start));
+        spearateTh.Start();
+        CurrentA = this;
+      }
+      else
+      {
+        if (CurrentB != null)
+        {
+          if (CurrentB.spearateTh != null && CurrentB.spearateTh.IsAlive)
+            CurrentB.spearateTh.Abort();
+        }
+
+        spearateTh = new Thread(new ThreadStart(Start));
+        spearateTh.Start();
+        CurrentB = this;
+      }
     }
 
     protected void Start()
@@ -61,12 +80,22 @@ namespace CalExtension.UOExtensions
         time += Step;
         counter = counter + (decimal)(Step / 1000.0m);
 
-        if (Skills.Hiding.HideRunning)
+        if (Skills.Hiding.HideRunning  || ForceCounter)
         {
           if (HighlightTime > 0 && time >= HighlightTime)
-            World.Player.PrintMessage(String.Format(PrefixText + "{0:#0.00}", counter), HighlightColor);
+          {
+            if (PrintType == "Player")
+              World.Player.PrintMessage(String.Format(PrefixText + "{0:#0.00}", counter), HighlightColor);
+            else
+              Game.PrintMessage(String.Format(PrefixText + "{0:#0.00}", counter), HighlightColor);
+          }
           else
-            World.Player.PrintMessage(String.Format(PrefixText + "{0:#0.00}", counter));
+          {
+            if (PrintType == "Player")
+              World.Player.PrintMessage(String.Format(PrefixText + "{0:#0.00}", counter));
+            else
+              Game.PrintMessage(String.Format(PrefixText + "{0:#0.00}", counter));
+          }
         }
         if (!String.IsNullOrEmpty(StopMessage) && ContainMessages())// || StopMethod.Invoke()/* || (StopMethod != null && StopMethod())*/)
         {

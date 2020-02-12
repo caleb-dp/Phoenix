@@ -33,8 +33,8 @@ namespace CalExtension.Skills
       Game.Wait(50);
 
       if (Journal.Contains(true, "Lovit lze jen v hluboke vode", "There are no fish here", "That is too far away", "Try fishing in water"))
-        result =  false;
-      
+        result = false;
+
       if (Journal.Contains(true, "Kraken", "Sea Serpent"))
         enemyDetected = true;
       if (Journal.Contains(true, "Podarilo se ti chytit"))
@@ -66,7 +66,7 @@ namespace CalExtension.Skills
       if (moveTries > 2)
       {
         moveTries = 0;
-        Game.PrintMessage("moveTries:" + moveTries );
+        Game.PrintMessage("moveTries:" + moveTries);
         return false;
       }
 
@@ -84,10 +84,10 @@ namespace CalExtension.Skills
       //
       int currentNotChangeCount = 0;
 
-      while(Robot.GetRelativeVectorLength(startPosition, currentPosition) < 12)
+      while (Robot.GetRelativeVectorLength(startPosition, currentPosition) < 12)
       {
         Game.Wait(500);
-        Game.PrintMessage("Distance:" + Robot.GetRelativeVectorLength(startPosition,currentPosition));
+        Game.PrintMessage("Distance:" + Robot.GetRelativeVectorLength(startPosition, currentPosition));
         if (currentPosition.X == World.Player.X && currentPosition.Y == World.Player.Y)
           currentNotChangeCount++;
 
@@ -105,20 +105,58 @@ namespace CalExtension.Skills
     }
 
 
-//    Serial: 0x400000AF  Position: 133.103.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x097F  Amount: 1  Layer: None Container: 0x40276E6D
+    //    Serial: 0x400000AF  Position: 133.103.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x097F  Amount: 1  Layer: None Container: 0x40276E6D
 
-//Serial: 0x401BD51D  Name: "draw knife"  Position: 87.92.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x10E4  Amount: 1  Layer: None Container: 0x40276E6D
+    //Serial: 0x401BD51D  Name: "draw knife"  Position: 87.92.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x10E4  Amount: 1  Layer: None Container: 0x40276E6D
 
-//Serial: 0x40359906  Name: "raw fish steaks"  Position: 137.128.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x097A  Amount: 915  Layer: None Container: 0x40276E6D
+    //Serial: 0x40359906  Name: "raw fish steaks"  Position: 137.128.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x097A  Amount: 915  Layer: None Container: 0x40276E6D
 
-//Serial: 0x400000AF  Position: 133.103.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x097F  Amount: 1  Layer: None Container: 0x40276E6D
+    //Serial: 0x400000AF  Position: 133.103.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x097F  Amount: 1  Layer: None Container: 0x40276E6D
 
-//Serial: 0x40001905  Position: 3352.344.10  Flags: 0x0020  Color: 0x0000  Graphic: 0x097B  Amount: 3  Layer: None Container: 0x00000000
-
+    //Serial: 0x40001905  Position: 3352.344.10  Flags: 0x0020  Color: 0x0000  Graphic: 0x097B  Amount: 3  Layer: None Container: 0x00000000
 
     //---------------------------------------------------------------------------------------------
 
-    public void StartFishing()//Zatim jen zacatek uvidime jak to bude fachat
+    public void GrabGroundFish(bool grabAll)
+    {
+
+      UOItem panvicka = World.Player.Backpack.Items.FindType(ItemLibrary.Panvicka.Graphic);
+      UOItem dwarfKnife = World.Player.Backpack.Items.FindType(ItemLibrary.DwarfKnife.Graphic, 0x0000);
+
+
+      List<UOItem> ground = new List<UOItem>();
+      ground.AddRange(World.Ground.ToArray());
+
+      foreach (UOItem groundItem in ground)
+      {
+        bool grab = true;
+
+        if (groundItem.Graphic == 0x097B)//upeceny steak
+          grab = false;
+
+        if (!grabAll)
+        {
+          if (!panvicka.Exist || !dwarfKnife.Exist)
+          {
+            foreach (UOItemType fish in ItemLibrary.Fish)
+            {
+              if (groundItem.Graphic == fish.Graphic && groundItem.Color == fish.Color)
+                grab = false;
+            }
+          }
+        }
+
+        if (groundItem.Distance < 3 && grab)//groundItem.Graphic != 0x097B)//upeceny steak
+        {
+          groundItem.Move(60000, World.Player.Backpack);
+          Game.Wait(300);
+        }
+      }
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    public void StartFishing(bool grabAll, bool oneSpot)//Zatim jen zacatek uvidime jak to bude fachat
     {
       Journal.Clear();
       Game.CurrentGame.Mode = GameMode.Working;
@@ -136,32 +174,7 @@ namespace CalExtension.Skills
 
           for (int x = -6; x < 7; x++)
           {
-            List<UOItem> ground = new List<UOItem>();
-            ground.AddRange(World.Ground.ToArray());
-
-            foreach (UOItem groundItem in ground)
-            {
-              bool grab = true;
-
-              if (groundItem.Graphic == 0x097B)//upeceny steak
-                grab = false;
-
-              if (!panvicka.Exist || !dwarfKnife.Exist)
-              {
-                foreach (UOItemType fish in ItemLibrary.Fish)
-                {
-                  if (groundItem.Graphic == fish.Graphic && groundItem.Color == fish.Color)
-                    grab = false;
-                }
-              }
-
-              if (groundItem.Distance < 3 && grab)//groundItem.Graphic != 0x097B)//upeceny steak
-              {
-                groundItem.Move(60000, World.Player.Backpack);
-                Game.Wait();
-              }
-            }
-
+            GrabGroundFish(grabAll);
 
             if (panvicka.Exist && dwarfKnife.Exist)
             {
@@ -257,7 +270,11 @@ namespace CalExtension.Skills
                   break;
                 }
               }
-              Game.Wait();
+
+              if (oneSpot)
+                GrabGroundFish(grabAll);
+
+              Game.Wait(250);
             }
 
 
@@ -266,18 +283,24 @@ namespace CalExtension.Skills
               break;
           }
 
-          if (!end)
+          if (!end && !oneSpot)
           {
             if (this.TryMoveNextPlace())
             {
-              this.StartFishing();
+              this.StartFishing(grabAll, oneSpot);
               return;
             }
             else
               break;
           }
           else
+          {
+            if (oneSpot)
+              World.Player.PrintMessage("OKOLI VYLOVENO PRESUN SE! A PUST ME ZNOVA");
+
+
             break;
+          }
 
         }
         else
@@ -293,9 +316,22 @@ namespace CalExtension.Skills
     [BlockMultipleExecutions]
     public static void ExecStartFishing()
     {
-      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Fishing>().StartFishing();
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Fishing>().StartFishing(false, false);
     }
 
+    [Executable("StartFishing")]
+    [BlockMultipleExecutions]
+    public static void ExecStartFishing(bool grabAll)
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Fishing>().StartFishing(grabAll, false);
+    }
+
+    [Executable("StartFishing")]
+    [BlockMultipleExecutions]
+    public static void ExecStartFishing(bool grabAll, bool oneSpot)
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Fishing>().StartFishing(grabAll, oneSpot);
+    }
 
     #endregion
   }

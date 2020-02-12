@@ -270,7 +270,7 @@ namespace CalExtension.PlayerRoles
     {
       MobKill(ResetTimerDefault);
     }
-    protected static int ResetTimerDefault = 15000;
+    protected static int ResetTimerDefault = 250;
     [Executable]
     public void MobKill(int resetTimer)
     {
@@ -333,9 +333,6 @@ namespace CalExtension.PlayerRoles
 
       if (current != null)
       {
-
-
-
         command = current.MobName + " kill";
         current.CommandCount++;
         current.LastCommandTime = DateTime.Now;
@@ -815,8 +812,8 @@ namespace CalExtension.PlayerRoles
           var arr = characters.Where(
             ch => ch.Distance <= 2 &&
             ch.Serial != World.Player.Serial &&
-            !deny.Contains(ch.GetUniqueKey()) &&
-            Game.IsMob(ch.Serial)
+            !deny.Contains(ch.GetUniqueKey()) 
+            //&& //GamesMob(ch.Serial)
             ).OrderBy(i => i.Hits).ToArray();
 
 
@@ -837,7 +834,6 @@ namespace CalExtension.PlayerRoles
             }
 
             t = ch;
-
             break;
           }
         }

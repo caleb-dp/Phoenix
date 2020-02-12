@@ -309,13 +309,26 @@ namespace CalExtension
                   World.Player.PrintMessage(spell + " [" + item.Amount + "ks]");
                   RunScriptCheck(5000);
                   hanledText = "NekroSpell";
-
-
                 }
 
                 if (handled && Debug)
                   Game.PrintMessage("DoubleClick handled" + hanledText);
               }
+
+              if (!handled)
+              {
+                if (ItemLibrary.ShrinkKlamaci.Count(s => s.Graphic == item.Graphic) > 0 || ItemLibrary.ShrinkMountTypes.Count(s=>s.Graphic == item.Graphic) > 0)
+                {
+                  UOItemType d = ItemLibrary.ShrinkKlamaci.FirstOrDefault(s => s.Graphic == item.Graphic);
+                  if (d == null)
+                    d = ItemLibrary.ShrinkMountTypes.FirstOrDefault(s => s.Graphic == item.Graphic);
+
+                  MobMaster.LasTimeUseKlamak = DateTime.Now;
+                  Game.PrintMessage("Klamak used: " + (d != null ? d.Name : " unknown"));
+                }
+
+              }
+
             }
           }
           else if (data[0] == 0x05)//OnAtack
@@ -548,6 +561,9 @@ namespace CalExtension
         }
         return this.alies;
       }
+
+
+      
     }
 
 
@@ -712,17 +728,52 @@ namespace CalExtension
     {
       Game.PrintMessage("SwitchWarRunOff", Game.Val_LightGreen);
       Targeting.ResetTarget();
-      WarmodeChange to = World.Player.Warmode ? WarmodeChange.Peace : WarmodeChange.War;
 
-      World.Player.ChangeWarmode(to);
-      if (to == WarmodeChange.Peace)
-      {
-        Game.Wait(250);
-        World.Player.ChangeWarmode(WarmodeChange.War);
-      }
+      World.Player.ChangeWarmode(WarmodeChange.Switch);
+      Game.Wait(200);
+      if (!World.Player.Warmode)
+        World.Player.ChangeWarmode(WarmodeChange.Switch);
+
+      //WarmodeChange to = World.Player.Warmode ? WarmodeChange.Peace : WarmodeChange.War;
+
+      //World.Player.ChangeWarmode(to);
+      //if (to == WarmodeChange.Peace)
+      //{
+      //  Game.Wait(250);
+      //  World.Player.ChangeWarmode(WarmodeChange.War);
+      //}
 
       RunScript(5);
     }
+
+    //---------------------------------------------------------------------------------------------
+
+
+    [Executable]
+    public static void HideObjectTarget(string target)
+    {
+      World.Player.PrintMessage("[Vyber hide..]");
+
+
+      TargetInfo t = Targeting.GetTarget(target);
+      if (t.Success && t.Object.Serial.IsValid)
+        UO.Hide(t.Object.Serial);
+      else
+        World.Player.PrintMessage("[Invalid hide..]");
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    //private void BtnHide_MouseClick(object sender, MouseEventArgs e)
+    //{
+    //  lastUsedMethod = BtnHide_MouseClick;
+    //  lastUsedObject = sender;
+    //  lastUsedMouseEventArgs = e;
+
+    //  World.Player.PrintMessage("[Vyber HIDE..]");
+    //  new Thread(new ThreadStart(UO.Hide)).Start();
+
+    //}
 
     //---------------------------------------------------------------------------------------------
 
@@ -2080,6 +2131,7 @@ namespace CalExtension
           if (Targeting.lastAttackTime.HasValue)
           {
             double diff = (DateTime.Now - Targeting.lastAttackTime.Value).TotalMilliseconds;
+          //  Game.PrintMessage(String.Format("Attack time: {0:N0}", diff));
             Targeting.lastDynamicAttackDelay = ((int)(diff / 50) * 50);
           }
 
@@ -2309,6 +2361,9 @@ namespace CalExtension
           wsSychr = 30000;
         }
       }
+
+      //if (milliseconds < 500)
+      //  milliseconds = 500;
 
       if (Core.CurrentLatency > 500 && Game.CurrentGame.Mode != GameMode.Working)
         UO.Wait(milliseconds + wsSychr);

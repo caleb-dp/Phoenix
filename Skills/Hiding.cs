@@ -65,7 +65,6 @@ namespace CalExtension.Skills
 
     public void Hide(int highlightTime, ushort highlightColor, int counterStep, Graphic dropItemGraphic, UOColor dropItemColor)
     {
-
       Journal.Clear();
       Game.CurrentGame.CurrentPlayer.SwitchWarmode();
 
@@ -207,17 +206,32 @@ namespace CalExtension.Skills
     {
       Journal.Clear();
 
-
+      //   SkillValue hidingSV = SkillsHelper.GetSkillValue("Hiding");
+      // SkillValue stealthSV = SkillsHelper.GetSkillValue("Stealth");
       StandardSkill usedSkill = StandardSkill.Hiding;
+      UO.UseSkill(usedSkill);
 
-      SkillValue hidingSV = SkillsHelper.GetSkillValue("Hiding");
-      SkillValue stealthSV = SkillsHelper.GetSkillValue("Stealth");
+      bool needAction = false;
+      if (Journal.WaitForText(true, 200, "You are preoccupied with thoughts of battle"))
+      {
+        Game.CurrentGame.CurrentPlayer.SwitchWarmode();
+        needAction = true;
 
-      if (stealthSV.RealValue > hidingSV.RealValue)
-        usedSkill = StandardSkill.Stealth;
+      }
+      // if (stealthSV.RealValue > hidingSV.RealValue)
+      // usedSkill = StandardSkill.Stealth;
+
+
+      //You are preoccupied with thoughts of battle
+
+
+
+
+
 
       if (World.Player.Layers[Layer.LeftHand].Graphic == 0x0A15)//lantern
       {
+
         UOItem shield = new UOItem(Serial.Invalid);
 
         List<UOItem> items = new List<UOItem>();
@@ -253,14 +267,126 @@ namespace CalExtension.Skills
 
       Hiding.HideRunning = true;
 
-      UO.BandageSelf();
-      Game.Wait(100);
+      if (needAction)
+      {
+        World.Player.PrintMessage("[ HID Action ]", MessageType.Warning);
+
+        if (World.Player.Hits < World.Player.Strenght)
+          UO.BandageSelf();
+        else if (World.Player.Mana > 4)
+          UO.Cast(StandardSpell.MagicArrow, World.Player.Serial);
+      }
+
+      Game.Wait(250);
       UO.UseSkill(usedSkill);
       Game.Wait(50);
       counter.Step = counterStep;
       counter.StopMessage = "You can't seem to hide here,You have hidden yourself well";
       counter.StopMethod = IsHidden;
       counter.Run();
+    }
+
+
+
+    //---------------------------------------------------------------------------------------------
+
+    public void HideInBattle()
+    {
+      HideInBattle(1500, 0, 400);
+    }
+
+    public void HideInBattle(int highlightTime, ushort highlightColor, int counterStep)
+    {
+      if (World.Player.Layers[Layer.LeftHand].Graphic == 0x0A15)//lantern
+      {
+        UOItem shield = new UOItem(Serial.Invalid);
+
+        List<UOItem> items = new List<UOItem>();
+        items.AddRange(World.Player.Backpack.Items);
+
+        foreach (UOItem item in items)
+        {
+          foreach (Graphic g in ItemLibrary.Shields.GraphicArray)
+          {
+            if (item.Graphic == g && (!shield.Exist || shield.Graphic != 0x1B76))
+              shield = item;
+          }
+        }
+
+        if (shield.Exist)
+          shield.Use();
+        else
+          World.Player.Layers[Layer.LeftHand].Move(1, World.Player.Backpack, 100, 30);
+
+        Game.Wait(250);
+      }
+
+
+      Journal.Clear();
+      SkillValue hidingSV = SkillsHelper.GetSkillValue("Hiding");
+      SkillValue stealthSV = SkillsHelper.GetSkillValue("Stealth");
+      StandardSkill usedSkill = StandardSkill.Hiding;
+      
+      if (stealthSV.RealValue > hidingSV.RealValue)
+        usedSkill = StandardSkill.Stealth;
+
+      AsyncCounter counter = new AsyncCounter();
+      counter.PrefixText = "";
+      if (highlightTime > 0)
+        counter.HighlightTime = highlightTime;
+
+      if (highlightColor > 0)
+        counter.HighlightColor = highlightColor;
+
+      Game.RunScript(3000);
+      UO.UseSkill(usedSkill);
+
+      if (Journal.WaitForText(true, 200, "You are preoccupied with thoughts of battle"))
+      {
+        Game.CurrentGame.CurrentPlayer.SwitchWarmode();
+        World.Player.PrintMessage("[ Preoccupied ]", MessageType.Warning);
+        Game.Wait(250);
+
+        if (World.Player.Hits < World.Player.Strenght)
+          UO.BandageSelf();
+        else
+          UO.UseSkill(StandardSkill.Meditation);
+
+        //else if (World.Player.Mana > 4)
+        //  UO.Cast(StandardSpell.MagicArrow, World.Player.Serial);
+
+      }
+      else
+      {
+        counter.Step = counterStep;
+        counter.StopMessage = "You can't seem to hide here,You have hidden yourself well";
+        counter.StopMethod = IsHidden;
+        counter.Run();
+      }
+
+
+      //You are preoccupied with thoughts of battle
+
+      //Game.RunScript(3500);
+
+
+
+      //Hiding.HideRunning = true;
+
+      //if (needAction)
+      //{
+      //  World.Player.PrintMessage("[ HID Action ]", MessageType.Warning);
+
+      //  if (World.Player.Hits < World.Player.Strenght)
+      //    UO.BandageSelf();
+      //  else if (World.Player.Mana > 4)
+      //    UO.Cast(StandardSpell.MagicArrow, World.Player.Serial);
+      //}
+
+      //Game.Wait(250);
+      //UO.UseSkill(usedSkill);
+      //Game.Wait(50);
+
     }
 
     //---------------------------------------------------------------------------------------------
@@ -305,7 +431,7 @@ namespace CalExtension.Skills
 
     //---------------------------------------------------------------------------------------------
 
-    public bool IsHidden()
+    public static bool IsHidden()
     {
       return World.Player.Hidden;
     }
@@ -346,6 +472,19 @@ namespace CalExtension.Skills
       Game.CurrentGame.CurrentPlayer.GetSkillInstance<Hiding>().HideDruid(wait);
     }
 
+    [Executable("hideray")]
+    public static void ExecHideRay()
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Hiding>().HideRay();
+    }
+
+
+
+    [Executable("HideInBattle")]
+    public static void ExecHideInBattle()
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Hiding>().HideInBattle();
+    }
 
     #endregion
   }

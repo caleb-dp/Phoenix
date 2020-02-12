@@ -315,6 +315,9 @@ namespace CalExtension.UOExtensions
           return Aliases.GetObject("LastStatusManual");
         if (targetName.ToLower() == "hover")
           return Game.CurrentGame.CurrentHoverStatus;
+        if (targetName.ToLower() == "mount")
+          return Mount._Mount;
+
         if (targetName.ToLower() == "selfmoving")
         {
           if (Game.PlayerMoving)

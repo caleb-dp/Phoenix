@@ -28,6 +28,18 @@ namespace CalExtension.UOExtensions
 
     }
 
+
+    public static bool HasHumanBody
+    {
+      get
+      {
+        return World.Player.Model != 0x0190 || //Male
+            World.Player.Model != 0x0191;//Female
+      }
+    }
+
+
+
     //---------------------------------------------------------------------------------------------
     public static Serial _Mount = Serial.Invalid;
     private static List<string> denyMounts = new List<string>();
@@ -86,13 +98,25 @@ namespace CalExtension.UOExtensions
             }
           }
 
-          var m = currChars.
+          List<UOCharacter> m = new List<UOCharacter>();
+
+          if (HasHumanBody)//nemam haluze
+          {
+            m.AddRange(currChars.
+Where(ch => !denyMounts.Contains(ch.GetUniqueKey()) && !skipMounts.Contains(ch.GetUniqueKey()) && ItemLibrary.MountTypes.Count(mt => mt.Graphic == ch.Model) > 0).
+OrderBy(ch => (ch.Renamable ? 0 : 1)).
+ThenBy(ch => ch.Distance).ToArray());
+          }
+          else
+          {
+            m.AddRange(currChars.
             Where(ch => !denyMounts.Contains(ch.GetUniqueKey()) && !skipMounts.Contains(ch.GetUniqueKey())).
             OrderBy(ch => (ch.Renamable ? 0 : 1)).
             ThenBy(ch => ItemLibrary.MountTypes.Count(mt => mt.Graphic == ch.Model) > 0 ? 0 : 1).
-            ThenBy(ch => ch.Distance).ToArray();
-
-          if (m.Length > 0)
+            ThenBy(ch => ch.Distance).ToArray());
+          }
+          
+          if (m.Count > 0)
             _Mount = m[0].Serial;
           else
           {
@@ -116,6 +140,7 @@ namespace CalExtension.UOExtensions
           _Mount = originalMount;
 
         curr = new UOCharacter(_Mount);
+        Journal.Clear();
 
         if (curr.ExistCust())
         {

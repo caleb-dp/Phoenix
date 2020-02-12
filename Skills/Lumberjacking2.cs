@@ -89,6 +89,13 @@ namespace DP_Scripts
       World.CharacterAppeared -= World_CharacterAppeared;
     }
 
+    //exec StartLumber2 0x402B77DF 0x402B77DF "3347.351" "" "log" "" 700 6 true "3393,397,3311,316"
+
+    //cesta u me u domu
+    //3360.363|3360.366|3364.360|3364.366|3360.372|3360.375|3356.375|3364.372|3360.366|3364.357|3368.354|3368.357|3372.357|3372.360|3376.360|3376.357|3356.375|3360.378|3356.378|3356.381|3352.381|3348.378|3348.381|3348.375|3348.366|3348.363|3344.378|3344.375|3344.366|3340.372|3340.375|3336.375|3337.379|3340.381|3336.381|3332.372|3332.378|3332.381|3328.384|3328.381|3329.373|3328.372|3328.369|3332.366|3332.369|3336.363|3328.363|3328.366|3328.369|3328.372|3329.373|3324.375|3324.378|3324.381|3320.381|3320.366|3320.381|3324.381|3328.381|3320.384|3328.384|3328.387|3332.387|3332.390|3328.396|3324.393|3324.399|3328.399|3332.399|3336.390|3336.387|3340.387|3340.390|3340.393|3344.396|3344.396|3348.396|3348.395|3348.393|3348.390|3348.387|3348.381|3352.381|3352.378|3348.378|3344.378|3348.375|3352.390|3352.399|3352.396|3356.396|3356.393|3352.399|3356.399|3360.399|3360.393|3360.387|3360.378|3360.375|3356.375|3364.384|3364.393|3364.390|3364.399|3368.393|3368.390|3372.399|3372.396|3372.393|3372.392|3372.387|3372.384|3372.381|3372.378|3372.375|3368.375|3364.378|3364.384|3376.375|3376.378|3380.390|3380.393|3376.396|3384.390|3380.393|3380.396|3384.396|3384.387|3386.382|3388.384|3388.387|3388.390|3388.396|3388.399|3392.390|3392.384|3392.381|3388.378|3388.375|3392.375|3384.375|3380.378|3396.381|3396.378|3396.375|3396.372|3396.366|3392.372|3392.375|3388.375|3384.375|3384.372|3384.366|3385.365|3388.366|3388.360|3384.369|3380.369|3380.372|3380.378|3376.378|3372.381|3372.378|3372.375|3376.372|3384.366|3385.365|3388.366|3372.369|3376.369|3380.369|3384.369|3396.363|3396.366|3400.363|3400.366|3396.360|3396.357|3392.357|3388.354|3392.351|3396.351|3388.360|3388.357|3384.357|3384.360|3380.357|3376.360|3376.357|3380.354|3392.351|3392.348|3396.345|3396.348|3396.351|3396.354|3396.357|3392.348|3388.345|3388.342|3392.342|3384.342|3380.351|3379.353|3380.354|3379.353|3380.348|3376.354|3376.357|3376.360|3372.360|3372.357|3368.357|3368.354|3372.351|3372.345|3376.345|3376.339|3380.339|3384.333|3380.336|3376.333|3372.336|3372.339|3368.339|3368.339|3370.334|3368.336|3368.339|3376.330|3380.330|3380.327|3376.327|3372.327|3368.330|3368.327|3364.330|3364.327|3360.330|3360.333|3364.324|3380.321|3380.318|3376.318|3372.321|3372.318|3376.315|3380.315|3372.315|3372.312|3372.309|3368.309|3364.309|3364.315|3364.309|3364.318|3364.321|3364.327|3362.324|3364.324|3360.318|3356.318|3356.324|3360.324|3352.324|3352.327|3360.330|3352.333|3348.327|3348.321|3346.323|3344.321|3348.320|3348.318|3348.315|3352.315|3352.312|3356.312|3355.314|3356.309|3360.309|3360.306|3346.323|3352.306|3352.309|3348.309|3344.312|3344.315|3340.315|3340.318|3340.321|3336.321|3336.327|3336.327|3340.327|3332.324|3336.321|3336.327|3324.321|3324.318|3324.312|3324.309|3320.312|3328.309|3332.306|3336.306|3336.309|3320.327|3320.330|3316.327|3316.321|3316.318|3316.315|3316.312|3312.318|3312.315|3308.318|3308.318|3308.321|3308.324|3312.327|3312.330|3316.330
+
+    //exec u me u domu
+    //exec StartLumber2 0x402B77DF 0x402B77DF "3347.351" "3353.292|3353.288" "log" "3360.363|3360.366|3364.360|3364.366|3360.372|3360.375|3356.375|3364.372|3360.366|3364.357|3368.354|3368.357|3372.357|3372.360|3376.360|3376.357|3356.375|3360.378|3356.378|3356.381|3352.381|3348.378|3348.381|3348.375|3348.366|3348.363|3344.378|3344.375|3344.366|3340.372|3340.375|3336.375|3337.379|3340.381|3336.381|3332.372|3332.378|3332.381|3328.384|3328.381|3329.373|3328.372|3328.369|3332.366|3332.369|3336.363|3328.363|3328.366|3328.369|3328.372|3329.373|3324.375|3324.378|3324.381|3320.381|3320.366|3320.381|3324.381|3328.381|3320.384|3328.384|3328.387|3332.387|3332.390|3328.396|3324.393|3324.399|3328.399|3332.399|3336.390|3336.387|3340.387|3340.390|3340.393|3344.396|3344.396|3348.396|3348.395|3348.393|3348.390|3348.387|3348.381|3352.381|3352.378|3348.378|3344.378|3348.375|3352.390|3352.399|3352.396|3356.396|3356.393|3352.399|3356.399|3360.399|3360.393|3360.387|3360.378|3360.375|3356.375|3364.384|3364.393|3364.390|3364.399|3368.393|3368.390|3372.399|3372.396|3372.393|3372.392|3372.387|3372.384|3372.381|3372.378|3372.375|3368.375|3364.378|3364.384|3376.375|3376.378|3380.390|3380.393|3376.396|3384.390|3380.393|3380.396|3384.396|3384.387|3386.382|3388.384|3388.387|3388.390|3388.396|3388.399|3392.390|3392.384|3392.381|3388.378|3388.375|3392.375|3384.375|3380.378|3396.381|3396.378|3396.375|3396.372|3396.366|3392.372|3392.375|3388.375|3384.375|3384.372|3384.366|3385.365|3388.366|3388.360|3384.369|3380.369|3380.372|3380.378|3376.378|3372.381|3372.378|3372.375|3376.372|3384.366|3385.365|3388.366|3372.369|3376.369|3380.369|3384.369|3396.363|3396.366|3400.363|3400.366|3396.360|3396.357|3392.357|3388.354|3392.351|3396.351|3388.360|3388.357|3384.357|3384.360|3380.357|3376.360|3376.357|3380.354|3392.351|3392.348|3396.345|3396.348|3396.351|3396.354|3396.357|3392.348|3388.345|3388.342|3392.342|3384.342|3380.351|3379.353|3380.354|3379.353|3380.348|3376.354|3376.357|3376.360|3372.360|3372.357|3368.357|3368.354|3372.351|3372.345|3376.345|3376.339|3380.339|3384.333|3380.336|3376.333|3372.336|3372.339|3368.339|3368.339|3370.334|3368.336|3368.339|3376.330|3380.330|3380.327|3376.327|3372.327|3368.330|3368.327|3364.330|3364.327|3360.330|3360.333|3364.324|3380.321|3380.318|3376.318|3372.321|3372.318|3376.315|3380.315|3372.315|3372.312|3372.309|3368.309|3364.309|3364.315|3364.309|3364.318|3364.321|3364.327|3362.324|3364.324|3360.318|3356.318|3356.324|3360.324|3352.324|3352.327|3360.330|3352.333|3348.327|3348.321|3346.323|3344.321|3348.320|3348.318|3348.315|3352.315|3352.312|3356.312|3355.314|3356.309|3360.309|3360.306|3346.323|3352.306|3352.309|3348.309|3344.312|3344.315|3340.315|3340.318|3340.321|3336.321|3336.327|3336.327|3340.327|3332.324|3336.321|3336.327|3324.321|3324.318|3324.312|3324.309|3320.312|3328.309|3332.306|3336.306|3336.309|3320.327|3320.330|3316.327|3316.321|3316.318|3316.315|3316.312|3312.318|3312.315|3308.318|3308.318|3308.321|3308.324|3312.327|3312.330|3316.330" 700 6 true "0,0,0,0"
 
     //exec startlumber2 0x40178E62 0x4010DB1C "1216.2146" "1192.2155" "" "" 0 6 true "0,0,0,0"
     //exec StartLumber2 0x402B77DF 0x402B77DF "3347.351" "3353.292|3353.288" "log" "" 0 6 true "0,0,0,0"
@@ -475,21 +482,55 @@ namespace DP_Scripts
     }
 
     //---------------------------------------------------------------------------------------------
-    int lastPositionIndex = -1;
+    //int lastPositionIndex = -1;
+    IUOPosition lastTree;
+    private static Hashtable doneTrees;
     public bool GoToNext()
     {
+      if (doneTrees == null)
+        doneTrees = new Hashtable();
+
       if (this.Trees.Count > 0)
       {
-        lastPositionIndex++;
+        var sortedList = this.Trees.Where(t => doneTrees[t.X + "." + t.Y] == null).OrderBy(t => Robot.GetRealDistance(World.Player.GetPosition(), t)).ToList();
+        if (sortedList.Count == 0)
+        {
+          doneTrees = new Hashtable();
+          sortedList = this.Trees.Where(t => doneTrees[t.X + "." + t.Y] == null).OrderBy(t => Robot.GetRealDistance(World.Player.GetPosition(), t)).ToList();
+        }
 
-        if (lastPositionIndex > this.Trees.Count - 1)
-          lastPositionIndex = 0;
+        if (sortedList.Count > 0)
+        {
+          lastTree = sortedList[0];
+          doneTrees[lastTree.X + "." + lastTree.Y] = lastTree;
 
-       UO.Print("GoToNext - " + this.Trees[lastPositionIndex] + " - " + lastPositionIndex + "/" + this.Trees.Count);
-        return this.Robot.GoTo(this.Trees[lastPositionIndex], 1, 100);
+          UO.Print("GoToNext - " + lastTree + ": " + doneTrees.Count + " / " + Trees.Count);
+          bool success = this.Robot.GoTo(lastTree, 1, 100);
+          if (!success)
+            lastTree = null;
+
+          return success;
+        }
+
       }
       else
+      {
         UO.Print("GoToNext - Trees == 0");
+      }
+
+
+      //if (this.Trees.Count > 0)
+      //{
+      //  lastPositionIndex++;
+
+        //  if (lastPositionIndex > this.Trees.Count - 1)
+        //    lastPositionIndex = 0;
+
+        // UO.Print("GoToNext - " + this.Trees[lastPositionIndex] + " - " + lastPositionIndex + "/" + this.Trees.Count);
+        //  return this.Robot.GoTo(this.Trees[lastPositionIndex], 1, 100);
+        //}
+        //else
+        //  UO.Print("GoToNext - Trees == 0");
 
       return false;
     }
@@ -515,6 +556,40 @@ namespace DP_Scripts
 
     //---------------------------------------------------------------------------------------------
 
+    protected SekInfo SekTreeAndGo(StaticTarget tree)
+    {
+      SekInfo info = new SekInfo();
+      Journal.Clear();
+
+      JournalEventWaiter jew = new JournalEventWaiter(true, "akce skoncila", "You put the logs in your pack", "You hack at the tree for a while, but fail to produce any useable wood", "There are no logs left here to chop", "You can't think of a way to use that item", "That's too far away to chop", "Try chopping a tree", "You found something special");
+      Nastroj.Use();
+      UO.WaitTargetTile(tree.X, tree.Y, tree.Z, tree.Graphic);
+      jew.Wait(5000 + LatencyMeasurement.CurrentLatency);
+
+     // Game.PrintMessage("CHOP DONE");
+
+      info.Mined = Journal.Contains(true, "There are no logs left here to chop");
+      info.Wrong = Journal.Contains(true, "You can't think of a way to use that item", "That's too far away to chop", "Try chopping a tree");
+      info.Special = Journal.Contains(true, "You found something special");
+
+      if (info.Mined || info.Wrong)
+      {
+         bool goOK = this.GoToNext();
+        if (!goOK)
+          info.GoFailed = true;
+      }
+
+      JournalEventWaiter jew2 = new JournalEventWaiter(true, "akce skoncila");
+      if (Journal.Contains(true, "akce skoncila") || jew2.Wait(10000 + LatencyMeasurement.CurrentLatency))
+      {
+        Game.PrintMessage("Akce done");
+      }
+
+      return info;
+    }
+
+    //---------------------------------------------------------------------------------------------
+
     public void Lumber()
     {
       int iteration = 0;
@@ -529,9 +604,9 @@ namespace DP_Scripts
         UO.Print("doLumber" + iteration);
         iteration++;
 
-        UO.Print("doLumber" + lastPositionIndex + "  / " + this.Trees.Count);
+        UO.Print("doLumber Trees:" +  this.Trees.Count);
 
-        IUOPosition current = this.Trees[lastPositionIndex];
+        IUOPosition current = lastTree;
 
         UOItem myDeadBody = this.MyDeadBody();
         bool dead = UO.Dead;
@@ -626,10 +701,19 @@ namespace DP_Scripts
           continue;
         }
     
+        if (current == null)
+        {
+          UO.Print("doLumber current == null END");
+          break;
+        }
+
         StaticTarget target = new StaticTarget(Serial.Invalid, current.X.GetValueOrDefault(), current.Y.GetValueOrDefault(), (sbyte)current.Z.GetValueOrDefault(), TreeGraphic[0]);
-        SekInfo sek = this.SekTree(target);
-        if (sek.Mined || sek.Wrong)
-          goToNext = true;
+        //SekInfo sek = this.SekTree(target);
+        //if (sek.Mined || sek.Wrong)
+        //  goToNext = true;
+
+        SekInfo sek = this.SekTreeAndGo(target);
+        goToNext = sek.GoFailed;
 
         this.SeberLogy();
 
@@ -987,6 +1071,9 @@ namespace DP_Scripts
       }
     }
 
+
+    //---------------------------------------------------------------------------------------------
+
     private static Hashtable waipointHt;
     [Executable]
     public static void PrintTree()
@@ -996,24 +1083,27 @@ namespace DP_Scripts
 
 
       TargetInfo info = new TargetInfo("").GetTarget();
-      if (info.Success && waipointHt[info.Character.Serial] == null)
+      if (info.Success && info.StaticTarget.Graphic != 0 && waipointHt[info.StaticTarget.X + "|" + info.StaticTarget.Y + "|" + info.StaticTarget.Graphic] == null)
       {
-        waipointHt[info.Character.Serial] = info;
-        string name = String.Empty;
-        if (info.Object.Exist && String.IsNullOrEmpty(info.Object.Name))
-        {
-          info.Object.Click();
-          Game.Wait(100);
-        }
+        string key = info.StaticTarget.X + "." + info.StaticTarget.Y + "|" + info.StaticTarget.Graphic;
 
-        name = info.Object.Name;
+        waipointHt[key] = info;
+        //string name = String.Empty;//
 
-        Notepad.Write(info.StaticTarget.X + "." + info.StaticTarget.Y + (String.IsNullOrEmpty(name) ? "" : "//" + name) + "|");
+        //if (info.Object.Exist && String.IsNullOrEmpty(info.Object.Name))
+        //{
+        //  info.Object.Click();
+        //  Game.Wait(100);
+        //}
 
-        info.Character.PrintMessage("[Print...]");
+//        name = info.Object.Name;
+
+        Notepad.Write(info.StaticTarget.X + "." + info.StaticTarget.Y + "|");
+
+        info.Character.PrintMessage("[Add " + key + "] - " + waipointHt.Count);
       }
       else
-        World.Player.PrintMessage("Neni strop", Game.Val_LightPurple);
+        World.Player.PrintMessage("Neni strom", Game.Val_LightPurple);
       
     }
 
@@ -1040,8 +1130,6 @@ namespace DP_Scripts
           Game.PrintMessage("Tree add: " + pos.ToString());
       }
     }
-
-
 
     //---------------------------------------------------------------------------------------------
 
@@ -1074,6 +1162,7 @@ namespace DP_Scripts
     public bool Mined = false;
     public bool Special = false;
     public bool Wrong = false;
+    public bool GoFailed = false;
   }
 
 

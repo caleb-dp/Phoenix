@@ -145,7 +145,7 @@ namespace CalExtension.Quests
             {
               kop = "scara";
             }
-            else if (Journal.WaitForText(true, 250, "ilshe"))
+            else if (Journal.WaitForText(true, 250, "illshe"))
             {
               kop = "jhelom";
             }

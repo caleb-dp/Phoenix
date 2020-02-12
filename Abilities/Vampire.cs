@@ -77,5 +77,17 @@ namespace CalExtension.Abilities
     }
 
     //---------------------------------------------------------------------------------------------
+
+//    19:11 System: Targeting Cancelled
+//19:12 You see: a Greezi Artefakt
+//19:12 : [Use]
+//19:12 Portia Labiata: [Odhidnut! ]
+//19:12 System: You have been revealed
+//19:12 System: Vitej doma.
+//19:12 : [Use]
+//19:12 Portia Labiata: *You used Rewind*
+//19:12 System: Za 5 sekund budes vracen v case!
+//19:12 Portia Labiata: *You was ported back in time*
+//19:12 Portia Labiata: Artefakt jeste neni pripraven k pouziti!
   }
 }

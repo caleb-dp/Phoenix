@@ -17,6 +17,40 @@ using CalExtension.Abilities;
 
 namespace CalExtension.Skills
 {
+  /*
+   Taming novy, mozne respy:
+   
+    Jhelom + ostrovy
+   
+    1451.3706|1343.3676|1317.3660|1301.3677|1285.3701|1251.3711|1284.3754|1304.3768|b1334.3765|1476.4004|1455.3989|1395.4004|1388.4028|1123.3603|1137.3589|1116.3583|1154.3620|1136.3634|1144.3439|
+
+    Vesper
+    2857.721|2811.980|2768.1011|
+
+    Yew
+    529.946|444.976|354.1034|659.964|680.1002|697.1014|551.1238|574.1243|
+
+    Minoc / Nova nara
+    2441.544|2547.342|2542.85|2584.116|2644.99|2590.191|
+
+     Zento:
+     351.573|351.538|461.580|519.469|520.457|536.471|155.474|
+    
+
+
+    Serpent:
+    3161.1817|4632.303|4673.323|4712.158|2981.3410|2914.3382|3034.3375|3042.3402|2899.3504|2866.3488|2901.3529|2798.3524|
+
+    Brit
+    1650.1319|1617.1299|1594.1286|1491.1308|1408.1318|1439.1499|1221.1600|1158.1667|1200.1681|1183.1726|1133.1800|1219.1895|1284.1883|1340.1803|1374.1711|1406.1732|1313.1581|1342.3678|
+     
+     * 
+     * * */
+
+
+
+
+
   //Serial: 0x401AE86C  Name: "Training Taming Staff crafted"  Position: 72.92.0  Flags: 0x0000  Color: 0x04B9  Graphic: 0x13F4  Amount: 1  Layer: LeftHand  Container: 0x00343F08
 
   public class Taming2 : Skill
@@ -147,7 +181,11 @@ namespace CalExtension.Skills
 
     public UOItem EnsuredTamingStaff
     {
-      get
+    //public UOItemType TrainTamingStaff { get { return new UOItemType() { Graphic = 0x13F4, Color = 0x04B9 }; } }
+    //public UOItemType TamingStaff { get { return new UOItemType() { Graphic = 0x13F4, Color = 0x076B }; } }
+    //public UOItemType TamingStaffCharged { get { return new UOItemType() { Graphic = 0x13F4, Color = 0x096D }; } }
+
+    get
       {
         Game.PrintMessage("EnsuredTamingStaff");
         UOItem tamingStaff = UO.Backpack.AllItems.FindType(0x13F4, 0x096D); //*/TamingStaffCharged.FindItem(Precision.GraphicColor, Search.Both);
@@ -885,6 +923,15 @@ namespace CalExtension.Skills
     public static void ExecTrainTamingAuto(int maxTries, params string[] str)
     {
       Game.CurrentGame.CurrentPlayer.GetSkillInstance<Taming2>().TrainTamingRecusive(maxTries, str);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable("TrainTamingAuto2")]
+    [BlockMultipleExecutions]
+    public static void ExecTrainTamingAuto(int maxTries, int perimeter ,params string[] str)
+    {
+      Game.CurrentGame.CurrentPlayer.GetSkillInstance<Taming2>().TrainTamingRecusive(maxTries, perimeter, str);
     }
 
     //---------------------------------------------------------------------------------------------

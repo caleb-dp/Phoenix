@@ -236,10 +236,23 @@ namespace Caleb.Library.CAL.Business
       UOItem item = FindItem(prec, sea);
       if (item != null)
       {
+        amount = amount > 0 ? amount : item.Amount;
+
+
+
+
         if (serial.IsValid)
-          return item.Move(amount > 0 ? amount : item.Amount, serial, x, y);
+        {
+          if (item.Container == serial && item.X == x && item.Y == y)
+            return false;
+
+          return item.Move(amount, serial, x, y);
+        }
         else
-          return item.Move(amount > 0 ? amount : item.Amount, x, y, z);
+          return item.Move(amount, x, y, z);
+
+
+
         //else
         //  item.Move(amount > 0 ? amount : item.Amount, item.Container, x, y);
       }

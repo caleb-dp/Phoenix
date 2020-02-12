@@ -264,6 +264,12 @@ namespace CalExtension.UOExtensions
       else if (cont.Graphic == 0x2006)
         itemSource = LootItemSource.Corpse;
 
+      //     Serial: 0x402A7DBC  Name: "Animal Timer"  Position: 34.102.0  Flags: 0x0000  Color: 0x0000  Graphic: 0x2007  Amount: 1  Layer: None Container: 0x400772A3
+
+      if (item.Graphic == 0x2007)//Animal Timer=
+        return false;
+
+
       foreach (LootItemTemplate o in LootItems)
       {
         bool sourceMatch = (o.Source == LootItemSource.Any || o.Source == itemSource);

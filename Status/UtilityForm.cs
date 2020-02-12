@@ -1582,7 +1582,7 @@ namespace CalExtension.UI.Status
       this.btnNajdiAVloz.Name = "btnNajdiAVloz";
       this.btnNajdiAVloz.Location = new System.Drawing.Point(currentPosition, currentLine);
       this.btnNajdiAVloz.Enabled = true;
-      this.btnNajdiAVloz.Text = "Najdi a vloz";
+      this.btnNajdiAVloz.Text = "Najdi regy";
       this.btnNajdiAVloz.Font = fontSmall;
       this.btnNajdiAVloz.Size = new Size(buttonMiddleWidth, buttonHeight);
       this.btnNajdiAVloz.BackColor = Color.LightSlateGray;
@@ -2356,7 +2356,7 @@ namespace CalExtension.UI.Status
       lastUsedObject = sender;
       lastUsedMouseEventArgs = e;
 
-      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["najdiavloz"]);
+      Phoenix.Runtime.RuntimeCore.Executions.Execute(Phoenix.Runtime.RuntimeCore.ExecutableList["najdiregy"]);
       //new Thread(new ThreadStart(ItemHelper.najdiavloz)).Start();
     }
 

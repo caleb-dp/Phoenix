@@ -684,6 +684,9 @@ namespace CalExtension.Skills
       Game.PrintMessage("Pytlik nebo Key ring k okopirovani:");
       UOItem toCopyBag = new UOItem(UIManager.TargetObject());
 
+      Game.PrintMessage("Pytlik kam davat klice:");
+      UOItem targetBag = new UOItem(UIManager.TargetObject());
+
       ItemHelper.EnsureContainer(blankBag);
 
       int blankCount = blankBag.Items.Count(ItemLibrary.BlankMagicKey.Graphic);
@@ -778,6 +781,8 @@ namespace CalExtension.Skills
               Game.Wait();
 
               if (emptyKeyRing.Exist && empty.Move(1, emptyKeyRing))
+                Game.Wait();
+              else if (targetBag.Exist && empty.Move(1, targetBag))
                 Game.Wait();
             }
             counter++;

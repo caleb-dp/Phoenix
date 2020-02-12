@@ -105,7 +105,7 @@ namespace CalExtension.UOExtensions
       {
         EnsureItem(container);
 
-        if (!container.Opened)
+        if (!container.Opened || container.Items.CountItems() == 0)
         {
           container.Use();
           Game.Wait(Game.SmallestWait);
@@ -183,6 +183,161 @@ namespace CalExtension.UOExtensions
         if (IsContainer(item))
         {
           list.AddRange(OpenContainerRecursive(item.Serial));
+        }
+      }
+
+      return list;
+    }
+
+
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void FindByName(string namepattern)
+    {
+
+      TargetInfo bag = new TargetInfo();
+      Game.PrintMessage("Vyberte bag:");
+      bag.GetTarget();
+      Game.Wait(250);
+
+      Game.PrintMessage("Start search");
+      contCount = 0;
+      itemCount = 0;
+      List<Serial> items = FindByNameRecursive(bag.Item, namepattern);
+      Game.PrintMessage("End search " + items.Count + ", Total: " + contCount + " / " + itemCount)  ;
+
+      // Notepad.WriteLine("Player.Hair.Color: " + World.Player.Layers[Layer.Hair].Color);
+    }
+    public static int contCount = 0;
+    public static int itemCount = 0;
+    //---------------------------------------------------------------------------------------------
+
+    public static List<Serial> FindByNameRecursive(Serial container, string namepattern)
+    {
+      contCount++;
+      UOItem cont = new UOItem(container);
+      ItemHelper.EnsureContainer(cont);
+      List<Serial> list = new List<Serial>();
+
+      // list.AddRange(cont.Items.ToArray());
+
+      itemCount += cont.Items.CountItems();
+      Game.PrintMessage("Cont " + contCount + ", Items: " + cont.Items.CountItems() + " - " + itemCount);
+
+
+      foreach (UOItem item in cont.Items)
+      {
+        if (item == null)
+          continue;
+
+        //UOItemExtInfo info = ItemHelper.GetItemExtInfo(item);
+
+        if (String.IsNullOrEmpty(item.Name))
+        {
+          item.Click();
+          Game.Wait(120);
+        }
+
+        string name = "";// info.Name;
+        string name2 = item.Name;
+
+        bool add = false;
+
+        if (!String.IsNullOrEmpty(name))
+        {
+          if (Regex.IsMatch(name, namepattern))
+          {
+            Game.PrintMessage("Find: " + name + " Serial: " + item.Serial);
+            list.Add(item.Serial);
+            add = true;
+          }
+        }
+
+        if (!add && !String.IsNullOrEmpty(name2))
+        {
+          if (Regex.IsMatch(name2, namepattern))
+          {
+            Game.PrintMessage("Find 2: " + name2 + " Serial: " + item.Serial);
+            list.Add(item.Serial);
+            add = true;
+          }
+        }
+
+        if (ItemHelper.IsContainer(item))
+        {
+          list.AddRange(FindByNameRecursive(item, namepattern));
+        }
+      }
+
+      return list;
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void FindByTypeColor(Graphic g, UOColor c)
+    {
+
+      TargetInfo bag = new TargetInfo();
+      Game.PrintMessage("Vyberte bag:");
+      bag.GetTarget();
+      Game.Wait(250);
+
+      Game.PrintMessage("Start search");
+      contCount = 0;
+      itemCount = 0;
+      List<Serial> items = FindByTypeColorRecursive(bag.Item, g, c);
+      Game.PrintMessage("End search " + items.Count + ", Total: " + contCount + " / " + itemCount);
+
+      // Notepad.WriteLine("Player.Hair.Color: " + World.Player.Layers[Layer.Hair].Color);
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+    public static List<Serial> FindByTypeColorRecursive(Serial container, Graphic g, UOColor c)
+    {
+      contCount++;
+      UOItem cont = new UOItem(container);
+      ItemHelper.EnsureContainer(cont);
+      List<Serial> list = new List<Serial>();
+
+      // list.AddRange(cont.Items.ToArray());
+
+      itemCount += cont.Items.CountItems();
+      Game.PrintMessage("Cont " + contCount + ", Items: " + cont.Items.CountItems() + " - " + itemCount);
+
+      foreach (UOItem item in cont.Items)
+      {
+        if (item == null)
+          continue;
+
+        //UOItemExtInfo info = ItemHelper.GetItemExtInfo(item);
+
+
+
+        string name = "";// info.Name;
+        string name2 = item.Name;
+
+        bool match = g == 0xFFFF ? item.Color == c : item.Graphic == g && (item.Color == c || c == 0xFFFF);
+
+
+        if (match)
+        {
+          if (String.IsNullOrEmpty(item.Name))
+          {
+            item.Click();
+            Game.Wait(120);
+          }
+
+          Game.PrintMessage("Find: " + name + " Serial: " + item.Serial);
+          list.Add(item.Serial);
+        }
+
+        if (ItemHelper.IsContainer(item))
+        {
+          list.AddRange(FindByTypeColorRecursive(item, g, c));
         }
       }
 
@@ -297,87 +452,87 @@ namespace CalExtension.UOExtensions
     public static void SortBasicBackpack()
     {
       if (ItemLibrary.Mortar.MoveBackpack(0, 10, 30, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
       if (ItemLibrary.RuneBook.MoveBackpack(0, 10, 45, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
       if (ItemLibrary.TravelBook.MoveBackpack(0, 10, 60, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
       if (ItemLibrary.SpellBook.MoveBackpack(0, 10, 75, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
       if (ItemLibrary.KeyRing.MoveBackpack(0, 10, 90, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
       if (ItemLibrary.DwarfKnife.MoveBackpack(0, 10, 105, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
       if (ItemLibrary.PoisonKit.MoveBackpack(0, 10, 120, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
       if (ItemLibrary.Voditko.Move(0, 10, 140, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.CleanBandages.Move(0, 10, 155, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
-      if (ItemLibrary.MagickyBrk.Move(0, 10, 170, 0, World.Player.Backpack))
-        Game.Wait();
+      if (ItemLibrary.KapsarskeNaradicko.Move(0, 10, 170, 0, World.Player.Backpack))
+        Game.Wait(250);
 
       if (ItemLibrary.DuchStepi.Move(0, 150, 30, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.DuchPralesa.Move(0, 170, 30, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
 
       if (ItemLibrary.StoneVampKrystal.Move(Precision.GraphicColor, Search.Backpack, 0, 120, 10, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.VampKrystal.Move(Precision.GraphicColor, Search.Backpack, 0, 135, 10, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.StoneKad.Move(Precision.GraphicColor, Search.Backpack, 0, 150, 10, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.GreeziArtefakt.Move(Precision.GraphicColor, Search.Backpack, 0, 170, 10, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
 
 
       if (ItemLibrary.CestovniKniha.Move(0, 180, 30, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.BoltQuiver.Move(Precision.GraphicColor, Search.Backpack, 0, 180, 45, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
-      if (ItemLibrary.BoltQuiver.Move(Precision.GraphicColor, Search.Backpack, 0, 185, 45, 0, World.Player.Backpack))
-        Game.Wait();
+      if (ItemLibrary.ArrowQuiver.Move(Precision.GraphicColor, Search.Backpack, 0, 185, 50, 0, World.Player.Backpack))
+        Game.Wait(250);
 
       if (ItemLibrary.Scissors.MoveBackpack(0, 180, 60, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.LockNaramek.Move(Precision.GraphicColor, Search.Backpack, 0, 180, 75, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.KlanKniha.MoveBackpack(0, 180, 90, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.KlanKad.MoveBackpack(0, 180, 105, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.Backpack.MoveBackpack(0, 180, 120, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.BeltPouch.MoveBackpack(0, 180, 130, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.BeltPouch2.MoveBackpack(0, 180, 132, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.NbRuna.Move(0, 180, 140, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.DungeonScrool.Move(0, 180, 155, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
       if (ItemLibrary.EmptyBottle.Move(0, 180, 170, 0, World.Player.Backpack))
-        Game.Wait();
+        Game.Wait(250);
 
 
       ushort x = 15;
@@ -394,6 +549,49 @@ namespace CalExtension.UOExtensions
           Game.Wait(250);
         }
 
+      }
+
+      Game.PrintMessage("Weapons Start");
+
+      List<UOItem> weapons = World.Player.Backpack.Items.Where(i => 
+      ItemLibrary.WeaponsFenc.Count(w => w.Graphic == i.Graphic) > 0 ||
+      ItemLibrary.WeaponsMace.Count(w => w.Graphic == i.Graphic) > 0 ||
+      ItemLibrary.WeaponsArch.Count(w => w.Graphic == i.Graphic) > 0 ||
+      ItemLibrary.WeaponsSword.Count(w => w.Graphic == i.Graphic) > 0)
+      /*.OrderBy(i=>i.Graphic)*/.ToList().OrderBy(i=> (ushort)i.Graphic).ToList();
+
+      Game.PrintMessage("Weapons " + weapons.Count);
+
+      x = 40;
+
+      foreach (UOItem item in weapons)
+      {
+          if (item.Move(item.Amount, item.Container, x, 130))
+          {
+            x += 8;
+          }
+          Game.Wait(250);
+      }
+
+      Game.PrintMessage("Weapons End");
+      List<UOItem> potions = World.Player.Backpack.Items.Where(i => i.Graphic >= 0x0F01 && i.Graphic < 0x0F0E).OrderBy(i => (ushort)i.Graphic).ToList();
+
+      x = 15;
+      ushort y = 10;
+
+      foreach (UOItem item in potions)
+      {
+        if (x > 95)
+        {
+          x = 15;
+          y += 9;
+        }
+
+        if (item.Move(item.Amount, item.Container, x, y))
+        {
+          x += 4;
+        }
+        Game.Wait(250);
       }
 
       Jewelry.SetridSperky();
@@ -2460,7 +2658,7 @@ namespace CalExtension.UOExtensions
           }
 
           string name = box.Name + String.Empty;
-          name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+          name = ItemRequip.NormalizeItemName(name).ToLower();//name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
 
           if (!htBox.ContainsKey(name))
           {
@@ -2487,7 +2685,7 @@ namespace CalExtension.UOExtensions
         }
 
         string name = animal.Name + String.Empty;
-        name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+        name = ItemRequip.NormalizeItemName(name).ToLower();//name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
 
 
         if (htBox.ContainsKey(name))
@@ -2638,7 +2836,7 @@ namespace CalExtension.UOExtensions
           }
 
           string name = box.Name + String.Empty;
-          name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+          name = ItemRequip.NormalizeItemName(name).ToLower(); //name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
 
           string fixBugName = String.Empty;
           if (name == "Great Alabaster Necklace".ToLower())
@@ -2679,7 +2877,7 @@ namespace CalExtension.UOExtensions
           }
 
           string name = item.Name + String.Empty;
-          name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+          name = ItemRequip.NormalizeItemName(name).ToLower();//name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
 
           foreach (string key in htBox.Keys)
           {
@@ -2932,7 +3130,7 @@ namespace CalExtension.UOExtensions
       info.Item = item;
 
       string trim = realName + String.Empty;
-      trim = trim.Replace("an ", "").Replace("a ", "").Trim();
+      trim = ItemRequip.NormalizeItemName(trim); // trim.Replace("an ", "").Replace("a ", "").Trim();
 
       if (Game.Debug)
         Game.PrintMessage("GetItemExtInfo trim: " + trim + " / " + item.Name);
@@ -2951,6 +3149,20 @@ namespace CalExtension.UOExtensions
         }
         else if (Game.Debug)
           Game.PrintMessage("GetItemExtInfo !Success: " + trim + " / " + rgxPattern);
+
+        Match m2 = Regex.Match(trim, "[+]?(?<plusamount>\\d{1,2})", RegexOptions.IgnoreCase);
+        if (m2.Success)
+        {
+          info.PlusValue = Utils.ToNullInt(m.Value.Replace("+", ""));
+         // Game.PrintMessage("Sucess " + m.Groups["plusamount"].Value + " / " + m2.Value);
+        }
+        //Game.PrintMessage("!Sucess " + trim);
+
+        if (!info.PlusValue.HasValue && trim.StartsWith("+"))
+        {
+          info.PlusValue = Utils.ToNullInt(trim.Split(' ')[0].Replace("+", ""));
+
+        }
       }
 
       return info;
@@ -3577,6 +3789,34 @@ namespace CalExtension.UOExtensions
 
     }
 
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void DropItemTo(ushort x, ushort y, sbyte z)
+    {
+      TargetInfo cilBag = new TargetInfo();
+      Game.PrintMessage("Vyberte predmet:");
+      cilBag.GetTarget();
+
+      if (cilBag.Item.Exist)
+      {
+        if (cilBag.Item.Move(cilBag.Item.Amount, x, y, z))
+        {
+          Game.PrintMessage("Move OK", MessageType.Info);
+        }
+        else
+          Game.PrintMessage("Move FAILED", MessageType.Error);
+
+      }
+      else
+        Game.PrintMessage("Invalid Object", MessageType.Error);
+    }
+
+//Serial: 0x4036C90C  Position: 3174.30.26  Flags: 0x0020  Color: 0x014D  Graphic: 0x1843  Amount: 0  Layer: None Container: 0x00000000
+//Serial: 0x400103AE  Position: 3174.28.32  Flags: 0x0020  Color: 0x0B77  Graphic: 0x1843  Amount: 0  Layer: None Container: 0x00000000
+//Serial: 0x402C00A2  Name: "Nadoba s Greater Blood (21445"  Position: 3174.30.38  Flags: 0x0020  Color: 0x0025  Graphic: 0x1843  Amount: 0  Layer: None Container: 0x00000000
+
+
 
     //---------------------------------------------------------------------------------------------
 
@@ -3604,6 +3844,7 @@ namespace CalExtension.UOExtensions
     public bool Success = false;
     public UOItem Item = new UOItem(Serial.Invalid);
     public int? Charges = null;
+    public int? PlusValue = null;
     public string ChargesName = String.Empty;
     public string Name = String.Empty;
   }

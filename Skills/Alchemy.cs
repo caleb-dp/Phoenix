@@ -14,6 +14,13 @@ namespace CalExtension.Skills
   public class Alchemy : Skill
   {
     //,exec gmmortar "Total Mana Refresh (612 Eyes of Newt nebo 306 Blue Eyes of Newt)"
+    //,exec gmmortar "Mana Refresh (306 Eyes of Newt)"
+    //,exec gmmortar "Greater Agility Refresh (306 Blood Mosses)"
+    //,exec gmmortar "Lava Bomb (612 Volcanic Ashes)"
+    //,exec gmmortar "Greater Strength (612 Mandrake Roots)"
+    //,exec gmmortar "Deadly Poison (1020 Nightshades)"
+    //,exec gmmortar "Invisibility (408 Wyrm's Hearts)"
+    //,exec gmmortar "Shrink (306 Batwings)"
     //---------------------------------------------------------------------------------------------
 
     public static UOItem Mortar
@@ -419,7 +426,7 @@ namespace CalExtension.Skills
 
       if (!potionItem.Exist)
       {
-        ItemHelper.OpenContainerRecursive(World.Player.Backpack);
+        //ItemHelper.OpenContainerRecursive(World.Player.Backpack);
         potionItem = GetPotionFromKad(potion);
       }
 
@@ -694,7 +701,8 @@ namespace CalExtension.Skills
                 origItems.Add(oi.Serial);
 
 
-              UO.WaitTargetObject(World.Player.Backpack.Items.FindType(0x0F0E, 0x0000));
+              //UO.WaitTargetObject(World.Player.Backpack.Items.FindType(0x0F0E, 0x0000));
+              UO.WaitTargetType(0x0F0E);
               item.Use();
 
               Game.Wait();
@@ -703,7 +711,7 @@ namespace CalExtension.Skills
 
               foreach (UOItem oi in World.Player.Backpack.Items)
               {
-                if (!origItems.Contains(oi.Serial))
+                if (!origItems.Contains(oi.Serial) && oi.Graphic != 0x1843)
                 {
                   potion = oi;
                   break;

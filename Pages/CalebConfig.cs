@@ -571,8 +571,16 @@ namespace CalExtension
       string result = defaultValue;
       try
       {
-        if (File.Exists(Path.Combine(Core.Directory, fileName)))
+        string filePath = Path.Combine(Core.Directory, fileName);
+        if (File.Exists(filePath))
+        {
           result = Encoding.UTF8.GetString(File.ReadAllBytes(Path.Combine(Core.Directory, fileName)));
+
+          string bkpPath = Path.Combine(Core.Directory, fileName + "_" + String.Format("{0:yyyyMMdd}", DateTime.Now) + ".backup");
+
+          if (!File.Exists(bkpPath))
+            File.WriteAllBytes(bkpPath, File.ReadAllBytes(filePath));
+        }
       }
       catch 
       {

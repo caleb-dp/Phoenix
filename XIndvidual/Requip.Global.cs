@@ -41,7 +41,15 @@ namespace CalExtension.XIndividual
 
     public static Serial VAL_TowerGuildSecureChest_RybyOstani = 0x403074C3;
     public static Serial VAL_TowerGuildSecureChest_RybyOstani_Verite = 0x40274A41;
+    public static Serial VAL_TowerGuildSecureChest_RybyOstani_Verite_S = 0x40169A72;
+    public static Serial VAL_TowerGuildSecureChest_RybyOstani_Verite_M = 0x40234652;
+    public static Serial VAL_TowerGuildSecureChest_RybyOstani_Verite_L = 0x40213423;
     public static Serial VAL_TowerGuildSecureChest_RybyOstani_Pracka = 0x40009A1C;
+
+//Serial: 0x40169A72  Position: 114.51.0  Flags: 0x0000  Color: 0x010B  Graphic: 0x0E76  Amount: 1  Layer: None Container: 0x403074C3
+//Serial: 0x40234652  Position: 128.51.0  Flags: 0x0000  Color: 0x010B  Graphic: 0x0E76  Amount: 1  Layer: None Container: 0x403074C3
+//Serial: 0x40213423  Position: 140.51.0  Flags: 0x0000  Color: 0x010B  Graphic: 0x0E76  Amount: 1  Layer: None Container: 0x403074C3
+
 
     //---------------------------------------------------------------------------------------------
 
@@ -74,6 +82,12 @@ namespace CalExtension.XIndividual
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -150,7 +164,7 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: modraryba, Amount: " + GetRefullAmountReserve(procento, 2) + ", Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: Verite s speara, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
 
 
@@ -163,11 +177,11 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 500) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 500) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat, Count: 5, X: 20, Y: 120", "Name: Bull, Count: " + GetRefullAmountReserve(procento2, 4) + ", X: 40, Y: 120");
 
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 50));
       ItemRequip.RefullKade(0, cilBag, "Name: Cure, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 50));
 
@@ -205,6 +219,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -232,7 +252,7 @@ namespace CalExtension.XIndividual
 
       List<string> lahve = new List<string>();
       lahve.Add("Name: Cure, Quality: Greater, MaxItem: 6");
-      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 4");
+      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 6");
 
       if (!Potion.LavaBomb.ContainsTopKad(cilBag))
         lahve.Add("Name: Lava Bomb, MaxItem: 4");
@@ -265,8 +285,12 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: magiclocky, Amount: 2, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 4, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       //ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 3, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_NekroRegy, cilBag, "Name: vialofblood, Amount: " + GetRefullAmountReserve(procento, 300) + ", Graphic: 0x0F7D, Color:  0x0000, X: 20, Y: 131");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_NekroRegy, cilBag, "Name: bone, Amount: " + GetRefullAmountReserve(procento, 150) + ", Graphic: 0x0F7E, Color:  0x0000, X: 30, Y: 131");
@@ -281,8 +305,9 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 2300) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 1000) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
-      ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat|Rabbit|Rat|Chicken, Count: 5, X: 20, Y: 120");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
+
+      ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Rabbit|Rat|Chicken, Count: 3, X: 20, Y: 120");
 
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 50");
@@ -319,6 +344,12 @@ namespace CalExtension.XIndividual
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -377,12 +408,14 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: efsvitek, Amount: 15, Graphic: " + Magery.SpellScrool[StandardSpell.EnergyField] + ", Color: 0x0000, X: 15, Y: 75");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: paralyze, Amount: 5, Graphic: " + Magery.SpellScrool[StandardSpell.Paralyze] + ", Color: 0x0000, X: 15, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: wossvitek, Amount: 40, Graphic: " + Magery.SpellScrool[StandardSpell.WallofStone] + ", Color: 0x0000, X: 15, Y: 105");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: wossvitek, Amount: 10, Graphic: " + Magery.SpellScrool[StandardSpell.SummonEarthElemental] + ", Color: 0x0000, X: 15, Y: 110");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: locky, Amount: 18, Graphic: 0x14FB, Color: 0x0000, X: 137, Y: 65");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: magiclocky, Amount: 2, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 4, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       //ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1605) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
@@ -432,6 +465,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -481,7 +520,7 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullLahve(0, cilBag, lahve.ToArray());
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: 6");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: " + GetRefullAmountReserve(procento, 500));
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: 500");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: teleportvitek, Amount: 4, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: resssvitek, Amount: " + GetRefullAmountReserve(procento2, 6) + ", Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
@@ -504,7 +543,7 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 1600) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat|Rabbit|Rat|Chicken, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 8, X: 40, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 50");
@@ -541,6 +580,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -590,7 +635,7 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullLahve(0, cilBag, lahve.ToArray());
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: 6");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: " + GetRefullAmountReserve(procento, 900));
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: 1100");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: teleportvitek, Amount: 10, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: resssvitek, Amount: " + GetRefullAmountReserve(procento2, 6) + ", Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
@@ -604,16 +649,16 @@ namespace CalExtension.XIndividual
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
 
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1665) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 3765) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 615) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1355) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1025) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 1625) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1665) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 3765) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 615) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1355) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1025) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 1625) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat|Rabbit|Rat|Chicken, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 8, X: 40, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 50");
@@ -644,12 +689,19 @@ namespace CalExtension.XIndividual
         return;
       }
 
+
       TargetInfo cilBag = new TargetInfo();
       Game.PrintMessage("Vyberte cilovy bag:");
       cilBag.GetTarget();
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -700,7 +752,7 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullLahve(0, cilBag, lahve.ToArray());
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: 6");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: " + GetRefullAmountReserve(procento, 1100));
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: 1100");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: teleportvitek, Amount: 10, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: resssvitek, Amount: " + GetRefullAmountReserve(procento2, 6) + ", Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
@@ -714,16 +766,16 @@ namespace CalExtension.XIndividual
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
 
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1665) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 3765) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 615) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1355) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1025) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 1625) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1665) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 3765) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 615) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1355) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1025) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 1625) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat|Rabbit|Rat|Chicken, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 8, X: 40, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 50");
@@ -764,6 +816,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -813,7 +871,7 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullLahve(0, cilBag, lahve.ToArray());
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: 6");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: " + GetRefullAmountReserve(procento, 1100));
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: 1100");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: teleportvitek, Amount: 10, Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: resssvitek, Amount: " + GetRefullAmountReserve(procento2, 6) + ", Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
@@ -836,16 +894,16 @@ namespace CalExtension.XIndividual
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s speara, Amount: 2, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
 
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1665) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 3765) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 615) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1355) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1025) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 1625) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
-      ItemRequip.RefullCommon(VAL_MojeBezpecna_RegPytlik, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1665) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 700) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 3765) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 615) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1355) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1025) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 1625) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2650) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat|Rabbit|Rat|Chicken, Count: 5, X: 20, Y: 120", "Name: Bull, Count: 8, X: 40, Y: 120");
 
       ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 50");
@@ -886,6 +944,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -957,9 +1021,11 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 4, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Bubinek, cilBag, "Name: bubinek, Amount: 1, Graphic: 0x0E9C, Color: 0x0000  , X: 120, Y: 120");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Harfa, cilBag, "Name: harfa, Amount: 1, Graphic: 0x0EB2, Color: 0x0000  , X: 140, Y: 120");
@@ -967,11 +1033,11 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento2, 450) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 6");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Squirrel|Black Cat|Cat|Chicken, Count: 5, X: 40, Y: 120", "Name: Bull frog|Goat, Count: 3, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
    
@@ -1007,6 +1073,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -1078,17 +1150,17 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 4, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 2, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento2, 450) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 6");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Chicken, Count: 5, X: 40, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1124,6 +1196,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -1195,9 +1273,11 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 4, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Bubinek, cilBag, "Name: bubinek, Amount: 1, Graphic: 0x0E9C, Color: 0x0000  , X: 120, Y: 120");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Harfa, cilBag, "Name: harfa, Amount: 1, Graphic: 0x0EB2, Color: 0x0000  , X: 140, Y: 120");
@@ -1205,11 +1285,11 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento2, 450) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 2, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 6");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 2, Amount: 16", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Squirrel|Black Cat|Cat|Chicken, Count: 5, X: 40, Y: 120", "Name: Bull frog|Goat, Count: 3, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1245,6 +1325,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -1315,18 +1401,26 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: magiclocky, Amount: 3, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+     // ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 4, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+    //  ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Bubinek, cilBag, "Name: bubinek, Amount: 1, Graphic: 0x0E9C, Color: 0x0000  , X: 120, Y: 120");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Harfa, cilBag, "Name: harfa, Amount: 1, Graphic: 0x0EB2, Color: 0x0000  , X: 140, Y: 120");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Loutna, cilBag, "Name: loutna, Amount: 1, Graphic: 0x0EB3, Color: 0x0000  , X: 160, Y: 120");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 600) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat, Count: 4, X: 40, Y: 120", "Name: Bull|Cow, Count: 6, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1362,6 +1456,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -1432,18 +1532,21 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: magiclocky, Amount: 3, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 4, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
       
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 600) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat, Count: 4, X: 40, Y: 120", "Name: Bull|Cow, Count: 6, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1478,6 +1581,12 @@ namespace CalExtension.XIndividual
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -1554,17 +1663,18 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 4, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 600) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat, Count: 4, X: 40, Y: 120", "Name: Bull|Cow, Count: 6, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1600,6 +1710,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -1674,16 +1790,18 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 700) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 6");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Black Cat|Cat, Count: 5, X: 40, Y: 120", "Name: Bull|Cow, Count: 10, X: 60, Y: 120", "Name: Sheep, Count: 5, X: 80, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1719,6 +1837,12 @@ namespace CalExtension.XIndividual
       cilBag.Item.Use();
       Game.Wait(250);
 
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
       UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
@@ -1791,16 +1915,16 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 700) + ", X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 1000) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 6");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Squirrel, Count: 4, X: 40, Y: 120", "Name: Panther, Count: 12, X: 60, Y: 120", "Name: Leopard, Count: 4, X: 80, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1836,6 +1960,12 @@ namespace CalExtension.XIndividual
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -1908,21 +2038,23 @@ namespace CalExtension.XIndividual
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 4, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
 
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 700) + ", X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 2, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 1100) + ", X: 15, Y: 141");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Bubinek, cilBag, "Name: bubinek, Amount: 1, Graphic: 0x0E9C, Color: 0x0000  , X: 120, Y: 120");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Harfa, cilBag, "Name: harfa, Amount: 1, Graphic: 0x0EB2, Color: 0x0000  , X: 140, Y: 120");
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Loutna, cilBag, "Name: loutna, Amount: 1, Graphic: 0x0EB3, Color: 0x0000  , X: 160, Y: 120");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 6");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Diamant Bracelet, Count: 1, Amount: 6", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Cat|Black Cat, Count: 4, X: 40, Y: 120", "Name: Panther, Count: 12, X: 60, Y: 120", "Name: Leopard, Count: 4, X: 80, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
 
@@ -1957,6 +2089,12 @@ namespace CalExtension.XIndividual
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -2033,21 +2171,35 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 700) + ", X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1400) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 1200) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 2000) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 1000) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1200) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1200) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 2000) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 2000) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
-      ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Sheep, Count: 4, X: 40, Y: 120", "Name: Bull|Cow, Count: 8, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Bubinek, cilBag, "Name: bubinek, Amount: 1, Graphic: 0x0E9C, Color: 0x0000  , X: 120, Y: 120");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Harfa, cilBag, "Name: harfa, Amount: 1, Graphic: 0x0EB2, Color: 0x0000  , X: 140, Y: 120");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Loutna, cilBag, "Name: loutna, Amount: 1, Graphic: 0x0EB3, Color: 0x0000  , X: 160, Y: 120");
+
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Gold Ring, Count: 1, Amount: 12", "Name: Titan Necklace, Count: 1, Amount: 8");
+      ItemRequip.RefullKlamaky(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Sheep, Count: 4, X: 40, Y: 120", "Name: Bull|Cow, Count: 8, X: 60, Y: 120");
+
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Blood, Amount: 200");
-      ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
+      ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 150");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 100");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Total Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(procento, 50));
-      ItemRequip.RefullKade(0, cilBag, "Name: Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(procento, 100));
+      ItemRequip.RefullKade(0, cilBag, "Name: Total Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(procento, 150));
+      ItemRequip.RefullKade(0, cilBag, "Name: Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(procento, 250));
       ItemRequip.RefullKade(0, cilBag, "Name: Shrink, Quality: None, Amount: 50");
 
       ItemHelper.SortBasicBackpack();
@@ -2077,6 +2229,12 @@ namespace CalExtension.XIndividual
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -2149,17 +2307,17 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: magiclocky, Amount: 3, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
-      //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
-      //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 700) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Sheep, Count: 4, X: 40, Y: 120", "Name: Bull|Cow, Count: 8, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Blood, Amount: 200");
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 100");
@@ -2195,6 +2353,12 @@ namespace CalExtension.XIndividual
       Game.Wait(250);
       cilBag.Item.Use();
       Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
 
       UO.UseObject(VAL_TowerGuildSecureChest);
       Game.Wait();
@@ -2270,15 +2434,15 @@ namespace CalExtension.XIndividual
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 2, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
       //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite, cilBag, "Name: Verite s zbran, Amount: 1, Graphic: 0xFFFF, Color: 0x08A1, X: 90, Y: 65");//TODO asi kudlicku pro support
-      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0x0000  , X: 110, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 1, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
 
       ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento2, 700) + ", X: 15, Y: 141");
 
-      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4");
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 6", "Name: Reflex Ring, Count: 1, Amount: 4", "Name: Great Gold Ring, Count: 1, Amount: 10");
       ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Sheep, Count: 4, X: 40, Y: 120", "Name: Bull|Cow, Count: 8, X: 60, Y: 120");
 
-      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento, 50));
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: " + GetRefullAmountReserve(procento2, 100));
       ItemRequip.RefullKade(0, cilBag, "Name: Blood, Amount: 200");
       ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
       ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 100");
@@ -2290,6 +2454,234 @@ namespace CalExtension.XIndividual
       ItemHelper.SortBasicBackpack();
       Jewelry.SetridSperky();
     }
+
+
+
+    [Executable]
+    public static void customreff_XYZ(int procento)
+    {
+      Serial Cont_Hlavni = new Serial(0x4035E487);
+      Serial Cont_Hlavni_Svitky = new Serial(0x40197DE3);
+      Serial Cont_Hlavni_DalsiVeci = new Serial(0x4009A793);
+      Serial Cont_Hlavni_DalsiVeci_Regy = new Serial(0x40214A2E);
+      Serial Cont_Hlavni_DalsiVeci_ABoxy = new Serial(0x4017EAAC);
+      Serial Cont_Hlavni_DalsiVeci_Lode = new Serial(0x4016CFC6);
+      Serial Cont_Hlavni_DalsiVeci_Sperkovnice = new Serial(0x40062F83);
+
+
+      Serial Cont_Hlavni_DalsiVeci2 = new Serial(0x40100726);
+      Serial Cont_Hlavni_DalsiVeci_RybyAtd = new Serial(0x400C01FC);
+      Serial Cont_Hlavni_DalsiVeci_RybyAtd_Refresh = new Serial(0x402ED242);
+
+      Serial Cont_Hlavni_LahvickyAKade = new Serial(0x4011D5AD);
+      Serial Cont_Hlavni_LahvickyAKade_ShrinkKade = new Serial(0x40196E95);
+
+      if (procento > 500)
+      {
+        Game.PrintMessage("Max 500 % !-" + procento);
+        return;
+      }
+
+      TargetInfo cilBag = new TargetInfo();
+      Game.PrintMessage("Vyberte cilovy bag: ");
+      cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
+      UO.UseObject(Cont_Hlavni);
+      Game.Wait();
+
+
+
+      int procento2 = 100;
+      if (procento > 100)
+      {
+        double d = (double)procento;
+        d = (d - 100) * 0.33;
+        procento2 = 100 + (int)d;
+      }
+
+      UOItem prazdneLahve = World.Player.FindType(0x0F0E);
+      ItemRequip.RefullCommon(Cont_Hlavni_LahvickyAKade, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((45 - prazdneLahve.Amount), 0));
+
+
+      ItemRequip.RefullCommon(Cont_Hlavni_Svitky, cilBag, "Name: Resurrection Scrol, Amount: 5, Graphic: 0x1F67, Color: 0x0000, X: 90, Y: 50");
+      ItemRequip.RefullCommon(Cont_Hlavni_Svitky, cilBag, "Name: Dispel Scroll, Amount: 10, Graphic: 0x1F55, Color: 0x0000, X: 115, Y: 50");
+      ItemRequip.RefullCommon(Cont_Hlavni_Svitky, cilBag, "Name: Teleport Scroll, Amount: 5, Graphic: 0x1F42, Color: 0x0000, X: 50, Y: 30");
+      ItemRequip.RefullCommon(Cont_Hlavni_Svitky, cilBag, "Name: Paralyze Scroll, Amount: 10, Graphic: 0x1F52, Color: 0x0000, X: 70, Y: 30");
+      ItemRequip.RefullCommon(Cont_Hlavni_Svitky, cilBag, "Name: Magic Reflection S, Amount: 10, Graphic: 0x1F50, Color: 0x0000, X: 90, Y: 30");
+      ItemRequip.RefullCommon(Cont_Hlavni_Svitky, cilBag, "Name: Lightning Scroll, Amount: 5, Graphic: 0x1F4A, Color: 0x0000, X: 100, Y: 30");
+      ItemRequip.RefullCommon(Cont_Hlavni_Svitky, cilBag, "Name: Summon Earth Eleme, Amount: 25, Graphic: 0x1F6A, Color: 0x0000, X: 110, Y: 30");
+
+
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_Lode, cilBag, "Name: Deed to a small ship crafted , Amount: 1, Graphic: 0x14F1, Color: 0x0000, X: 96, Y: 77");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: magregy, Amount: " + GetRefullAmountReserve(procento, 500) + ", X: 55, Y: 110");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Eyes of Newt, Amount: " + GetRefullAmountReserve(procento, 500) + ", Graphic: 0x0F87, Color:  0x0000, X: 40, Y: 110");
+
+
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_RybyAtd, cilBag, "Name: Jabara Berry, Amount: 155, Graphic: 0x0C67, Color: 0x049B, X: 25, Y: 25");
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_RybyAtd, cilBag, "Name: Cinchona Bark, Amount: 45, Graphic: 0x0C41, Color: 0x0BA9, X: 22, Y: 20");
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_RybyAtd, cilBag, "Name: clean bandages, Amount: 300, Graphic: 0x0E21, Color: 0x0000, X: 69, Y: 76");
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_RybyAtd, cilBag, "Name: Ginseng Salad, Amount: 2, Graphic: 0x09EC, Color: 0x06AB, X: 38, Y: 51");
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_RybyAtd, cilBag, "Name: lockpicks, Amount: 20, Graphic: 0x14FB, Color: 0x0000, X: 1, Y: 30");
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_RybyAtd, cilBag, "Name: Wondrous Fish, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 16, Y: 54");
+
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_RybyAtd_Refresh, cilBag, "Name: Essence of Refresh, Amount: 2, Graphic: 0x0EFE, Color: 0x005B, X: 17, Y: 51");
+
+
+      List<string> lahve = new List<string>();
+
+      if (!Potion.LavaBomb.ContainsTopKad(cilBag))
+        lahve.Add("Name: Lava Bomb, MaxItem:  " + GetRefullAmountReserve(procento2, 6));
+
+      ItemRequip.RefullLahve(0, cilBag, lahve.ToArray());
+
+
+      ItemRequip.RefullKlamakyClear(Cont_Hlavni_DalsiVeci_ABoxy, cilBag, "Name: Cougar, Count: 10, X: 16, Y: 87", "Name: Leopard, Count: 12, X: 32, Y: 87", "Name: Cat, Count: 8, X: 60, Y: 92");
+
+      ItemRequip.RefullSperky(Cont_Hlavni_DalsiVeci_Sperkovnice, cilBag, "Name: Heart of Dark Forest, Count: 1, Amount: 6");
+      ItemRequip.RefullCommon(Cont_Hlavni_DalsiVeci_Sperkovnice, cilBag, "Name: Spirit of the Rain, Amount: 2, Graphic: 0x0E26, Color: 0x049D, X: 16, Y: 51");
+
+      ItemRequip.RefullCommon(Cont_Hlavni_LahvickyAKade_ShrinkKade, cilBag, "Name: Nadoba s Shrink , Amount: 1, Graphic: 0x1843, Color: 0x0724, X: 45, Y: 51");
+
+      ItemRequip.RefullCommon(Cont_Hlavni_LahvickyAKade, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: 6");
+
+    }
+
+
+    //---------------------------------------------------------------------------------------------
+
+    [Executable]
+    public static void towerref_dancul() { towerref_dancul(100); }
+
+    [Executable]
+    public static void towerref_dancul(int procento)
+    {
+      if (procento > 500)
+      {
+        Game.PrintMessage("Max 500% ! - " + procento);
+        return;
+      }
+
+      TargetInfo cilBag = new TargetInfo();
+      Game.PrintMessage("Vyberte cilovy bag:");
+      cilBag.GetTarget();
+      Game.Wait(250);
+      cilBag.Item.Use();
+      Game.Wait(250);
+
+      if (!cilBag.Object.Exist || !cilBag.Object.Serial.IsValid)
+      {
+        Game.PrintMessage("Cilovy bag NEVALIDNI ID", MessageType.Error);
+        return;
+      }
+
+      UO.UseObject(VAL_TowerGuildSecureChest);
+      Game.Wait();
+      UO.UseObject(VAL_TowerGuildSecureChest_Svitky);
+      Game.Wait();
+      UO.UseObject(VAL_TowerGuildSecureChest_AnimalBoxy);
+      Game.Wait();
+      UO.UseObject(VAL_TowerGuildSecureChest_SperkyRegy);
+      Game.Wait();
+      UO.UseObject(VAL_TowerGuildSecureChest_RybyOstani);
+      Game.Wait();
+
+      ItemHelper.OpenContainerRecursive(VAL_TowerGuildSecureChest_SperkyRegy);
+      ItemHelper.OpenContainerRecursive(VAL_TowerGuildSecureChest_RybyOstani);
+
+      int procento2 = 100;
+      if (procento > 100)
+      {
+        double d = (double)procento;
+        d = (d - 100) * 0.33;
+        procento2 = 100 + (int)d;
+      }
+
+      UOItem prazdneLahve = World.Player.FindType(0x0F0E);
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, World.Player.Backpack, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: " + Math.Max((45 - prazdneLahve.Amount), 0));
+
+      List<string> lahve = new List<string>();
+      lahve.Add("Name: Cure, Quality: Greater, MaxItem: 10");
+      lahve.Add("Name: Invisibility, Quality: None, MaxItem: 10");
+
+
+      if (!Potion.LavaBomb.ContainsTopKad(cilBag))
+        lahve.Add("Name: Lava Bomb, MaxItem:  " + GetRefullAmountReserve(procento2, 6));
+
+      if (!Potion.Heal.ContainsTopKad(cilBag))
+        lahve.Add("Name: Heal, Quality: Greater, MaxItem:  " + GetRefullAmountReserve(procento2, 10));
+
+      if (!Potion.Strength.ContainsTopKad(cilBag))
+        lahve.Add("Name: Strength, Quality: Greater, MaxItem:  " + GetRefullAmountReserve(procento2, 10));
+
+      if (!Potion.Refresh.ContainsTopKad(cilBag))
+        lahve.Add("Name: Refresh, Quality: Total, MaxItem: " + GetRefullAmountReserve(procento2, 10));
+
+      if (!Potion.Shrink.ContainsTopKad(cilBag))
+        lahve.Add("Name: Shrink, Quality: None, MaxItem: 2");
+
+      ItemRequip.RefullLahve(0, cilBag, lahve.ToArray());
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: PrazdneLahve, Graphic: 0x0F0E, Color: 0x0000, Amount: 6");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: Bandages, Graphic: 0x0E21, Color: 0x0000, Amount: 150");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: teleportvitek, Amount: " + GetRefullAmountReserve(procento2, 10) + ", Graphic: " + Magery.SpellScrool[StandardSpell.Teleport] + ", Color: 0x0000, X: 15, Y: 45");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: resssvitek, Amount: " + GetRefullAmountReserve(procento2, 6) + ", Graphic: " + Magery.SpellScrool[StandardSpell.Ressurection] + ", Color: 0x0000, X: 15, Y: 60");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: efsvitek, Amount: 40, Graphic: " + Magery.SpellScrool[StandardSpell.EnergyField] + ", Color: 0x0000, X: 15, Y: 75");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_Svitky, cilBag, "Name: paralyze, Amount: 5, Graphic: " + Magery.SpellScrool[StandardSpell.Paralyze] + ", Color: 0x0000, X: 15, Y: 90");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: locky, Amount: 18, Graphic: 0x14FB, Color: 0x0000, X: 137, Y: 65");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: magiclocky, Amount: 2, Graphic: 0x14FB, Color: 0x0B18  , X: 137, Y: 80");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani, cilBag, "Name: modraryba, Amount: 4, Graphic: 0x09CD, Color: 0x084C, X: 137, Y: 90");
+      //ItemRequip.RefullCommon(VAL_MojeGuild_BedinkaEquip, cilBag, "Name: zelenaryba, Amount: 2, Graphic: 0x09CD, Color: 0x0850, X: 120, Y: 90");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_S, cilBag, "Name: Verite dagger, Amount: 2, Graphic:  0x0F51, Color: 0x08A1, X: 90, Y: 65");
+      //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_M, cilBag, "Name: Verite short spear, Amount: 1, Graphic: 0x1402, Color: 0x08A1, X: 90, Y: 65");
+      //ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Verite_L, cilBag, "Name: Verite spear, Amount: 1, Graphic: 0x0F62, Color: 0x08A1, X: 90, Y: 65");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest, cilBag, "Name: salat, Amount: 3, Graphic: 0x09EC, Color: 0x06AB, X: 120, Y: 121");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_RybyOstani_Pracka, cilBag, "Name: pracka, Amount: 1, Graphic: 0x1008  , Color: 0xFFFF  , X: 110, Y: 121");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Bubinek, cilBag, "Name: bubinek, Amount: 1, Graphic: 0x0E9C, Color: 0x0000  , X: 120, Y: 120");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_Harfa, cilBag, "Name: harfa, Amount: 1, Graphic: 0x0EB2, Color: 0x0000  , X: 140, Y: 120");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_NekroRegy, cilBag, "Name: vialofblood, Amount: " + GetRefullAmountReserve(procento, 300) + ", Graphic: 0x0F7D, Color:  0x0000, X: 20, Y: 131");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_NekroRegy, cilBag, "Name: bone, Amount: " + GetRefullAmountReserve(procento, 150) + ", Graphic: 0x0F7E, Color:  0x0000, X: 30, Y: 131");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_NekroRegy, cilBag, "Name: excap, Amount: " + GetRefullAmountReserve(procento, 150) + ", Graphic: 0x0F83, Color:  0x0000, X: 40, Y: 131");
+
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: MandrakeRoot, Amount: " + GetRefullAmountReserve(procento, 1900) + ", Graphic: " + Reagent.MandrakeRoot.Graphic + ", Color: 0x0000, X: 15, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BloodMoss, Amount: " + GetRefullAmountReserve(procento, 1000) + ", Graphic: " + Reagent.BloodMoss.Graphic + ", Color: 0x0000, X: 25, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SpidersSilk, Amount: " + GetRefullAmountReserve(procento, 2400) + ", Graphic: " + Reagent.SpidersSilk.Graphic + ", Color: 0x0000, X: 35, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: SulphurousAsh, Amount: " + GetRefullAmountReserve(procento, 1100) + ", Graphic: " + Reagent.SulphurousAsh.Graphic + ", Color: 0x0000, X: 45, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Garlic, Amount: " + GetRefullAmountReserve(procento, 1000) + ", Graphic: " + Reagent.Garlic.Graphic + ", Color: 0x0000, X: 55, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Nightshade, Amount: " + GetRefullAmountReserve(procento, 1200) + ", Graphic: " + Reagent.Nightshade.Graphic + ", Color: 0x0000, X: 65, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: BlackPearl, Amount: " + GetRefullAmountReserve(procento, 2300) + ", Graphic: " + Reagent.BlackPearl.Graphic + ", Color: 0x0000, X: 75, Y: 141");
+      ItemRequip.RefullCommon(VAL_TowerGuildSecureChest_SperkyRegy_MagRegy, cilBag, "Name: Ginseng, Amount: " + GetRefullAmountReserve(procento, 1000) + ", Graphic: " + Reagent.Ginseng.Graphic + ", Color: 0x0000, X: 85, Y: 141");
+
+      ItemRequip.RefullSperkyClear(VAL_TowerGuildSecureChest_SperkyRegy, cilBag, "Name: Great Reflex Ring, Count: 1, Amount: 8", "Name: Reflex Ring, Count: 1, Amount: 4");
+
+      ItemRequip.RefullKlamakyClear(VAL_TowerGuildSecureChest_AnimalBoxy, cilBag, "Name: Rabbit|Rat|Chicken, Count: 3, X: 20, Y: 120");
+
+
+      ItemRequip.RefullKade(0, cilBag, "Name: Strength, Quality: Greater, Amount: 50");
+      ItemRequip.RefullKade(0, cilBag, "Name: Heal, Quality: Greater, Amount: 50");
+      ItemRequip.RefullKade(0, cilBag, "Name: Nightsight, Quality: None, Amount: 100");
+      ItemRequip.RefullKade(0, cilBag, "Name: Refresh, Quality: Total, Amount: 50");
+      ItemRequip.RefullKade(0, cilBag, "Name: Total Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(procento, 175));
+      ItemRequip.RefullKade(0, cilBag, "Name: Mana Refresh, Quality: None, Amount: " + GetRefullAmountReserve(procento, 175) * 2);
+      ItemRequip.RefullKade(0, cilBag, "Name: Shrink, Quality: None, Amount: 50");
+
+
+      ItemHelper.SortBasicBackpack();
+      Jewelry.SetridSperky();
+    }
+
   }
 }
 

@@ -84,7 +84,7 @@ namespace CalExtension.UOExtensions
           }
 
           string name = box.Name + String.Empty;
-          name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+          name = NormalizeItemName(name).ToLower();//name.Replace("an ", "").Replace("a ", "").Trim()//.ToLower();
 
           if (!htBox.ContainsKey(name))
           {
@@ -121,7 +121,7 @@ namespace CalExtension.UOExtensions
             }
 
             string name = item.Name + String.Empty;
-            name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+            name = NormalizeItemName(name).ToLower();//name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
 
             if (name == a && ItemLibrary.ShrinkKlamaci.Contains(item.Graphic) && !info.Items.Contains(item))
               info.Items.Add(item);
@@ -194,7 +194,7 @@ namespace CalExtension.UOExtensions
                   }
 
                   string name = item.Name + String.Empty;
-                  name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+                  name = NormalizeItemName(name).ToLower();//name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
 
                   if (name == a && ItemLibrary.ShrinkKlamaci.Contains(item.Graphic) && !info.Items.Contains(item))
                     info.Items.Add(item);
@@ -267,6 +267,26 @@ namespace CalExtension.UOExtensions
       RefullSperky(Serial.Invalid, Serial.Invalid, options);
     }
 
+  //  string name = box.Name + String.Empty;
+
+
+    //name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+
+    //---------------------------------------------------------------------------------------------
+
+    public static string NormalizeItemName(string name)
+    {
+      if (name.StartsWith("an "))
+        name = name.Remove(0, 3);
+
+      if (name.StartsWith("a "))
+        name = name.Remove(0, 2);
+
+      name = name.Trim();
+
+      return name;
+    }
+
     //---------------------------------------------------------------------------------------------
 
     [Executable]
@@ -302,11 +322,19 @@ namespace CalExtension.UOExtensions
           if (String.IsNullOrEmpty(box.Name))
           {
             box.Click();
-            Game.Wait(250);
+            Game.Wait(Game.SmallestWait);
           }
 
           string name = box.Name + String.Empty;
-          name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
+
+          if (name.StartsWith("an "))
+            name = name.Remove(0, 3);
+
+          if (name.StartsWith("a "))
+            name = name.Remove(0, 2);
+
+          name = name.Trim().ToLower();
+          //name = name.Replace("an ", "").Replace("a ", "").Trim().ToLower();
 
           string fixBugName = String.Empty;
           if (name == "Great Alabaster Necklace".ToLower())
@@ -329,6 +357,7 @@ namespace CalExtension.UOExtensions
         }
       }
 
+      Game.PrintMessage("Nalezeno " + htBox.Keys.Count + " Sperkovnic");
       List<UOItem> bagitems = new List<UOItem>();
 
       if (ItemHelper.IsInBackpack(cilKont))
@@ -338,7 +367,7 @@ namespace CalExtension.UOExtensions
 
       foreach (ItemRequipInfo info in infos)
       {
-        Game.PrintMessage("Count: " + info.Count + " / Amount: " + info.Amount);
+        Game.PrintMessage(info.Name + " - Count: " + info.Count + " / Items.Count: " + info.Items.Count + " / Amount: " + info.Amount);
         
         if (info.Items.Count < info.Count)
         {
@@ -372,7 +401,7 @@ namespace CalExtension.UOExtensions
                 {
                   UO.WaitTargetObject(box);
                   box.Use();
-                  Game.Wait();
+                  Game.Wait(Game.SmallestWait);
                 }
 
                 for (int i = info.Items.Count; i < info.Count; i++)
@@ -411,7 +440,7 @@ namespace CalExtension.UOExtensions
                                 break;
                               }
                               else
-                                Game.Wait();
+                                Game.Wait(Game.SmallestWait);
                             }
 
                             UOItem itemAfter = new UOItem(item.Serial);
@@ -437,7 +466,7 @@ namespace CalExtension.UOExtensions
                 if (originalPositions.ContainsKey(box.Serial))
                 {
                   box.Move(1, (Serial)originalPositions[box.Serial][2], (ushort)originalPositions[box.Serial][0], (ushort)originalPositions[box.Serial][1]);
-                  Game.Wait();
+                  Game.Wait(Game.SmallestWait);
                 }
               }
             }
@@ -453,7 +482,7 @@ namespace CalExtension.UOExtensions
             Game.Wait(350);
           }
         }
-        Game.Wait();
+        Game.Wait(Game.SmallestWait);
 
         Game.PrintMessage(info.Name + " - " + info.Items.Count);
       }
@@ -657,7 +686,7 @@ namespace CalExtension.UOExtensions
               else
                 moveAmount = 0;
 
-              Game.Wait();
+              Game.Wait(Game.SmallestWait);
             }
           }
           else if (moveDirection < 0)
@@ -680,10 +709,10 @@ namespace CalExtension.UOExtensions
               else
                 moveAmount = 0;
 
-              Game.Wait();
+              Game.Wait(Game.SmallestWait);
             }
           }
-          Game.Wait();
+          Game.Wait(Game.SmallestWait);
         }
 
         Game.PrintMessage(messageFormat, MessageType.Info, info.Name, directionMessage, moveAmount, itmAmount, cilKont.Items.FindType(info.Graphic, info.Color).Amount);
@@ -740,7 +769,7 @@ namespace CalExtension.UOExtensions
       Game.PrintMessage("Nacitam Itemy ...");
       List<UOItem> items = new List<UOItem>();
       if (zdrojBagl == 0 || !zdrojBagl.IsValidCust() || !zdrojKont.ExistCust())// { World.FindDistance = 8; isGround = true;  }
-         items.AddRange(World.Ground.ToArray());
+         items.AddRange(World.Ground.ToArray().Where(a => a.Distance <= 5));
       else
         items = ItemHelper.OpenContainerRecursive(zdrojKont);
 
@@ -757,7 +786,7 @@ namespace CalExtension.UOExtensions
       ushort startY = 16;
       //ushort currentX = startX;
       //ushort currentY = startY;
-
+      items = items.OrderBy(a => (Math.Abs(a.Z - World.Player.Z))).ThenBy(a => a.Distance).ToList();
       for (int i = 0; i < infos.Count; i++)
       {
         Game.PrintMessage("infos ..." + i);
@@ -830,13 +859,13 @@ namespace CalExtension.UOExtensions
                   {
                     UO.WaitTargetObject(kad);
                     sourcekad.Use();
-                    Game.Wait();
+                    Game.Wait(Game.SmallestWait);
                   }
 
                   if (new UOItem(kad.Serial).Container != orgiCont)
                   {
                     kad.Move(1, orgiCont);
-                    Game.Wait();
+                    Game.Wait(Game.SmallestWait);
                   }
 
                   Game.PrintMessage(info.Name + " doplneno " + toFill);
@@ -1056,7 +1085,7 @@ namespace CalExtension.UOExtensions
 
       bagitems.AddRange(ItemHelper.OpenContainerRecursive(cilKont));
 
-      Game.Wait();
+      Game.Wait(Game.SmallestWait);
 
       foreach (UOItem item in bagitems)
       {
@@ -1071,7 +1100,7 @@ namespace CalExtension.UOExtensions
         }
       }
 
-      Game.Wait();
+      Game.Wait(Game.SmallestWait);
 
 
       Game.PrintMessage("requipInfo.Count: " + requipInfo.Count);
@@ -1107,7 +1136,7 @@ namespace CalExtension.UOExtensions
           if (kad.ExistCust())
           {
             kad.Move(1, World.Player.Backpack);
-            Game.Wait();
+            Game.Wait(Game.SmallestWait);
           }
         }
 
@@ -1117,44 +1146,47 @@ namespace CalExtension.UOExtensions
         {
           while (info.Count < info.MaxItem)
           {
-            UOItem empty = World.Ground.FindType(Potion.Empty);
-
+            UOItem empty = World.Player.Backpack.AllItems.FindType(Potion.Empty); 
 
             if (!empty.Exist)
             {
-              if (zdrojBagl.IsValid)
+              if (!empty.Exist)
+                empty = World.Ground.FindType(Potion.Empty);
+
+              if (!empty.Exist)
               {
-                Game.PrintMessage("Nacitam Itemy ...");
-                ItemsCollection items = new ItemsCollection(zdrojKont, true);// ItemHelper.OpenContainerRecursive(zdrojKont);
-
-                empty = items.FindType(Potion.Empty);
-
-                if (empty.Exist)
+                if (zdrojBagl.IsValid)
                 {
-                  empty.Move(1, World.Player.Backpack);
-                  Game.Wait();
-                  empty = World.Player.Backpack.AllItems.FindType(Potion.Empty);
+                  Game.PrintMessage("Nacitam Itemy ...");
+                  ItemsCollection items = new ItemsCollection(zdrojKont, true);// ItemHelper.OpenContainerRecursive(zdrojKont);
+
+                  empty = items.FindType(Potion.Empty);
+
+                  if (empty.Exist)
+                  {
+                    empty.Move(2, World.Player.Backpack);
+                    Game.Wait(Game.SmallestWait);
+                    empty = World.Player.Backpack.AllItems.FindType(Potion.Empty);
+                  }
                 }
               }
 
-              if (!empty.Exist)
-                empty = World.Player.Backpack.AllItems.FindType(Potion.Empty);
             }
 
             if (empty.Exist)
             {
               kad.Use();
               UO.WaitTargetObject(empty);// nebo jednoduse targettype ..?
-              Game.Wait();
+              Game.Wait(Game.SmallestWait);
             }
 
             info.Count++;
           }
-          Game.Wait();
+          Game.Wait(Game.SmallestWait);
           if (!ground)
           {
             kad.Move(1, zdrojKont.Serial);
-            Game.Wait();
+            Game.Wait(Game.SmallestWait);
           }
 
           bagitems.Clear();
@@ -1171,7 +1203,7 @@ namespace CalExtension.UOExtensions
         }
 
         counter++;
-        Game.Wait();
+        Game.Wait(Game.SmallestWait);
 
         for (int i = 0; i < kvp.Value.Items.Count; i++)
         {

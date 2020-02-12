@@ -328,7 +328,7 @@ namespace CalExtension.UOExtensions
     public static Potion LavaBomb
     {
       get
-      {
+      {//----------------------------------------------------------------------------------llllddss0x0F0D  
         Dictionary<PotionQuality, PotionQualityDefinition> dict = new Dictionary<PotionQuality, PotionQualityDefinition>();
         dict.Add(PotionQuality.None, new PotionQualityDefinition() { Amount = 6, Color = 0x000E, Graphic = 0x0F0D, KadColor = 0x000E, MenuName = "Lava Bomb" });//??KadBarva
         return new Potion() { Name = "Lava Bomb", Reagent = Reagent.VulcanicAsh, Qualities = dict, Shortcut = "Lava" };
